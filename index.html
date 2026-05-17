@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Image Converter | 100% Local</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: direction 0.3s ease;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 550px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 22px;
+            color: #111827;
+            line-height: 1.4;
+            margin-bottom: 25px;
+        }
+        .controls-wrapper {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .control-group label {
+            font-weight: 600;
+            color: #4b5563;
+            font-size: 14px;
+        }
+        select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+            background-color: #f9fafb;
+        }
+        select:focus {
+            border-color: #3b82f6;
+        }
+        .drop-zone {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .drop-zone p {
+            margin: 0;
+            font-weight: 600;
+            color: #3b82f6;
+            line-height: 1.5;
+        }
+        #preview {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .download-btn {
+            display: none;
+            margin-top: 20px;
+            background-color: #10b981;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background 0.3s;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .download-btn:hover {
+            background-color: #059669;
+        }
+        .badge {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        /* 阿拉伯语特殊右对齐样式 */
+        body[dir="rtl"] .control-group {
+            flex-direction: row-reverse;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="mainContainer">
+    <!-- 顶层状态标签 -->
+    <div class="badge" id="privacyBadge">🔒 100% Local & Private</div>
+    
+    <!-- 主标题 -->
+    <h1 id="mainTitle">100% Local, Secure File Converter.<br>No Uploading, No Privacy Leak.</h1>
+    
+    <!-- 配置区域（多语言 + 格式选择） -->
+    <div class="controls-wrapper">
+        <!-- 语言选择 -->
+        <div class="control-group">
+            <label for="langSelect">🌐 </label>
+            <select id="langSelect">
+                <option value="en">English</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="zh-TW">繁體中文</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="it">Italiano</option>
+                <option value="ar">العربية</option>
+            </select>
+        </div>
+
+        <!-- 转换目标格式选择 -->
+        <div class="control-group">
+            <label id="formatLabel" for="formatSelect">Convert to: </label>
+            <select id="formatSelect">
+                <option value="png" id="optPng">PNG (Best Quality)</option>
+                <option value="webp" id="optWebp">WebP (Small Size)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- 拖拽区域 -->
+    <div class="drop-zone" id="dropZone">
+        <p id="dropZoneText">Drag & Drop any image here<br><br>or Click to browse</p>
+    </div>
+    
+    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+    
+    <!-- 预览与下载 -->
+    <img id="preview" alt="Image Preview">
+    <a id="downloadBtn" class="download-btn">Download</a>
+</div>
+
+<script>
+    // 八国语言包核心数据
+    const i18n = {
+        en: {
+            badge: "🔒 100% Local & Private",
+            title: "100% Local, Secure File Converter.<br>No Uploading, No Privacy Leak.",
+            formatLabel: "Convert to: ",
+            optPng: "PNG (Best Quality)",
+            optWebp: "WebP (Small Size)",
+            dropText: "Drag & Drop any image here<br><br>or Click to browse",
+            alert: "Please upload a valid image file.",
+            btnText: "Download"
+        },
+        "zh-CN": {
+            badge: "🔒 100% 本地与隐私安全",
+            title: "100% 本地安全文件转换器。<br>无需上传，绝不泄露隐私。",
+            formatLabel: "转换为: ",
+            optPng: "PNG (最佳质量)",
+            optWebp: "WebP (极小体积)",
+            dropText: "拖拽任何图片到这里<br><br>或 点击浏览文件",
+            alert: "请上传有效的图片文件。",
+            btnText: "下载图片"
+        },
+        "zh-TW": {
+            badge: "🔒 100% 本地與隱私安全",
+            title: "100% 本地安全檔案轉換器。<br>無需上傳，絕不洩漏隱私。",
+            formatLabel: "轉換為: ",
+            optPng: "PNG (最佳質量)",
+            optWebp: "WebP (極小體積)",
+            dropText: "拖曳任何圖片到這裡<br><br>或 點擊瀏覽檔案",
+            alert: "請上傳有效的圖片檔案。",
+            btnText: "下載圖片"
+        },
+        es: {
+            badge: "🔒 100% Local y Privado",
+            title: "Convertidor de archivos 100% local y seguro.<br>Sin cargar, sin fugas de privacidad.",
+            formatLabel: "Convertir a: ",
+            optPng: "PNG (Mejor Calidad)",
+            optWebp: "WebP (Tamaño Pequeño)",
+            dropText: "Arrastra y suelta cualquier imagen aquí<br><br>o Haz clic para buscar",
+            alert: "Por favor, sube un archivo de imagen válido.",
+            btnText: "Descargar"
+        },
+        fr: {
+            badge: "🔒 100% Local et Privé",
+            title: "Convertisseur de fichiers 100% local et sécurisé.<br>Pas de téléchargement, pas de fuite de confidentialité.",
+            formatLabel: "Convertir en: ",
+            optPng: "PNG (Meilleure Qualité)",
+            optWebp: "WebP (Petite Taille)",
+            dropText: "Glissez-déposez n'importe quelle image ici<br><br>ou Cliquez pour parcourir",
+            alert: "Veuillez télécharger un fichier image valide.",
+            btnText: "Télécharger"
+        },
+        de: {
+            badge: "🔒 100% Lokal & Sicher",
+            title: "100% lokaler, sicherer Dateikonverter.<br>Kein Hochladen, kein Datenleck.",
+            formatLabel: "Konvertieren in: ",
+            optPng: "PNG (Beste Qualität)",
+            optWebp: "WebP (Kleine Größe)",
+            dropText: "Ziehen Sie ein Bild hierher<br><br>oder Klicken Sie zum Durchsuchen",
+            alert: "Bitte laden Sie eine gültige Bilddatei hoch.",
+            btnText: "Herunterladen"
+        },
+        it: {
+            badge: "🔒 100% Locale e Privato",
+            title: "Convertitore di file sicuro al 100% locale.<br>Nessun caricamento, nessuna violazione della privacy.",
+            formatLabel: "Converti in: ",
+            optPng: "PNG (Migliore Qualità)",
+            optWebp: "WebP (Dimensioni Ridotte)",
+            dropText: "Trascina e rilascia qualsiasi immagine qui<br><br>o Fai clic per sfogliare",
+            alert: "Si prega di caricare un file immagine valido.",
+            btnText: "Scarica"
+        },
+        ar: {
+            badge: "🔒 محلي وخاص 100%",
+            title: "محول ملفات محلي وآمن 100%.<br>بدون رفع، بدون تسريب للخصوصية.",
+            formatLabel: "تحويل إلى: ",
+            optPng: "PNG (أفضل جودة)",
+            optWebp: "WebP (حجم صغير)",
+            dropText: "اسحب وأسقط أي صورة هنا<br><br>أو انقر للتصفح",
+            alert: "يرجى تحميل ملف صورة صالحة.",
+            btnText: "تحميل"
+        }
+    };
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const formatSelect = document.getElementById('formatSelect');
+    const langSelect = document.getElementById('langSelect');
+
+    let currentFile = null;
+    let currentImgWidth = 0;
+    let currentImgHeight = 0;
+
+    // 切换语言的函数
+    function updateLanguage(lang) {
+        // 1. 设置网页排版方向（阿拉伯语从右向左）
+        if (lang === 'ar') {
+            document.body.setAttribute('dir', 'rtl');
+        } else {
+            document.body.setAttribute('dir', 'ltr');
+        }
+
+        // 2. 批量替换界面文字
+        document.getElementById('privacyBadge').textContent = i18n[lang].badge;
+        document.getElementById('mainTitle').innerHTML = i18n[lang].title;
+        document.getElementById('formatLabel').textContent = i18n[lang].formatLabel;
+        document.getElementById('optPng').textContent = i18n[lang].optPng;
+        document.getElementById('optWebp').textContent = i18n[lang].optWebp;
+        document.getElementById('dropZoneText').innerHTML = i18n[lang].dropText;
+
+        // 3. 如果已经有转换好的图片，动态更新下载按钮的文字
+        if (downloadBtn.style.display === 'block') {
+            const targetFormat = formatSelect.value.toUpperCase();
+            downloadBtn.textContent = `${i18n[lang].btnText} ${targetFormat} (${currentImgWidth}x${currentImgHeight})`;
+        }
+    }
+
+    // 监听语言下拉菜单切换
+    langSelect.addEventListener('change', (e) => {
+        updateLanguage(e.target.value);
+    });
+
+    // 监听转换格式切换
+    formatSelect.addEventListener('change', () => {
+        if (currentFile) handleFile(currentFile);
+    });
+
+    // 点击与拖拽核心逻辑
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+            currentFile = e.dataTransfer.files[0];
+            handleFile(currentFile);
+        }
+    });
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            currentFile = e.target.files[0];
+            handleFile(currentFile);
+        }
+    });
+
+    // 图片转换核心算法
+    function handleFile(file) {
+        const currentLang = langSelect.value;
+        
+        if (!file.type.startsWith('image/')) {
+            alert(i18n[currentLang].alert);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                preview.src = img.src;
+                preview.style.display = 'block';
+                
+                // 记住图片尺寸用于下载按钮显示
+                currentImgWidth = img.width;
+                currentImgHeight = img.height;
+
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+
+                const targetFormat = formatSelect.value;
+                let dataUrl;
+                let fileExtension;
+
+                if (targetFormat === 'webp') {
+                    dataUrl = canvas.toDataURL('image/webp', 0.8);
+                    fileExtension = '.webp';
+                } else if (targetFormat === 'png') {
+                    dataUrl = canvas.toDataURL('image/png');
+                    fileExtension = '.png';
+                }
+
+                const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || 'converted_image';
+
+                downloadBtn.href = dataUrl;
+                downloadBtn.download = originalName + fileExtension;
+                downloadBtn.style.display = 'block';
+                
+                // 渲染当前语言的下载文案
+                downloadBtn.textContent = `${i18n[currentLang].btnText} ${targetFormat.toUpperCase()} (${img.width}x${img.height})`;
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+
+    // 网页加载时，默认初始化为英文界面
+    updateLanguage('en');
+</script>
+
+</body>
+</html>
