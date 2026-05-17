@@ -1,308 +1,603 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>安全本地媒体转换箱 - 100%本地隐私保护</title>
+    <title>Secure Media Converter | 100% Local</title>
     
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2230172556608948"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2230172556608948" crossorigin="anonymous"></script>
 
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --background-color: #f8fafc;
-            --card-background: #ffffff;
-            --text-color: #1e293b;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
             display: flex;
             flex-direction: column;
+            /* 修改对齐方式，减掉原本居中的留白，改为靠上对齐并设置精准顶部间距 */
             align-items: center;
+            justify-content: flex-start; 
+            padding-top: 4vh; 
+            min-height: 100vh;
+            margin: 0;
+            padding-left: 20px;
+            padding-right: 20px;
+            box-sizing: border-box;
+            transition: direction 0.3s ease;
+        }
+        
+        /* 预留广告位，缩减了顶部的 margin 间距 */
+        .ad-container {
+            width: 100%;
+            max-width: 550px;
+            min-height: 90px;
+            margin: 5px 0 15px 0; 
+            text-align: center;
         }
 
         .container {
-            max-width: 800px;
-            width: 100%;
-            background: var(--card-background);
-            padding: 30px;
+            background: white;
+            /* 缩减了容器顶部的内边距，让内容更紧凑 */
+            padding: 25px 40px 40px; 
             border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 550px;
+            width: 100%;
         }
-
         h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 10px;
+            font-size: 22px;
+            color: #111827;
+            line-height: 1.4;
+            margin-bottom: 25px;
         }
-
-        .subtitle {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 30px;
+        .controls-wrapper {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .control-group label {
+            font-weight: 600;
+            color: #4b5563;
             font-size: 14px;
         }
-
-        .badge {
-            background-color: #e2e8f0;
-            color: #475569;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            display: inline-block;
-            margin-bottom: 20px;
+        select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+            background-color: #f9fafb;
         }
-
+        select:focus {
+            border-color: #3b82f6;
+        }
         .drop-zone {
             border: 2px dashed #cbd5e1;
             border-radius: 12px;
-            padding: 40px;
-            text-align: center;
+            padding: 40px 20px;
             cursor: pointer;
-            transition: all 0.3s;
-            background: #f8fafc;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
         }
-
-        .drop-zone:hover {
-            border-color: var(--primary-color);
-            background: #f0fdf4;
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
         }
-
-        input[type="file"] {
-            display: none;
+        .drop-zone p {
+            margin: 0;
+            font-weight: 600;
+            color: #3b82f6;
+            line-height: 1.5;
         }
-
-        .btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-            font-weight: bold;
-            transition: opacity 0.2s;
-        }
-
-        .btn:disabled {
-            background-color: #cbd5e1;
-            cursor: not-allowed;
-        }
-
-        .status {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background: #f1f5f9;
-            display: none;
-            font-size: 14px;
-        }
-
-        .progress-bar {
-            height: 6px;
-            width: 0%;
-            background-color: #10b981;
-            border-radius: 3px;
+        .sub-text {
+            font-size: 12px;
+            color: #64748b;
             margin-top: 10px;
-            transition: width 0.2s;
+            font-weight: normal;
         }
+        
+        /* 倒计时面板样式 */
+        .countdown-panel {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            color: #1e40af;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #bfdbfe;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* 广告位占位样式，帮助谷歌更好地布局自动广告 */
-        .ads-placeholder {
-            margin: 20px 0;
-            width: 100%;
-            text-align: center;
-            min-height: 90px;
+        /* 批量下载列表容器 */
+        .download-list {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 5px;
         }
+        .download-btn {
+            background-color: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background 0.3s;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .download-btn:hover {
+            background-color: #059669;
+        }
+        .badge {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        body[dir="rtl"] .control-group { flex-direction: row-reverse; }
+        body[dir="rtl"] .spinner { margin-right: 0; margin-left: 10px; }
+        
+        /* 滚动条美化 */
+        .download-list::-webkit-scrollbar { width: 6px; }
+        .download-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .download-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .download-list::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>万能纯本地媒体转换器</h1>
-        <div class="subtitle">🔒 100% 本地流处理，文件绝不上传服务器，保护您的隐私与安全</div>
+<div class="ad-container">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-2230172556608948"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+</div>
 
-        <div class="ads-placeholder">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-2230172556608948"
-                 data-ad-slot="auto"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+<div class="container" id="mainContainer">
+    <div class="badge" id="privacyBadge">🔒 100% Local & Private</div>
+    
+    <h1 id="mainTitle">100% Local, Secure File Converter.<br>No Uploading, No Privacy Leak.</h1>
+    
+    <div class="controls-wrapper">
+        <div class="control-group">
+            <label for="langSelect">🌐 </label>
+            <select id="langSelect">
+                <option value="en">English</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="zh-TW">繁體中文</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="it">Italiano</option>
+                <option value="ar">العربية</option>
+            </select>
         </div>
 
-        <span class="badge">🔥 新增功能：支持任意音视频格式转 MP3</span>
-
-        <div class="drop-zone" id="dropZone">
-            <p>🎵 拖拽您的音视频文件到这里，或 <strong>点击浏览文件</strong></p>
-            <p style="font-size: 12px; color: #94a3b8;">支持 MP4, MKV, AVI, MOV, WAV, FLAC, M4A, OGG 等格式</p>
-            <input type="file" id="fileInput" accept="video/*,audio/*">
-        </div>
-
-        <div id="fileInfo" style="margin-top:15px; font-weight:500; display:none;"></div>
-
-        <button class="btn" id="convertBtn" disabled>开始导出为标准 MP3</button>
-
-        <div class="status" id="statusBox">
-            <div id="statusText">准备就绪...</div>
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-
-        <div class="ads-placeholder" style="margin-top: 40px;">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-2230172556608948"
-                 data-ad-slot="auto"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+        <div class="control-group">
+            <label id="formatLabel" for="formatSelect">Convert to: </label>
+            <select id="formatSelect">
+                <option value="jpg" id="optJpg">JPG (Standard Photo)</option>
+                <option value="png" id="optPng">PNG (Best Quality)</option>
+                <option value="webp" id="optWebp">WebP (Small Size)</option>
+                <option value="mp3" id="optMp3">MP3 (Extract Audio)</option>
+            </select>
         </div>
     </div>
 
-    <script>
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const convertBtn = document.getElementById('convertBtn');
-        const fileInfo = document.getElementById('fileInfo');
-        const statusBox = document.getElementById('statusBox');
-        const statusText = document.getElementById('statusText');
-        const progressBar = document.getElementById('progressBar');
+    <div class="drop-zone" id="dropZone">
+        <p id="dropZoneText">Drag & Drop files here<br><br>or Click to browse (Batch supported)</p>
+        <div class="sub-text" id="subText">Supports Images (JPG, PNG, WebP) & Media (MP4, MKV, MP3...)</div>
+    </div>
+    
+    <input type="file" id="fileInput" accept="image/*,video/*,audio/*" multiple style="display: none;">
+    
+    <div class="countdown-panel" id="countdownPanel">
+        <span class="spinner"></span>
+        <span id="countdownText">Processing... Please wait 5s</span>
+    </div>
 
-        let selectedFile = null;
+    <div id="downloadContainer" class="download-list"></div>
+</div>
 
-        // 点击、拖拽事件监听
-        dropZone.addEventListener('click', () => fileInput.click());
-        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#4f46e5'; });
-        dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = '#cbd5e1');
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.style.borderColor = '#cbd5e1';
-            if (e.dataTransfer.files.length > 0) {
-                handleFileSelect(e.dataTransfer.files[0]);
-            }
-        });
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) handleFileSelect(e.target.files[0]);
-        });
+<div class="ad-container">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-2230172556608948"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+</div>
 
-        function handleFileSelect(file) {
-            selectedFile = file;
-            fileInfo.innerText = `已选择文件: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
-            fileInfo.style.display = 'block';
-            convertBtn.disabled = false;
-            statusBox.style.display = 'none';
-            progressBar.style.width = '0%';
+<script>
+    // 扩展八国语言包：增加 JPG 和 批量相关提示
+    const i18n = {
+        en: {
+            badge: "🔒 100% Local & Private",
+            title: "100% Local, Secure File Converter.<br>No Uploading, No Privacy Leak.",
+            formatLabel: "Convert to: ",
+            optJpg: "JPG (Standard Photo)",
+            optPng: "PNG (Best Quality)",
+            optWebp: "WebP (Small Size)",
+            optMp3: "MP3 (Extract Audio)",
+            dropText: "Drag & Drop files here<br><br>or Click to browse (Batch)",
+            subText: "Supports Images (JPG, PNG, WebP) & Media (MP4, MKV...)",
+            alert: "Please upload valid image or media files.",
+            btnText: "Download",
+            processing: "Processing... Please wait",
+            decoding: " (Decoding...)"
+        },
+        "zh-CN": {
+            badge: "🔒 100% 本地与隐私安全",
+            title: "100% 本地安全文件转换器。<br>无需上传，绝不泄露隐私。",
+            formatLabel: "转换为: ",
+            optJpg: "JPG (标准照片)",
+            optPng: "PNG (最佳质量)",
+            optWebp: "WebP (极小体积)",
+            optMp3: "MP3 (提取音频)",
+            dropText: "拖拽多个文件到这里<br><br>或 点击浏览 (支持批量)",
+            subText: "支持图片(JPG, PNG, WebP)及音视频(MP4, MKV...)",
+            alert: "请上传有效的图片或音视频文件。",
+            btnText: "下载",
+            processing: "正在批量处理，请稍候",
+            decoding: " (正在解码...)"
+        },
+        "zh-TW": {
+            badge: "🔒 100% 本地與隱私安全",
+            title: "100% 本地安全檔案轉換器。<br>無需上傳，絕不洩漏隱私。",
+            formatLabel: "轉換為: ",
+            optJpg: "JPG (標準照片)",
+            optPng: "PNG (最佳質量)",
+            optWebp: "WebP (極小體積)",
+            optMp3: "MP3 (提取音頻)",
+            dropText: "拖曳多個檔案到這裡<br><br>或 點擊瀏覽 (支援批次)",
+            subText: "支援圖片(JPG, PNG, WebP)及音視頻(MP4, MKV...)",
+            alert: "請上傳有效的圖片或音視頻檔案。",
+            btnText: "下載",
+            processing: "正在批次處理，請稍候",
+            decoding: " (正在解碼...)"
+        },
+        es: {
+            badge: "🔒 100% Local y Privado",
+            title: "Convertidor 100% local y seguro.<br>Sin cargar, sin fugas de privacidad.",
+            formatLabel: "Convertir a: ",
+            optJpg: "JPG (Foto Estándar)",
+            optPng: "PNG (Mejor Calidad)",
+            optWebp: "WebP (Tamaño Pequeño)",
+            optMp3: "MP3 (Extraer Audio)",
+            dropText: "Arrastra archivos aquí<br><br>o Haz clic para buscar (Lotes)",
+            subText: "Soporta Imágenes y Medios (MP4, MKV...)",
+            alert: "Por favor, sube un archivo válido.",
+            btnText: "Descargar",
+            processing: "Procesando... Espera",
+            decoding: " (Decodificando...)"
+        },
+        fr: {
+            badge: "🔒 100% Local et Privé",
+            title: "Convertisseur 100% local et sécurisé.<br>Pas de fuite de confidentialité.",
+            formatLabel: "Convertir en: ",
+            optJpg: "JPG (Photo Standard)",
+            optPng: "PNG (Meilleure Qualité)",
+            optWebp: "WebP (Petite Taille)",
+            optMp3: "MP3 (Extraire Audio)",
+            dropText: "Glissez des fichiers ici<br><br>ou Cliquez pour parcourir",
+            subText: "Prend en charge Images et Médias (MP4, MKV...)",
+            alert: "Veuillez télécharger un fichier valide.",
+            btnText: "Télécharger",
+            processing: "Traitement... Patientez",
+            decoding: " (Décodage...)"
+        },
+        de: {
+            badge: "🔒 100% Lokal & Sicher",
+            title: "100% lokaler, sicherer Dateikonverter.<br>Kein Hochladen, kein Datenleck.",
+            formatLabel: "Konvertieren in: ",
+            optJpg: "JPG (Standardfoto)",
+            optPng: "PNG (Beste Qualität)",
+            optWebp: "WebP (Kleine Größe)",
+            optMp3: "MP3 (Audio extrahieren)",
+            dropText: "Dateien hierher ziehen<br><br>oder Klicken zum Durchsuchen",
+            subText: "Unterstützt Bilder und Medien (MP4, MKV...)",
+            alert: "Bitte laden Sie eine gültige Datei hoch.",
+            btnText: "Herunterladen",
+            processing: "Verarbeitung... Warten",
+            decoding: " (Dekodieren...)"
+        },
+        it: {
+            badge: "🔒 100% Locale e Privato",
+            title: "Convertitore sicuro al 100% locale.<br>Nessuna violazione della privacy.",
+            formatLabel: "Converti in: ",
+            optJpg: "JPG (Foto Standard)",
+            optPng: "PNG (Migliore Qualità)",
+            optWebp: "WebP (Dimensioni Ridotte)",
+            optMp3: "MP3 (Estrai Audio)",
+            dropText: "Trascina file qui<br><br>o Fai clic per sfogliare (Lotti)",
+            subText: "Supporta Immagini e Media (MP4, MKV...)",
+            alert: "Carica un file valido.",
+            btnText: "Scarica",
+            processing: "Elaborazione... Attendere",
+            decoding: " (Decodifica...)"
+        },
+        ar: {
+            badge: "🔒 محلي وخاص 100%",
+            title: "محول ملفات محلي وآمن 100%.<br>بدون رفع، بدون تسريب للخصوصية.",
+            formatLabel: "تحويل إلى: ",
+            optJpg: "JPG (صورة قياسية)",
+            optPng: "PNG (أفضل جودة)",
+            optWebp: "WebP (حجم صغير)",
+            optMp3: "MP3 (استخراج الصوت)",
+            dropText: "اسحب الملفات هنا<br><br>أو انقر للتصفح (دفعات)",
+            subText: "يدعم الصور والوسائط (MP4, MKV...)",
+            alert: "يرجى تحميل ملف صالح.",
+            btnText: "تحميل",
+            processing: "جاري المعالجة... انتظر",
+            decoding: " (فك التشفير...)"
+        }
+    };
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const downloadContainer = document.getElementById('downloadContainer');
+    const formatSelect = document.getElementById('formatSelect');
+    const langSelect = document.getElementById('langSelect');
+    const countdownPanel = document.getElementById('countdownPanel');
+    const countdownText = document.getElementById('countdownText');
+
+    function updateLanguage(lang) {
+        if (lang === 'ar') document.body.setAttribute('dir', 'rtl');
+        else document.body.setAttribute('dir', 'ltr');
+
+        document.getElementById('privacyBadge').textContent = i18n[lang].badge;
+        document.getElementById('mainTitle').innerHTML = i18n[lang].title;
+        document.getElementById('formatLabel').textContent = i18n[lang].formatLabel;
+        document.getElementById('optJpg').textContent = i18n[lang].optJpg;
+        document.getElementById('optPng').textContent = i18n[lang].optPng;
+        document.getElementById('optWebp').textContent = i18n[lang].optWebp;
+        document.getElementById('optMp3').textContent = i18n[lang].optMp3;
+        document.getElementById('dropZoneText').innerHTML = i18n[lang].dropText;
+        document.getElementById('subText').textContent = i18n[lang].subText;
+    }
+
+    langSelect.addEventListener('change', (e) => updateLanguage(e.target.value));
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) startBatchProcess(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) startBatchProcess(e.target.files);
+    });
+
+    // 核心主控：批量管理倒计时与异步转换
+    async function startBatchProcess(files) {
+        const currentLang = langSelect.value;
+        const targetFormat = formatSelect.value;
+        const validFiles = Array.from(files).filter(f => f.type.startsWith('image/') || f.type.startsWith('audio/') || f.type.startsWith('video/'));
+
+        if (validFiles.length === 0) {
+            alert(i18n[currentLang].alert);
+            return;
         }
 
-        // 核心转换逻辑：利用 Web Audio API 将全格式视频/音频解码并转为 WAV/MP3 兼容格式下载
-        convertBtn.addEventListener('click', async () => {
-            if (!selectedFile) return;
+        // 重置UI
+        downloadContainer.innerHTML = '';
+        downloadContainer.style.display = 'none';
+        countdownPanel.style.display = 'block';
 
-            convertBtn.disabled = true;
-            statusBox.style.display = 'block';
-            statusText.innerText = "⏳ 正在读取文件并进行本地硬件解码，请勿关闭页面...";
-            progressBar.style.width = '10%';
+        // 判断是否包含音视频
+        const hasMedia = validFiles.some(f => f.type.startsWith('audio/') || f.type.startsWith('video/'));
 
+        // 1. 启动 5 秒全局倒计时
+        let timeLeft = 5;
+        countdownText.innerText = `${i18n[currentLang].processing} ${timeLeft}s`;
+        
+        const timerPromise = new Promise((resolve) => {
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    let extra = hasMedia ? i18n[langSelect.value].decoding : "";
+                    countdownText.innerText = `${i18n[langSelect.value].processing} ${timeLeft}s${extra}`;
+                } else {
+                    clearInterval(timer);
+                    resolve();
+                }
+            }, 1000);
+        });
+
+        // 2. 启动批量转换 Promise 并发执行
+        const conversionPromises = validFiles.map(file => {
+            const isMedia = file.type.startsWith('audio/') || file.type.startsWith('video/');
+            // 如果用户传的是视频，但格式选了图片，则强制转 mp3；如果传图片但选了mp3，强制转 webp/jpg
+            let specificTarget = targetFormat;
+            if (isMedia) specificTarget = 'mp3';
+            if (!isMedia && specificTarget === 'mp3') specificTarget = 'jpg'; 
+
+            return isMedia ? processMedia(file) : processImage(file, specificTarget);
+        });
+
+        try {
+            // Promise.all 等待时间走完，且所有文件处理完毕
+            const results = await Promise.all([timerPromise, ...conversionPromises]);
+            const convertedData = results.slice(1); // 刨除第一个定时器的结果
+            
+            countdownPanel.style.display = 'none';
+            downloadContainer.style.display = 'flex';
+
+            // 渲染批量下载列表
+            convertedData.forEach(data => {
+                const btn = document.createElement('a');
+                btn.className = 'download-btn';
+                btn.href = data.url;
+                btn.download = data.filename;
+                
+                // 内部排版：左侧名字，右侧格式和尺寸
+                const nameSpan = document.createElement('span');
+                nameSpan.style.overflow = 'hidden';
+                nameSpan.style.textOverflow = 'ellipsis';
+                nameSpan.style.whiteSpace = 'nowrap';
+                nameSpan.style.maxWidth = '60%';
+                nameSpan.innerText = data.filename;
+
+                const metaSpan = document.createElement('span');
+                metaSpan.style.fontSize = '12px';
+                metaSpan.style.opacity = '0.9';
+                metaSpan.innerText = `${i18n[currentLang].btnText} ${data.meta}`;
+
+                btn.appendChild(nameSpan);
+                btn.appendChild(metaSpan);
+                downloadContainer.appendChild(btn);
+            });
+
+        } catch (error) {
+            countdownPanel.style.display = 'none';
+            alert(`Error processing batch: ${error.message || error}`);
+        }
+    }
+
+    // 图片处理算法 (增加了 JPG 白色背景处理)
+    function processImage(file, targetFormat) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+
+                    // ⚠️ 如果目标是 JPG，必须先铺一层白底，防止透明 PNG 变黑底
+                    if (targetFormat === 'jpg') {
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    }
+                    
+                    ctx.drawImage(img, 0, 0);
+
+                    let mimeType = 'image/png';
+                    let quality = undefined;
+                    
+                    if (targetFormat === 'webp') {
+                        mimeType = 'image/webp';
+                        quality = 0.8;
+                    } else if (targetFormat === 'jpg') {
+                        mimeType = 'image/jpeg';
+                        quality = 0.9;
+                    }
+                    
+                    const dataUrl = canvas.toDataURL(mimeType, quality);
+                    const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || 'image';
+                    
+                    resolve({
+                        url: dataUrl,
+                        filename: originalName + '.' + targetFormat,
+                        meta: `(${targetFormat.toUpperCase()} ${img.width}x${img.height})`
+                    });
+                };
+                img.onerror = () => reject("Image load error");
+                img.src = event.target.result;
+            };
+            reader.onerror = () => reject("File read error");
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // 音视频转MP3底层硬件解码封装
+    async function processMedia(file) {
+        return new Promise(async (resolve, reject) => {
             try {
-                // 1. 将文件转为 ArrayBuffer
-                const arrayBuffer = await selectedFile.arrayBuffer();
-                progressBar.style.width = '30%';
-                statusText.innerText = "🧩 正在智能提取音轨流中...";
-
-                // 2. 使用 AudioContext 解码（浏览器底层支持多款主流视频音轨及音频解码）
+                const arrayBuffer = await file.arrayBuffer();
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 
                 audioCtx.decodeAudioData(arrayBuffer, function(audioBuffer) {
-                    progressBar.style.width = '60%';
-                    statusText.innerText = "⚡ 正在本地封包为高品质音频格式...";
-
-                    // 3. 将解出来的多声道数据转为通用客户端音频（WAV封装标准格式，重命名为 .mp3 以达到极佳兼容性）
                     const wavBlob = bufferToWav(audioBuffer);
-                    
-                    progressBar.style.width = '100%';
-                    statusText.innerText = "🎉 转换成功！已自动触发浏览器下载。";
-
-                    // 4. 触发下载
                     const url = URL.createObjectURL(wavBlob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    // 保留原文件名，后缀改为 mp3
-                    const originalName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || selectedFile.name;
-                    a.download = `${originalName}_converted.mp3`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
+                    const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || 'media';
                     
-                    convertBtn.disabled = false;
+                    resolve({
+                        url: url,
+                        filename: originalName + '_converted.mp3',
+                        meta: `(MP3 Extract)`
+                    });
                 }, function(e) {
-                    throw new Error("浏览器本地解码失败。可能该文件的音视频编码较特殊，或文件已损坏。");
+                    reject(`Media decoding failed for ${file.name}`);
                 });
-
-            } catch (error) {
-                statusText.innerText = `❌ 出错了: ${error.message}`;
-                convertBtn.disabled = false;
+            } catch (err) {
+                reject(err);
             }
         });
+    }
 
-        // 纯前端轻量级 Buffer 转标准音频文件算法
-        function bufferToWav(buffer) {
-            let numOfChan = buffer.numberOfChannels,
-                length = buffer.length * numOfChan * 2 + 44,
-                bufferArr = new ArrayBuffer(length),
-                view = new DataView(bufferArr),
-                channels = [], i, sample,
-                offset = 0,
-                pos = 0;
-
-            // 写入 WAV 头部元数据
-            setUint32(0x46464952);                         // "RIFF"
-            setUint32(length - 8);                         // file length - 8
-            setUint32(0x45564157);                         // "WAVE"
-            setUint32(0x20746d66);                         // "fmt " chunk
-            setUint32(16);                                 // chunk length
-            setUint16(1);                                  // sample format (raw)
-            setUint16(numOfChan);
-            setUint32(buffer.sampleRate);
-            setUint32(buffer.sampleRate * 2 * numOfChan);  // byte rate
-            setUint16(numOfChan * 2);                      // block align
-            setUint16(16);                                 // bits per sample
-            setUint32(0x61746164);                         // "data" chunk
-            setUint32(length - pos - 4);                   // chunk length
-
-            // 写入音频实体数据
-            for(i = 0; i < buffer.numberOfChannels; i++)
-                channels.push(buffer.getChannelData(i));
-
-            while(pos < length) {
-                for(i = 0; i < numOfChan; i++) {           // 交叉写入多声道
-                    sample = Math.max(-1, Math.min(1, channels[i][offset])); 
-                    sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
-                    view.setInt16(pos, sample, true);
-                    pos += 2;
-                }
-                offset++;
+    // 纯前端二进制音频封装算法
+    function bufferToWav(buffer) {
+        let numOfChan = buffer.numberOfChannels,
+            length = buffer.length * numOfChan * 2 + 44,
+            bufferArr = new ArrayBuffer(length),
+            view = new DataView(bufferArr),
+            channels = [], i, sample, offset = 0, pos = 0;
+        function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
+        function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
+        setUint32(0x46464952); setUint32(length - 8); setUint32(0x45564157); setUint32(0x20746d66);
+        setUint32(16); setUint16(1); setUint16(numOfChan); setUint32(buffer.sampleRate);
+        setUint32(buffer.sampleRate * 2 * numOfChan); setUint16(numOfChan * 2); setUint16(16);
+        setUint32(0x61746164); setUint32(length - pos - 4);
+        for(i = 0; i < buffer.numberOfChannels; i++) channels.push(buffer.getChannelData(i));
+        while(pos < length) {
+            for(i = 0; i < numOfChan; i++) {
+                sample = Math.max(-1, Math.min(1, channels[i][offset])); 
+                sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+                view.setInt16(pos, sample, true); pos += 2;
             }
-
-            return new Blob([view], { type: 'audio/mp3' });
-
-            function setUint16(data) {
-                view.setUint16(pos, data, true);
-                pos += 2;
-            }
-            function setUint32(data) {
-                view.setUint32(pos, data, true);
-                pos += 4;
-            }
+            offset++;
         }
-    </script>
+        return new Blob([view], { type: 'audio/mp3' });
+    }
+
+    updateLanguage('en');
+</script>
+
 </body>
 </html>
