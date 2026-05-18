@@ -1,13 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0T0X3CFMZQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0T0X3CFMZQ');
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Media Converter | 100% Local</title>
+    <title>Universal Omni Converter | 100% Local</title>
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2230172556608948" crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gifshot@0.4.5/build/gifshot.min.js"></script>
+
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f3f4f6;
@@ -16,39 +37,50 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start; 
-            padding-top: 4vh; 
+            padding-top: 15px;
             min-height: 100vh;
-            margin: 0;
             padding-left: 20px;
             padding-right: 20px;
-            box-sizing: border-box;
             transition: direction 0.3s ease;
         }
         
-        /* 预留广告位，缩减了顶部的 margin 间距 */
         .ad-container {
             width: 100%;
             max-width: 550px;
-            min-height: 60px;
-            margin: 5px 0 15px 0; 
+            margin: 0 0 15px 0;
             text-align: center;
         }
 
         .container {
             background: white;
-            padding: 15px 40px 40px; 
+            padding: 20px 30px 35px;
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             text-align: center;
-            max-width: 550px;
             width: 100%;
+            max-width: 550px;
+            position: relative;
         }
+
+        .badge {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
         h1 {
             font-size: 22px;
             color: #111827;
             line-height: 1.4;
-            margin-bottom: 25px;
+            margin-top: 0;
+            margin-bottom: 20px;
         }
+
         .controls-wrapper {
             display: flex;
             justify-content: center;
@@ -102,6 +134,22 @@
             margin-top: 10px;
             font-weight: normal;
         }
+
+        .feedback-wrapper {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        .feedback-link {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .feedback-link:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
         
         .countdown-panel {
             display: none;
@@ -148,23 +196,12 @@
             cursor: pointer;
             border: none;
             width: 100%;
-            box-sizing: border-box;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .download-btn:hover {
             background-color: #059669;
-        }
-        .badge {
-            display: inline-block;
-            background: #dcfce7;
-            color: #166534;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 15px;
         }
         
         body[dir="rtl"] .control-group { flex-direction: row-reverse; }
@@ -215,17 +252,24 @@
                 <option value="png" id="optPng">PNG (Best Quality)</option>
                 <option value="webp" id="optWebp">WebP (Small Size)</option>
                 <option value="mp3" id="optMp3">MP3 (Extract Audio)</option>
+                <option value="pdf" id="optPdf">PDF (Merge Documents)</option>
+                <option value="gif" id="optGif">GIF (Meme Animation)</option>
             </select>
         </div>
     </div>
 
     <div class="drop-zone" id="dropZone">
         <p id="dropZoneText">Drag & Drop files here<br><br>or Click to browse (Batch supported)</p>
-        <div class="sub-text" id="subText">Supports Images (JPG, PNG, WebP) & Media (MP4, MKV, MP3...)</div>
+        <div class="sub-text" id="subText">Supports Any Images, HEIC, Video & Audio Files</div>
     </div>
     
-    <input type="file" id="fileInput" accept="image/*,video/*,audio/*" multiple style="display: none;">
+    <input type="file" id="fileInput" multiple style="display: none;">
     
+    <div class="feedback-wrapper">
+        <span id="feedbackText">Questions or feedback? Contact </span>
+        <a href="mailto:xingkong5678@gmail.com" class="feedback-link">xingkong5678@gmail.com</a>
+    </div>
+
     <div class="countdown-panel" id="countdownPanel">
         <span class="spinner"></span>
         <span id="countdownText">Processing... Please wait 5s</span>
@@ -234,7 +278,7 @@
     <div id="downloadContainer" class="download-list"></div>
 </div>
 
-<div class="ad-container">
+<div class="ad-container" style="margin-top: 15px;">
     <ins class="adsbygoogle"
          style="display:block"
          data-ad-client="ca-pub-2230172556608948"
@@ -254,12 +298,15 @@
             optPng: "PNG (Best Quality)",
             optWebp: "WebP (Small Size)",
             optMp3: "MP3 (Extract Audio)",
+            optPdf: "PDF (Merge Documents)",
+            optGif: "GIF (Meme Animation)",
             dropText: "Drag & Drop files here<br><br>or Click to browse (Batch)",
-            subText: "Supports Images (JPG, PNG, WebP) & Media (MP4, MKV...)",
-            alert: "Please upload valid image or media files.",
+            subText: "Supports Any Images, HEIC, Video & Audio Files",
+            feedback: "Questions or feedback? Contact ",
+            alert: "Please select files to convert.",
             btnText: "Download",
             processing: "Processing... Please wait",
-            decoding: " (Decoding...)"
+            decoding: " (Decoding/Rendering...)"
         },
         "zh-CN": {
             badge: "🔒 100% 本地与隐私安全",
@@ -269,12 +316,15 @@
             optPng: "PNG (最佳质量)",
             optWebp: "WebP (极小体积)",
             optMp3: "MP3 (提取音频)",
+            optPdf: "PDF (合并文稿)",
+            optGif: "GIF (动态表情包)",
             dropText: "拖拽多个文件到这里<br><br>或 点击浏览 (支持批量)",
-            subText: "支持图片(JPG, PNG, WebP)及音视频(MP4, MKV...)",
-            alert: "请上传有效的图片或音视频文件。",
+            subText: "支持任意图片、HEIC、视频及音频文件类型",
+            feedback: "有任何疑问或建议？联系邮箱：",
+            alert: "请选择需要转换的文件。",
             btnText: "下载",
-            processing: "正在批量处理，请稍候",
-            decoding: " (正在解码...)"
+            processing: "正在本地处理中，请稍候",
+            decoding: " (正在深度解码与渲染...)"
         },
         "zh-TW": {
             badge: "🔒 100% 本地與隱私安全",
@@ -283,13 +333,16 @@
             optJpg: "JPG (標準照片)",
             optPng: "PNG (最佳質量)",
             optWebp: "WebP (極小體積)",
-            optMp3: "MP3 (提取音頻)",
+            optMp3: "MP3 (提取音訊)",
+            optPdf: "PDF (合併文稿)",
+            optGif: "GIF (動態表情包)",
             dropText: "拖曳多個檔案到這裡<br><br>或 點擊瀏覽 (支援批次)",
-            subText: "支援圖片(JPG, PNG, WebP)及音視頻(MP4, MKV...)",
-            alert: "請上傳有效的圖片或音視頻檔案。",
+            subText: "支援任意圖片、HEIC、視頻及音訊檔案類型",
+            feedback: "有任何疑問或建議？聯繫信箱：",
+            alert: "請選擇需要轉換的檔案。",
             btnText: "下載",
-            processing: "正在批次處理，請稍候",
-            decoding: " (正在解碼...)"
+            processing: "正在本地處理中，請稍候",
+            decoding: " (正在深度解碼與渲染...)"
         },
         es: {
             badge: "🔒 100% Local y Privado",
@@ -299,8 +352,11 @@
             optPng: "PNG (Mejor Calidad)",
             optWebp: "WebP (Tamaño Pequeño)",
             optMp3: "MP3 (Extraer Audio)",
+            optPdf: "PDF (Combinar Documentos)",
+            optGif: "GIF (Animación Meme)",
             dropText: "Arrastra archivos aquí<br><br>o Haz clic para buscar (Lotes)",
-            subText: "Soporta Imágenes y Medios (MP4, MKV...)",
+            subText: "Soporta cualquier archivo de imagen, HEIC, video y audio",
+            feedback: "¿Preguntas o comentarios? Contacto: ",
             alert: "Por favor, sube un archivo válido.",
             btnText: "Descargar",
             processing: "Procesando... Espera",
@@ -313,9 +369,12 @@
             optJpg: "JPG (Photo Standard)",
             optPng: "PNG (Meilleure Qualité)",
             optWebp: "WebP (Petite Taille)",
-            optMp3: "MP3 (Extraire Audio)",
+            optMp3: "MP3 (Extraer l'audio)",
+            optPdf: "PDF (Fusionner Documents)",
+            optGif: "GIF (Animation Meme)",
             dropText: "Glissez des fichiers ici<br><br>ou Cliquez pour parcourir",
-            subText: "Prend en charge Images et Médias (MP4, MKV...)",
+            subText: "Prend en charge toutes les images, HEIC, vidéos et fichiers audio",
+            feedback: "Des questions ou des commentaires? Contactez ",
             alert: "Veuillez télécharger un fichier valide.",
             btnText: "Télécharger",
             processing: "Traitement... Patientez",
@@ -329,8 +388,11 @@
             optPng: "PNG (Beste Qualität)",
             optWebp: "WebP (Kleine Größe)",
             optMp3: "MP3 (Audio extrahieren)",
+            optPdf: "PDF (Dokumente zusammenführen)",
+            optGif: "GIF (Meme Animation)",
             dropText: "Dateien hierher ziehen<br><br>oder Klicken zum Durchsuchen",
-            subText: "Unterstützt Bilder und Medien (MP4, MKV...)",
+            subText: "Unterstützt alle Bilder, HEIC, Videos und Audiodateien",
+            feedback: "Fragen oder Feedback? Kontaktieren Sie ",
             alert: "Bitte laden Sie eine gültige Datei hoch.",
             btnText: "Herunterladen",
             processing: "Verarbeitung... Warten",
@@ -344,8 +406,11 @@
             optPng: "PNG (Migliore Qualità)",
             optWebp: "WebP (Dimensioni Ridotte)",
             optMp3: "MP3 (Estrai Audio)",
+            optPdf: "PDF (Unisci Documenti)",
+            optGif: "GIF (Animazione Meme)",
             dropText: "Trascina file qui<br><br>o Fai clic per sfogliare (Lotti)",
-            subText: "Supporta Immagini e Media (MP4, MKV...)",
+            subText: "Supporta qualsiasi file di immagine, HEIC, video e audio",
+            feedback: "Domande o feedback? Contatta ",
             alert: "Carica un file valido.",
             btnText: "Scarica",
             processing: "Elaborazione... Attendere",
@@ -359,8 +424,11 @@
             optPng: "PNG (أفضل جودة)",
             optWebp: "WebP (حجم صغير)",
             optMp3: "MP3 (استخراج الصوت)",
+            optPdf: "PDF (دمج المستندات)",
+            optGif: "GIF (رسوم متحركة ميمي)",
             dropText: "اسحب الملفات هنا<br><br>أو انقر للتصفح (دفعات)",
-            subText: "يدعم الصور والوسائط (MP4, MKV...)",
+            subText: "يدعم أي صورة و HEIC وفيديو وملف صوتي",
+            feedback: "هل لديك أسئلة أو تعليقات؟ اتصل بنا ",
             alert: "يرجى تحميل ملف صالح.",
             btnText: "تحميل",
             processing: "جاري المعالجة... انتظر",
@@ -383,24 +451,30 @@
         document.getElementById('privacyBadge').textContent = i18n[lang].badge;
         document.getElementById('mainTitle').innerHTML = i18n[lang].title;
         document.getElementById('formatLabel').textContent = i18n[lang].formatLabel;
+        
         document.getElementById('optJpg').textContent = i18n[lang].optJpg;
         document.getElementById('optPng').textContent = i18n[lang].optPng;
         document.getElementById('optWebp').textContent = i18n[lang].optWebp;
         document.getElementById('optMp3').textContent = i18n[lang].optMp3;
+        document.getElementById('optPdf').textContent = i18n[lang].optPdf;
+        document.getElementById('optGif').textContent = i18n[lang].optGif;
+        
         document.getElementById('dropZoneText').innerHTML = i18n[lang].dropText;
         document.getElementById('subText').textContent = i18n[lang].subText;
+        document.getElementById('feedbackText').textContent = i18n[lang].feedback;
     }
 
     langSelect.addEventListener('change', (e) => updateLanguage(e.target.value));
-
     dropZone.addEventListener('click', () => fileInput.click());
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    
     dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
         dropZone.classList.remove('dragover');
         if (e.dataTransfer.files.length) startBatchProcess(e.dataTransfer.files);
     });
+
     fileInput.addEventListener('change', (e) => {
         if (e.target.files.length) startBatchProcess(e.target.files);
     });
@@ -408,18 +482,21 @@
     async function startBatchProcess(files) {
         const currentLang = langSelect.value;
         const targetFormat = formatSelect.value;
-        const validFiles = Array.from(files).filter(f => f.type.startsWith('image/') || f.type.startsWith('audio/') || f.type.startsWith('video/'));
+        
+        let fileList = Array.from(files).sort((a, b) => {
+            return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+        });
 
-        if (validFiles.length === 0) {
+        if (fileList.length === 0) {
             alert(i18n[currentLang].alert);
             return;
         }
 
+        fileInput.value = "";
+
         downloadContainer.innerHTML = '';
         downloadContainer.style.display = 'none';
         countdownPanel.style.display = 'block';
-
-        const hasMedia = validFiles.some(f => f.type.startsWith('audio/') || f.type.startsWith('video/'));
 
         let timeLeft = 5;
         countdownText.innerText = `${i18n[currentLang].processing} ${timeLeft}s`;
@@ -428,8 +505,7 @@
             const timer = setInterval(() => {
                 timeLeft--;
                 if (timeLeft > 0) {
-                    let extra = hasMedia ? i18n[langSelect.value].decoding : "";
-                    countdownText.innerText = `${i18n[langSelect.value].processing} ${timeLeft}s${extra}`;
+                    countdownText.innerText = `${i18n[langSelect.value].processing} ${timeLeft}s${i18n[langSelect.value].decoding}`;
                 } else {
                     clearInterval(timer);
                     resolve();
@@ -437,23 +513,36 @@
             }, 1000);
         });
 
-        const conversionPromises = validFiles.map(file => {
-            const isMedia = file.type.startsWith('audio/') || file.type.startsWith('video/');
-            let specificTarget = targetFormat;
-            if (isMedia) specificTarget = 'mp3';
-            if (!isMedia && specificTarget === 'mp3') specificTarget = 'jpg'; 
-
-            return isMedia ? processMedia(file) : processImage(file, specificTarget);
-        });
-
+        let finalOutputs = [];
         try {
-            const results = await Promise.all([timerPromise, ...conversionPromises]);
-            const convertedData = results.slice(1); 
+            if (targetFormat === 'pdf') {
+                const pdfData = await processToPdf(fileList);
+                finalOutputs.push(pdfData);
+            } else if (targetFormat === 'gif') {
+                const gifData = await processToGif(fileList);
+                finalOutputs.push(gifData);
+            } else {
+                const conversionPromises = fileList.map(async (file) => {
+                    const ext = file.name.split('.').pop().toLowerCase();
+                    const isHEIC = ext === 'heic';
+                    const isMedia = file.type.startsWith('audio/') || file.type.startsWith('video/');
+
+                    if (isMedia || targetFormat === 'mp3') {
+                        return await processMedia(file);
+                    } else {
+                        return await processImage(file, targetFormat, isHEIC);
+                    }
+                });
+                finalOutputs = await Promise.all(conversionPromises);
+            }
+
+            await timerPromise; 
             
             countdownPanel.style.display = 'none';
             downloadContainer.style.display = 'flex';
 
-            convertedData.forEach(data => {
+            finalOutputs.forEach(data => {
+                if(!data) return;
                 const btn = document.createElement('a');
                 btn.className = 'download-btn';
                 btn.href = data.url;
@@ -478,53 +567,55 @@
 
         } catch (error) {
             countdownPanel.style.display = 'none';
-            alert(`Error processing batch: ${error.message || error}`);
+            alert(`Conversion Error: ${error.message || error}`);
         }
     }
 
-    function processImage(file, targetFormat) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
+    function processImage(file, targetFormat, isHEIC = false) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let blobToProcess = file;
+                if (isHEIC) {
+                    const decodedBlob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.9 });
+                    blobToProcess = Array.isArray(decodedBlob) ? decodedBlob[0] : decodedBlob;
+                }
 
-                    if (targetFormat === 'jpg') {
-                        ctx.fillStyle = '#FFFFFF';
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    }
-                    
-                    ctx.drawImage(img, 0, 0);
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
 
-                    let mimeType = 'image/png';
-                    let quality = undefined;
-                    
-                    if (targetFormat === 'webp') {
-                        mimeType = 'image/webp';
-                        quality = 0.8;
-                    } else if (targetFormat === 'jpg') {
-                        mimeType = 'image/jpeg';
-                        quality = 0.9;
-                    }
-                    
-                    const dataUrl = canvas.toDataURL(mimeType, quality);
-                    const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || 'image';
-                    
-                    resolve({
-                        url: dataUrl,
-                        filename: originalName + '.' + targetFormat,
-                        meta: `(${targetFormat.toUpperCase()} ${img.width}x${img.height})`
-                    });
+                        if (targetFormat === 'jpg') {
+                            ctx.fillStyle = '#FFFFFF';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        }
+                        ctx.drawImage(img, 0, 0);
+
+                        let mimeType = 'image/png';
+                        let quality = undefined;
+                        if (targetFormat === 'webp') { mimeType = 'image/webp'; quality = 0.8; }
+                        else if (targetFormat === 'jpg') { mimeType = 'image/jpeg'; quality = 0.9; }
+                        
+                        const dataUrl = canvas.toDataURL(mimeType, quality);
+                        const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || 'image';
+                        
+                        resolve({
+                            url: dataUrl,
+                            filename: originalName + '.' + targetFormat,
+                            meta: `(${targetFormat.toUpperCase()} ${img.width}x${img.height})`
+                        });
+                    };
+                    img.onerror = () => reject("Image render error");
+                    img.src = event.target.result;
                 };
-                img.onerror = () => reject("Image load error");
-                img.src = event.target.result;
-            };
-            reader.onerror = () => reject("File read error");
-            reader.readAsDataURL(file);
+                reader.readAsDataURL(blobToProcess);
+            } catch (err) {
+                reject("HEIC local decoder failed: " + err.message);
+            }
         });
     }
 
@@ -533,31 +624,85 @@
             try {
                 const arrayBuffer = await file.arrayBuffer();
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                
                 audioCtx.decodeAudioData(arrayBuffer, function(audioBuffer) {
                     const wavBlob = bufferToWav(audioBuffer);
                     const url = URL.createObjectURL(wavBlob);
                     const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || 'media';
-                    
-                    resolve({
-                        url: url,
-                        filename: originalName + '_converted.mp3',
-                        meta: `(MP3 Extract)`
-                    });
-                }, function(e) {
-                    reject(`Media decoding failed for ${file.name}`);
+                    resolve({ url: url, filename: originalName + '.mp3', meta: `(MP3 Audio)` });
+                }, function() {
+                    reject(`Media format unsupported locally for ${file.name}`);
                 });
-            } catch (err) {
-                reject(err);
+            } catch (err) { reject(err); }
+        });
+    }
+
+    async function processToPdf(fileList) {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        
+        const imgFiles = fileList.filter(f => f.type.startsWith('image/') || f.name.toLowerCase().endsWith('.heic'));
+        if (imgFiles.length === 0) throw new Error("No valid images found for PDF conversion.");
+
+        let isFirstPage = true;
+
+        for (const file of imgFiles) {
+            const isHEIC = file.name.toLowerCase().endsWith('.heic');
+            const imgData = await processImage(file, 'jpg', isHEIC);
+
+            await new Promise((resolveReady) => {
+                const img = new Image();
+                img.onload = function() {
+                    if (!isFirstPage) {
+                        pdf.addPage();
+                    } else {
+                        isFirstPage = false;
+                    }
+
+                    const pageWidth = pdf.internal.pageSize.getWidth();
+                    const pageHeight = pdf.internal.pageSize.getHeight();
+                    
+                    const ratio = Math.min(pageWidth / img.width, pageHeight / img.height);
+                    const w = img.width * ratio;
+                    const h = img.height * ratio;
+                    
+                    pdf.addImage(imgData.url, 'JPEG', (pageWidth - w) / 2, (pageHeight - h) / 2, w, h);
+                    resolveReady();
+                };
+                img.src = imgData.url;
+            });
+        }
+
+        const pdfUrl = pdf.output('bloburl');
+        return { url: pdfUrl, filename: 'Merged_Documents.pdf', meta: `(PDF Bundle)` };
+    }
+
+    function processToGif(fileList) {
+        return new Promise((resolve, reject) => {
+            const mediaFile = fileList[0];
+            if (!mediaFile) return reject("No file provided.");
+
+            if (mediaFile.type.startsWith('video/')) {
+                const videoUrl = URL.createObjectURL(mediaFile);
+                gifshot.createGIF({ video: [videoUrl], numFrames: 15, frameDuration: 2, sampleInterval: 10 }, function(obj) {
+                    if (!obj.error) {
+                        resolve({ url: obj.image, filename: 'Animation_Meme.gif', meta: `(GIF Live)` });
+                    } else { reject("GIF processing failed."); }
+                });
+            } else {
+                const imgUrls = fileList.filter(f => f.type.startsWith('image/')).map(f => URL.createObjectURL(f));
+                if(imgUrls.length === 0) return reject("Please drop a video or image sequence.");
+                gifshot.createGIF({ images: imgUrls, interval: 0.5 }, function(obj) {
+                    if (!obj.error) {
+                        resolve({ url: obj.image, filename: 'Photo_Slide.gif', meta: `(GIF Slide)` });
+                    } else { reject("GIF multi-frame creation failed."); }
+                });
             }
         });
     }
 
     function bufferToWav(buffer) {
-        let numOfChan = buffer.numberOfChannels,
-            length = buffer.length * numOfChan * 2 + 44,
-            bufferArr = new ArrayBuffer(length),
-            view = new DataView(bufferArr),
+        let numOfChan = buffer.numberOfChannels, length = buffer.length * numOfChan * 2 + 44,
+            bufferArr = new ArrayBuffer(length), view = new DataView(bufferArr),
             channels = [], i, sample, offset = 0, pos = 0;
         function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
         function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
@@ -577,7 +722,7 @@
         return new Blob([view], { type: 'audio/mp3' });
     }
 
-    updateLanguage('en');
+    updateLanguage('en'); 
 </script>
 
 </body>
