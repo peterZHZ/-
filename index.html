@@ -14,7 +14,6 @@
             color: #1f2937;
             display: flex;
             flex-direction: column;
-            /* 修改对齐方式，减掉原本居中的留白，改为靠上对齐并设置精准顶部间距 */
             align-items: center;
             justify-content: flex-start; 
             padding-top: 4vh; 
@@ -30,15 +29,14 @@
         .ad-container {
             width: 100%;
             max-width: 550px;
-            min-height: 90px;
+            min-height: 60px;
             margin: 5px 0 15px 0; 
             text-align: center;
         }
 
         .container {
             background: white;
-            /* 缩减了容器顶部的内边距，让内容更紧凑 */
-            padding: 25px 40px 40px; 
+            padding: 15px 40px 40px; 
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             text-align: center;
@@ -105,7 +103,6 @@
             font-weight: normal;
         }
         
-        /* 倒计时面板样式 */
         .countdown-panel {
             display: none;
             margin-top: 25px;
@@ -130,7 +127,6 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* 批量下载列表容器 */
         .download-list {
             display: none;
             flex-direction: column;
@@ -174,7 +170,6 @@
         body[dir="rtl"] .control-group { flex-direction: row-reverse; }
         body[dir="rtl"] .spinner { margin-right: 0; margin-left: 10px; }
         
-        /* 滚动条美化 */
         .download-list::-webkit-scrollbar { width: 6px; }
         .download-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         .download-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -250,7 +245,6 @@
 </div>
 
 <script>
-    // 扩展八国语言包：增加 JPG 和 批量相关提示
     const i18n = {
         en: {
             badge: "🔒 100% Local & Private",
@@ -411,7 +405,6 @@
         if (e.target.files.length) startBatchProcess(e.target.files);
     });
 
-    // 核心主控：批量管理倒计时与异步转换
     async function startBatchProcess(files) {
         const currentLang = langSelect.value;
         const targetFormat = formatSelect.value;
@@ -422,15 +415,12 @@
             return;
         }
 
-        // 重置UI
         downloadContainer.innerHTML = '';
         downloadContainer.style.display = 'none';
         countdownPanel.style.display = 'block';
 
-        // 判断是否包含音视频
         const hasMedia = validFiles.some(f => f.type.startsWith('audio/') || f.type.startsWith('video/'));
 
-        // 1. 启动 5 秒全局倒计时
         let timeLeft = 5;
         countdownText.innerText = `${i18n[currentLang].processing} ${timeLeft}s`;
         
@@ -447,10 +437,8 @@
             }, 1000);
         });
 
-        // 2. 启动批量转换 Promise 并发执行
         const conversionPromises = validFiles.map(file => {
             const isMedia = file.type.startsWith('audio/') || file.type.startsWith('video/');
-            // 如果用户传的是视频，但格式选了图片，则强制转 mp3；如果传图片但选了mp3，强制转 webp/jpg
             let specificTarget = targetFormat;
             if (isMedia) specificTarget = 'mp3';
             if (!isMedia && specificTarget === 'mp3') specificTarget = 'jpg'; 
@@ -459,21 +447,18 @@
         });
 
         try {
-            // Promise.all 等待时间走完，且所有文件处理完毕
             const results = await Promise.all([timerPromise, ...conversionPromises]);
-            const convertedData = results.slice(1); // 刨除第一个定时器的结果
+            const convertedData = results.slice(1); 
             
             countdownPanel.style.display = 'none';
             downloadContainer.style.display = 'flex';
 
-            // 渲染批量下载列表
             convertedData.forEach(data => {
                 const btn = document.createElement('a');
                 btn.className = 'download-btn';
                 btn.href = data.url;
                 btn.download = data.filename;
                 
-                // 内部排版：左侧名字，右侧格式和尺寸
                 const nameSpan = document.createElement('span');
                 nameSpan.style.overflow = 'hidden';
                 nameSpan.style.textOverflow = 'ellipsis';
@@ -497,7 +482,6 @@
         }
     }
 
-    // 图片处理算法 (增加了 JPG 白色背景处理)
     function processImage(file, targetFormat) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -509,7 +493,6 @@
                     canvas.height = img.height;
                     const ctx = canvas.getContext('2d');
 
-                    // ⚠️ 如果目标是 JPG，必须先铺一层白底，防止透明 PNG 变黑底
                     if (targetFormat === 'jpg') {
                         ctx.fillStyle = '#FFFFFF';
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -545,7 +528,6 @@
         });
     }
 
-    // 音视频转MP3底层硬件解码封装
     async function processMedia(file) {
         return new Promise(async (resolve, reject) => {
             try {
@@ -571,7 +553,6 @@
         });
     }
 
-    // 纯前端二进制音频封装算法
     function bufferToWav(buffer) {
         let numOfChan = buffer.numberOfChannels,
             length = buffer.length * numOfChan * 2 + 44,
