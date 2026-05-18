@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0T0X3CFMZQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0T0X3CFMZQ');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0T0X3CFMZQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0T0X3CFMZQ');
+    </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,17 +34,27 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start; 
-            padding-top: 15px;
+            padding-top: 25px;
             min-height: 100vh;
             padding-left: 20px;
             padding-right: 20px;
             transition: direction 0.3s ease;
         }
         
-        .ad-container {
+        .main-layout {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
             width: 100%;
-            max-width: 550px;
-            margin: 0 0 15px 0;
+            max-width: 1200px;
+        }
+
+        .sidebar-ad {
+            display: none;
+            width: 160px;
+            position: sticky;
+            top: 25px;
             text-align: center;
         }
 
@@ -60,6 +67,46 @@
             width: 100%;
             max-width: 550px;
             position: relative;
+            flex-shrink: 0; 
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding-top: 15px;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .container {
+                padding: 15px 15px 25px;
+            }
+            h1 {
+                font-size: 18px !important;
+            }
+            .controls-wrapper {
+                gap: 10px !important;
+            }
+            .drop-zone {
+                padding: 30px 10px !important;
+            }
+        }
+
+        @media (min-width: 950px) {
+            .sidebar-ad {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 949px) {
+            .sidebar-ad {
+                display: none !important;
+            }
+        }
+
+        .ad-container {
+            width: 100%;
+            max-width: 550px;
+            margin: 20px 0 0 0;
+            text-align: center;
         }
 
         .badge {
@@ -215,77 +262,91 @@
 </head>
 <body>
 
-<div class="ad-container">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2230172556608948"
-         data-ad-slot="auto"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-</div>
+<div class="main-layout">
+    
+    <div class="sidebar-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2230172556608948"
+             data-ad-slot="auto"
+             data-ad-format="vertical"
+             data-full-width-responsive="true"></ins>
+        <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+    </div>
 
-<div class="container" id="mainContainer">
-    <div class="badge" id="privacyBadge">🔒 100% Local & Private</div>
-    
-    <h1 id="mainTitle">100% Local, Secure File Converter.<br>No Uploading, No Privacy Leak.</h1>
-    
-    <div class="controls-wrapper">
-        <div class="control-group">
-            <label for="langSelect">🌐 </label>
-            <select id="langSelect">
-                <option value="en">English</option>
-                <option value="zh-CN">简体中文</option>
-                <option value="zh-TW">繁體中文</option>
-                <option value="es">Español</option>
-                <option value="fr">Français</option>
-                <option value="de">Deutsch</option>
-                <option value="it">Italiano</option>
-                <option value="ar">العربية</option>
-            </select>
+    <div class="container" id="mainContainer">
+        <div class="badge" id="privacyBadge">🔒 100% Local & Private</div>
+        
+        <h1 id="mainTitle">100% Local, Secure File Converter.<br>No Uploading, No Privacy Leak.</h1>
+        
+        <div class="controls-wrapper">
+            <div class="control-group">
+                <label for="langSelect">🌐 </label>
+                <select id="langSelect">
+                    <option value="en">English</option>
+                    <option value="zh-CN">简体中文</option>
+                    <option value="zh-TW">繁體中文</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="it">Italiano</option>
+                    <option value="ar">العربية</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label id="formatLabel" for="formatSelect">Convert to: </label>
+                <select id="formatSelect">
+                    <option value="jpg" id="optJpg">JPG (Standard Photo)</option>
+                    <option value="png" id="optPng">PNG (Best Quality)</option>
+                    <option value="webp" id="optWebp">WebP (Small Size)</option>
+                    <option value="mp3" id="optMp3">MP3 (Extract Audio)</option>
+                    <option value="pdf" id="optPdf">PDF (Merge Documents)</option>
+                    <option value="gif" id="optGif">GIF (Meme Animation)</option>
+                </select>
+            </div>
         </div>
 
-        <div class="control-group">
-            <label id="formatLabel" for="formatSelect">Convert to: </label>
-            <select id="formatSelect">
-                <option value="jpg" id="optJpg">JPG (Standard Photo)</option>
-                <option value="png" id="optPng">PNG (Best Quality)</option>
-                <option value="webp" id="optWebp">WebP (Small Size)</option>
-                <option value="mp3" id="optMp3">MP3 (Extract Audio)</option>
-                <option value="pdf" id="optPdf">PDF (Merge Documents)</option>
-                <option value="gif" id="optGif">GIF (Meme Animation)</option>
-            </select>
+        <div class="drop-zone" id="dropZone">
+            <p id="dropZoneText">Drag & Drop files here<br><br>or Click to browse (Batch supported)</p>
+            <div class="sub-text" id="subText">Supports Any Images, HEIC, Video & Audio Files</div>
+        </div>
+        
+        <input type="file" id="fileInput" multiple style="display: none;">
+        
+        <div class="feedback-wrapper">
+            <span id="feedbackText">Questions or feedback? Contact </span>
+            <a href="mailto:xingkong5678@gmail.com" class="feedback-link">xingkong5678@gmail.com</a>
+        </div>
+
+        <div class="countdown-panel" id="countdownPanel">
+            <span class="spinner"></span>
+            <span id="countdownText">Processing... Please wait 5s</span>
+        </div>
+
+        <div id="downloadContainer" class="download-list"></div>
+        
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-2230172556608948"
+                 data-ad-slot="auto"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
         </div>
     </div>
 
-    <div class="drop-zone" id="dropZone">
-        <p id="dropZoneText">Drag & Drop files here<br><br>or Click to browse (Batch supported)</p>
-        <div class="sub-text" id="subText">Supports Any Images, HEIC, Video & Audio Files</div>
-    </div>
-    
-    <input type="file" id="fileInput" multiple style="display: none;">
-    
-    <div class="feedback-wrapper">
-        <span id="feedbackText">Questions or feedback? Contact </span>
-        <a href="mailto:xingkong5678@gmail.com" class="feedback-link">xingkong5678@gmail.com</a>
+    <div class="sidebar-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2230172556608948"
+             data-ad-slot="auto"
+             data-ad-format="vertical"
+             data-full-width-responsive="true"></ins>
+        <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
     </div>
 
-    <div class="countdown-panel" id="countdownPanel">
-        <span class="spinner"></span>
-        <span id="countdownText">Processing... Please wait 5s</span>
-    </div>
-
-    <div id="downloadContainer" class="download-list"></div>
-</div>
-
-<div class="ad-container" style="margin-top: 15px;">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2230172556608948"
-         data-ad-slot="auto"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
 </div>
 
 <script>
@@ -335,7 +396,7 @@
             optWebp: "WebP (極小體積)",
             optMp3: "MP3 (提取音訊)",
             optPdf: "PDF (合併文稿)",
-            optGif: "GIF (動態表情包)",
+            optGif: "GIF (動態表情包)", 
             dropText: "拖曳多個檔案到這裡<br><br>或 點擊瀏覽 (支援批次)",
             subText: "支援任意圖片、HEIC、視頻及音訊檔案類型",
             feedback: "有任何疑問或建議？聯繫信箱：",
