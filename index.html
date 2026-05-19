@@ -28,7 +28,6 @@
   <script src="https://cdn.jsdelivr.net/npm/gifshot@0.4.5/build/gifshot.min.js"></script>
 
   <style>
-   /* 🎯 统一盒模型与全局基础样式 */
    * { box-sizing: border-box; margin: 0; padding: 0; }
    body {
      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -42,7 +41,6 @@
      justify-content: flex-start;
    }
 
-   /* 📱 严格防止 Google 自动广告在网页顶部插入导致的严重留白隐患 */
    .google-auto-placed, 
    ins.adsbygoogle[data-ad-status="unfilled"],
    #google_ads_iframe_ { 
@@ -51,7 +49,6 @@
      width: 0 !important; 
    }
 
-   /* 主布局大容器：包裹侧边栏与中间主体 */
    .layout {
      display: flex;
      width: 100%;
@@ -62,7 +59,6 @@
      margin-top: 10px;
    }
 
-   /* 🖥️ 电脑端两侧悬浮广告栏（默认隐藏，宽屏才显示） */
    .aside-ad {
      display: none;
      width: 160px;
@@ -72,7 +68,6 @@
      flex-shrink: 0;
    }
 
-   /* 中央核心转换器面板 */
    .box {
      background: #ffffff;
      border-radius: 24px;
@@ -125,7 +120,6 @@
    }
    select:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
 
-   /* 拖拽上传区域 */
    .drop {
      border: 2px dashed #cbd5e1;
      border-radius: 16px;
@@ -139,7 +133,6 @@
    .drop p { font-size: 16px; font-weight: 700; color: #2563eb; margin-bottom: 8px; }
    .drop span { font-size: 13px; color: #64748b; }
 
-   /* 核心动作触发按钮 */
    .btn {
      display: block;
      width: 100%;
@@ -153,16 +146,18 @@
      cursor: pointer;
      transition: all 0.2s;
      text-decoration: none;
+     margin-bottom: 20px;
    }
    .btn:hover { background-color: #1d4ed8; }
    .btn:disabled, .cd-mode .btn { background-color: #94a3b8; cursor: not-allowed; }
 
-   /* 统计数据显示面板 */
+   .ad-middle { width: 100%; margin-top: 10px; margin-bottom: 10px; text-align: center; }
+
    .stat {
      display: flex;
      justify-content: center;
      gap: 24px;
-     margin-top: 24px;
+     margin-top: 20px;
      padding-top: 20px;
      border-top: 1px solid #f1f5f9;
      font-size: 13px;
@@ -173,16 +168,11 @@
    .foot { margin-top: 24px; font-size: 12px; color: #94a3b8; }
    .foot a { color: #64748b; text-decoration: none; font-weight: 500; }
    .foot a:hover { color: #2563eb; text-decoration: underline; }
-   .foot .divider { margin: 0 6px; color: #cbd5e1; }
+   .foot class="divider" { margin: 0 6px; color: #cbd5e1; }
 
-   /* 📱 底部通用移动端广告横幅容器 */
-   .ad-bottom { width: 100%; max-width: 560px; margin-top: 24px; text-align: center; }
-
-   /* 🖥️ 电脑大屏幕：自适应拉开左右两侧广告位 */
    @media (min-width: 950px) {
      .aside-ad { display: block; }
    }
-   /* 📱 严格移动端适配：小于950px的屏幕绝对物理隐藏侧边栏，防止错位 */
    @media (max-width: 949px) {
      .aside-ad { display: none !important; }
      body { padding: 12px; }
@@ -216,6 +206,8 @@
           <option value="en">English</option>
           <option value="zh-CN">简体中文</option>
           <option value="zh-TW">繁體中文</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
           <option value="es">Español</option>
           <option value="fr">Français</option>
           <option value="de">Deutsch</option>
@@ -245,6 +237,16 @@
     
     <button class="btn" id="btn_act">Choose Files to Convert</button>
     
+    <div class="ad-middle">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-2230172556608948"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+    </div>
+    
     <div class="stat">
       <span><strong id="su">0</strong> <span id="lb_u">Users Securely Converted</span></span>
       <span><strong id="sf">0</strong> <span id="lb_f">Files Safely Processed</span></span>
@@ -255,16 +257,6 @@
       <a href="mailto:xingkong5678@gmail.com">xingkong5678@gmail.com</a>
       <span class="divider">|</span>
       <a href="/privacy.html" target="_blank" style="font-weight: 600; text-decoration: underline;">Privacy Policy</a>
-    </div>
-
-    <div class="ad-bottom">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-2230172556608948"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
     </div>
   </div>
 
@@ -280,7 +272,6 @@
 </div>
 
 <script>
- // 🌐 国际化完全翻译词典
  var LAN = {
    en: {
      b: "🔒 100% Local & Private", h: "100% Local File Converter.<br/>No Uploading, No Privacy Leak.",
@@ -302,12 +293,30 @@
    },
    "zh-TW": {
      b: "🔒 100% 本地與隱私安全", h: "100% 本地安全檔案轉換器。<br/>無需上傳，絕不洩漏隱私。",
-     to: "轉換為:", o_jpg: "JPG (標準照片)", o_png: "PNG (最佳質量)", o_webp: "WebP (極小體積)",
+     to: "轉換為:", o_jpg: "JPG (標準照片)", o_png: "PNG (最佳質量)", o_webp: "極小體積 (WebP)",
      o_mp3: "MP3 (提取音訊)", o_pdf: "PDF (合併文稿)", o_gif: "GIF (動態表情包)",
      d: "拖曳多個檔案到這裡", s: "或 點擊瀏覽 (支援批次)",
      act: "選擇檔案開始轉換", u: "位用戶已安全轉換", f: "個檔案已本地處理",
-     q: "有任何疑問或建議？聯繫信箱：", cd_t: "正在本地處理中，請稍候",
+     q: "有任何疑問 or 建議？聯繫信箱：", cd_t: "正在本地處理中，請稍候",
      done: "✓ 轉換完成 點擊下載", fail: "⚠️ 部分檔案處理失敗 點擊重試"
+   },
+   ja: {
+     b: "🔒 100% ローカル＆プライバシー保護", h: "100% ローカル安全ファイル変換器。<br/>アップロード不要、個人情報の漏洩なし。",
+     to: "変換先:", o_jpg: "JPG (標準写真)", o_png: "PNG (最高画質)", o_webp: "WebP (軽量サイズ)",
+     o_mp3: "MP3 (音声抽出)", o_pdf: "PDF (文書結合)", o_gif: "GIF (アニメーション)",
+     d: "ここにファイルをドラッグ＆ドロップ", s: "または クリックして選択 (一括対応)",
+     act: "ファイルを選択して変換", u: "人が安全に変換しました", f: "個のファイルがローカルで処理されました",
+     q: "ご質問やフィードバックはこちらへ：", cd_t: "ローカル処理中...少々お待ちください",
+     done: "✓ 変換完了！クリックしてダウンロード", fail: "⚠️ 一部の処理に失敗しました クリックして再試行"
+   },
+   ko: {
+     b: "🔒 100% 로컬 및 개인정보 보호", h: "100% 로컬 안전 파일 변환기.<br/>업로드 없음, 개인정보 유출 걱정 끝.",
+     to: "변환 대상:", o_jpg: "JPG (표준 사진)", o_png: "PNG (최고 화질)", o_webp: "WebP (작은 용량)",
+     o_mp3: "MP3 (오디오 추출)", o_pdf: "PDF (문서 병합)", o_gif: "GIF (움짤 애니메이션)",
+     d: "여기에 파일을 끌어다 놓으세요", s: "또는 클릭하여 찾아보기 (일괄 지원)",
+     act: "변환할 파일 선택하기", u: "명의 사용자가 안전하게 변환함", f: "개의 파일이 로컬에서 처리됨",
+     q: "문의 사항이나 피드백이 있으신가요? ", cd_t: "로컬에서 처리 중... 잠시만 기다려주세요",
+     done: "✓ 변환 완료! 클릭하여 다운로드", fail: "⚠️ 일부 파일 처리 실패 클릭하여 재시도"
    },
    es: {
      b: "🔒 100% Local y Privado", h: "Convertidor 100% local y seguro.<br/>Sin cargar, sin fugas de privacidad.",
@@ -394,7 +403,6 @@
    }
  }
 
- // ⚡ 语言自动记忆：监听用户手动切换语言，并立刻保存到本地缓存
  sl.addEventListener('change', function() {
    try {
      localStorage.setItem('_pref_lang', sl.value);
@@ -409,7 +417,7 @@
  fi.addEventListener('change', function(e){ if(e.target.files.length) run(e.target.files); });
 
  var cnt = { users: 2841, files: 14920 };
- var CD = 4; // 广告倒计时
+ var CD = 4; 
  var rd = [];
 
  function scnt() {
@@ -422,7 +430,6 @@
  document.getElementById('su').textContent = cnt.users;
  document.getElementById('sf').textContent = cnt.files;
 
- // 🚀 启动初始化加载：优先读取缓存的语言，实现“自动记住上次语言”
  try {
    var savedLang = localStorage.getItem('_pref_lang');
    if(savedLang && LAN[savedLang]) {
@@ -448,7 +455,6 @@
    fi.click();
  });
 
- // 前端本地转换核心异步链路
  function run(fs) {
    rd = []; var res = [];
    cvt.classList.add('cd-mode');
@@ -608,7 +614,6 @@
    return new Blob([view], { type: 'audio/mp3' });
  }
 
- // 执行一次初始翻译
  sc();
 </script>
 </body>
