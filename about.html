@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - GhostConvert</title>
+    <meta name="description" content="GhostConvert is built by an independent developer who believes your files belong to you. No uploads, total privacy." />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+        }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.5rem; margin-top: 2rem; }
+        p, li { margin: 0.5rem 0; }
+        .highlight-box {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 16px;
+            margin: 24px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>About GhostConvert</h1>
+    <p><strong>GhostConvert is built and maintained by a single independent developer who is passionate about privacy, web technologies, and giving users full control over their data.</strong></p>
+
+    <h2>Why I Created GhostConvert</h2>
+    <p>Like many of you, I’ve used online file converters for years – to change an iPhone photo from HEIC to JPG, to extract audio from a video clip, or to merge documents into a PDF. But every time I used one of those "free" online tools, I felt a knot in my stomach: <em>Where is my file actually going? Who else can see it?</em></p>
+    <p>I discovered that most online converters upload your files to a remote server, process them, and then provide a download link. Your private photos, sensitive spreadsheets, and personal documents may sit on a third‑party server – sometimes for hours, sometimes indefinitely. That’s a privacy risk I could no longer accept.</p>
+    <p>So I built GhostConvert: a file conversion tool that works <strong>entirely inside your browser</strong>. No files are ever uploaded to any server. Every conversion – whether it’s an image, a document, or an audio file – runs locally on your device’s CPU. You can even turn off your internet connection and GhostConvert still works perfectly.</p>
+
+    <h2>How It Works</h2>
+    <p>GhostConvert leverages cutting‑edge browser technologies:</p>
+    <ul>
+        <li><strong>WebAssembly (WASM)</strong> for high‑performance image and audio processing.</li>
+        <li><strong>Modern JavaScript APIs</strong> like the FileReader API, Canvas API, and AudioContext.</li>
+        <li><strong>Client‑side libraries</strong> such as PDF.js, Mammoth (for DOCX), SheetJS (for XLSX), LameJS (for MP3 encoding), and HEIC2ANY (for Apple HEIC images).</li>
+    </ul>
+    <p>All these libraries run in a secure sandbox inside your browser. That means <strong>your files never leave your device</strong> – not even for a millisecond.</p>
+
+    <h2>Our Promise: 100% Local, 100% Private</h2>
+    <div class="highlight-box">
+        <ul>
+            <li>✅ <strong>No server uploads</strong> – files are processed right in your browser.</li>
+            <li>✅ <strong>No hidden logs</strong> – we don't track which files you convert.</li>
+            <li>✅ <strong>No registration</strong> – use the tool immediately, with zero data collection.</li>
+            <li>✅ <strong>Works offline</strong> – once the page is loaded, you can disconnect the internet and everything still works.</li>
+        </ul>
+    </div>
+
+    <h2>Meet the Developer</h2>
+    <p>I’m a full‑stack developer with a background in web security and client‑side performance. I built GhostConvert because I wanted a tool that respects the fundamental principle: <strong>your files are yours, and they should stay on your machine</strong>.</p>
+    <p>I believe in radical transparency. The entire codebase is front‑end only – you can inspect every line of JavaScript in your browser's DevTools. There is no backend server, no database, and no hidden tracking.</p>
+
+    <h2>Why Advertisements?</h2>
+    <p>GhostConvert is completely free to use. To cover the costs of domain hosting and continued development, I display non‑intrusive advertisements through Google AdSense. These ads never access your files or compromise your privacy – they are simply how I can keep the tool running and improve it over time.</p>
+    <p>If you have any questions, feedback, or just want to say hello, I’d love to hear from you at <a href="mailto:support@ghostconvert.cc">support@ghostconvert.cc</a>.</p>
+
+    <hr>
+    <p><small>&copy; 2026 GhostConvert. Built with ❤️ by an independent developer.</small></p>
+</body>
+</html>
