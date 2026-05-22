@@ -7,40 +7,45 @@
   <meta name="description" content="基于先进的浏览器 WebAssembly 与 JavaScript 技术，所有转换完全在您本地完成，文件无需上传服务器，绝无隐私泄露风险。" />
   <meta name="keywords" content="幽灵转换器, GhostConvert, 本地文件转换, HEIC转JPG, 图片转PDF, 视频提取MP3, 免费批量转换" />
   <link rel="canonical" href="https://ghostconvert.cc?lang=zh-CN" />
-  <!-- 多语言 hreflang -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234f46e5'/><text x='16' y='24' font-family='Arial,sans-serif' font-size='22' font-weight='bold' fill='white' text-anchor='middle'>G</text></svg>" />
   <link rel="alternate" hreflang="en" href="https://ghostconvert.cc?lang=en" />
   <link rel="alternate" hreflang="zh-CN" href="https://ghostconvert.cc?lang=zh-CN" />
   <link rel="alternate" hreflang="es" href="https://ghostconvert.cc?lang=es" />
   <link rel="alternate" hreflang="de" href="https://ghostconvert.cc?lang=de" />
   <link rel="alternate" hreflang="fr" href="https://ghostconvert.cc?lang=fr" />
   <link rel="alternate" hreflang="ja" href="https://ghostconvert.cc?lang=ja" />
+  <link rel="alternate" hreflang="ko" href="https://ghostconvert.cc?lang=ko" />
+  <link rel="alternate" hreflang="zh-TW" href="https://ghostconvert.cc?lang=zh-TW" />
   <link rel="alternate" hreflang="x-default" href="https://ghostconvert.cc?lang=en" />
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0T0X3CFMZQ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      'ad_storage': 'denied',
-      'ad_user_data': 'denied',
-      'ad_personalization': 'denied',
-      'analytics_storage': 'denied'
-    });
+    gtag('consent', 'default', { 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'analytics_storage': 'denied' });
     gtag('js', new Date());
     gtag('config', 'G-0T0X3CFMZQ');
   </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2230172556608948" crossorigin="anonymous"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+  <script defer src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/canvg@4.0.1/lib/umd.js"></script>
+  <script defer src="https://unpkg.com/officeparser@7.2.2/dist/officeparser.js"></script>
+
   <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof pdfjsLib !== 'undefined') {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      }
+    });
   </script>
 
   <style>
@@ -48,33 +53,14 @@
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
     .drop-zone.dragover { border-color: #6366f1; background-color: #eef2ff; }
     .drop-zone.dragover .drop-icon { animation: bounce 0.6s infinite alternate; }
-    @keyframes bounce {
-      0% { transform: translateY(0) scale(1.1); }
-      100% { transform: translateY(-6px) scale(1.1); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .drop-zone.dragover .drop-icon { animation: none; transform: scale(1.05); }
-    }
-    .gradient-text {
-      background: linear-gradient(135deg, #0f172a 20%, #2563eb 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .format-btn {
-      font-weight: 700;
-      font-size: 0.75rem; 
-      white-space: nowrap;
-      border: 1px solid #d1d5db;
-    }
-    .format-btn.active {
-      background-color: #eef2ff;
-      color: #4338ca;
-      border-color: #c7d2fe;
-    }
+    @keyframes bounce { 0% { transform: translateY(0) scale(1.1); } 100% { transform: translateY(-6px) scale(1.1); } }
+    @media (prefers-reduced-motion: reduce) { .drop-zone.dragover .drop-icon { animation: none; transform: scale(1.05); } }
+    .gradient-text { background: linear-gradient(135deg, #0f172a 20%, #2563eb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .format-btn { font-weight: 700; font-size: 0.75rem; white-space: nowrap; border: 1px solid #d1d5db; }
+    .format-btn.active { background-color: #eef2ff; color: #4338ca; border-color: #c7d2fe; }
     .btn-success-flash { box-shadow: 0 0 0 4px rgba(34,197,94,0.4); transition: box-shadow 0.3s; }
     .google-auto-placed, ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; height: 0 !important; width: 0 !important; }
-    .mobile-menu { display: none; }
-    .mobile-menu.open { display: flex; }
+    .mobile-menu { display: none; } .mobile-menu.open { display: flex; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased">
@@ -85,26 +71,27 @@
         <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">G</div>
         <span class="text-xl font-extrabold tracking-tight gradient-text" id="brand">幽灵转换器</span>
       </div>
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600" id="desktopNav">
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
         <a href="#tool-section" class="nav-link text-indigo-600 hover:text-indigo-700" id="nav-tool">在线转换工具</a>
         <a href="#how-it-works" class="nav-link hover:text-gray-900" id="nav-how">核心原理</a>
         <a href="#guide-section" class="nav-link hover:text-gray-900" id="nav-guide">新手指南</a>
         <a href="#deepdive-section" class="nav-link hover:text-gray-900" id="nav-deepdive">格式科普</a>
         <a href="#faq-section" class="nav-link hover:text-gray-900" id="nav-faq">常见问题</a>
+        <a href="#" id="bookmarkBtn" class="text-gray-500 hover:text-indigo-600 text-sm" title="添加到收藏夹">⭐ 收藏</a>
       </nav>
       <div class="flex items-center gap-4">
         <select id="langSelect" class="bg-gray-100 border border-gray-300 rounded-md text-xs px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
           <option value="en">English</option>
-          <option value="zh-CN">简体中文</option>
           <option value="es">Español</option>
           <option value="de">Deutsch</option>
           <option value="fr">Français</option>
           <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+          <option value="zh-CN">简体中文</option>
+          <option value="zh-TW">繁體中文</option>
         </select>
         <button id="menuToggle" class="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
     </div>
@@ -116,17 +103,18 @@
       <a href="#faq-section" class="mobile-nav-link" id="mobile-nav-faq">常见问题</a>
       <select id="mobileLangSelect" class="bg-gray-100 border border-gray-300 rounded-md text-xs px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2">
         <option value="en">English</option>
-        <option value="zh-CN">简体中文</option>
         <option value="es">Español</option>
         <option value="de">Deutsch</option>
         <option value="fr">Français</option>
         <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="zh-CN">简体中文</option>
+        <option value="zh-TW">繁體中文</option>
       </select>
     </nav>
   </header>
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
-    
     <aside class="hidden lg:block lg:col-span-2">
       <div class="bg-gray-100 border border-dashed border-gray-300 rounded-xl p-4 text-center text-xs text-gray-400 h-[600px] flex items-center justify-center">
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2230172556608948" data-ad-slot="auto" data-ad-format="vertical" data-full-width-responsive="true"></ins>
@@ -134,21 +122,13 @@
     </aside>
 
     <div class="col-span-1 lg:col-span-8 space-y-10">
-      
       <section class="text-center flex flex-col items-center pt-4">
-        <div class="inline-flex items-center bg-green-50 text-green-700 font-semibold px-3 py-1 rounded-full border border-green-200 text-sm mb-5" id="hero-badge">
-          🔒 100% 本地运行 · 安全私密
-        </div>
-        <h1 class="text-3xl sm:text-4xl font-black text-gray-950 tracking-tight mb-4" id="hero-title">
-          全格式支持，一键转换
-        </h1>
-        <p class="text-sm sm:text-base text-gray-500 max-w-2xl mx-auto leading-relaxed mb-0" id="hero-desc">
-          基于先进的浏览器前端 WebAssembly 与 JavaScript 技术，所有转换完全在您本地的电脑或手机上完成。文件无需上传服务器，绝无隐私泄露风险。
-        </p>
+        <div class="inline-flex items-center bg-green-50 text-green-700 font-semibold px-3 py-1 rounded-full border border-green-200 text-sm mb-5" id="hero-badge">🔒 100% 本地运行 · 安全私密</div>
+        <h1 class="text-3xl sm:text-4xl font-black text-gray-950 tracking-tight mb-4" id="hero-title">全格式支持，一键转换</h1>
+        <p class="text-sm sm:text-base text-gray-500 max-w-2xl mx-auto leading-relaxed mb-0" id="hero-desc">基于先进的浏览器前端 WebAssembly 与 JavaScript 技术，所有转换完全在您本地的电脑或手机上完成。文件无需上传服务器，绝无隐私泄露风险。</p>
       </section>
 
       <section id="tool-section" class="bg-white border border-gray-200 shadow-xl rounded-2xl p-6 sm:p-8 space-y-5 scroll-mt-24">
-        
         <div class="w-full flex flex-wrap justify-center gap-2" id="formatBtns">
           <button data-fmt="jpg" class="format-btn active px-3 py-1.5 rounded-md transition-colors" id="btn-jpg">JPG（标准图片）</button>
           <button data-fmt="png" class="format-btn px-3 py-1.5 rounded-md transition-colors bg-white text-gray-600 hover:bg-gray-50" id="btn-png">PNG（透明背景）</button>
@@ -156,49 +136,31 @@
           <button data-fmt="pdf" class="format-btn px-3 py-1.5 rounded-md transition-colors bg-white text-gray-600 hover:bg-gray-50" id="btn-pdf">PDF（合并文档）</button>
           <button data-fmt="mp3" class="format-btn px-3 py-1.5 rounded-md transition-colors bg-white text-gray-600 hover:bg-gray-50" id="btn-mp3">MP3/WAV（音频提取）</button>
         </div>
-
         <div id="dropZone" class="border-2 border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/30 rounded-xl p-8 sm:p-10 text-center transition-all cursor-pointer drop-zone">
           <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 drop-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
           </div>
           <p class="text-sm font-bold text-gray-800" id="drop-title">拖拽文件或文件夹到此处</p>
           <p class="text-xs text-gray-400 mt-1" id="drop-sub">或点击浏览（支持批量）</p>
           <input type="file" id="fileInput" multiple class="hidden" />
         </div>
-
         <button id="convertBtn" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-lg shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-          <span id="convertBtnText">⚡ 开始本地安全转换</span>
+          <span id="convertBtnText">⚡ 拖入文件，一键转换</span>
         </button>
-
-        <div class="bg-gray-100 border border-dashed border-gray-300 rounded-xl p-4 text-center text-xs text-gray-400 h-24 flex items-center justify-center">
+        <div class="bg-gray-100 border border-dashed border-gray-300 rounded-xl p-4 text-center text-xs text-gray-400 min-h-[90px] flex items-center justify-center">
           <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2230172556608948" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
         </div>
-
         <div class="flex justify-center gap-8 text-xs text-gray-500">
-          <div>
-            <span class="text-indigo-600 font-bold text-lg" id="statUsers">3916</span>
-            <span id="statUsersLabel"> 位用户已安全转换</span>
-          </div>
-          <div>
-            <span class="text-indigo-600 font-bold text-lg" id="statFiles">20247</span>
-            <span id="statFilesLabel"> 个文件已本地处理</span>
-          </div>
+          <div><span class="text-indigo-600 font-bold text-lg" id="statUsers">3916</span><span id="statUsersLabel"> 位用户已安全转换</span></div>
+          <div><span class="text-indigo-600 font-bold text-lg" id="statFiles">20247</span><span id="statFilesLabel"> 个文件已本地处理</span></div>
         </div>
       </section>
 
       <section id="how-it-works" class="bg-white border border-gray-100 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4 scroll-mt-24">
         <h2 class="text-xl sm:text-2xl font-bold text-gray-900 border-l-4 border-indigo-600 pl-3" id="how-title">为什么选择幽灵转换器？彻底颠覆传统的本地隐私文件处理技术</h2>
-        <p class="text-sm text-gray-600 leading-relaxed" id="how-p1">
-          传统的在线文件转换网站，无一例外地需要您将私人文件、敏感照片或内部工作文档上传到他们的云端服务器。在这个过程中，您的敏感数据面临着传输被截获、服务器日志留存以及第三方商业公司非法扫描或二次售卖的严重隐私风险。
-        </p>
-        <p class="text-sm text-gray-600 leading-relaxed" id="how-p2">
-          幽灵转换器 彻底解决了这一安全痛点。我们利用先进的 WebAssembly (WASM) 编译技术与新型的前端 JavaScript 库，将强大的图像、音频及文档解析内核直接植入到了您的现代浏览器（如 Chrome, Edge, Safari）之中。
-        </p>
-        <p class="text-sm text-gray-600 leading-relaxed bg-indigo-50/50 p-3 rounded-lg border border-indigo-100/50 font-semibold text-indigo-700" id="how-p3">
-          这意味着：当您在下方上传文件时，文件读取、解码、矩阵转换、重新编码的完整流水线完全在您这台设备的 CPU 和内存中本地闭环运行，整个过程不需要消耗任何上传网络流量。即使此时断开互联网，幽灵转换器依然可以完美顺畅地为您工作。
-        </p>
+        <p class="text-sm text-gray-600 leading-relaxed" id="how-p1">传统的在线文件转换网站，无一例外地需要您将私人文件、敏感照片或内部工作文档上传到他们的云端服务器。在这个过程中，您的敏感数据面临着传输被截获、服务器日志留存以及第三方商业公司非法扫描或二次售卖的严重隐私风险。</p>
+        <p class="text-sm text-gray-600 leading-relaxed" id="how-p2">幽灵转换器 彻底解决了这一安全痛点。我们利用先进的 WebAssembly (WASM) 编译技术与新型的前端 JavaScript 库，将强大的图像、音频及文档解析内核直接植入到了您的现代浏览器（如 Chrome, Edge, Safari）之中。</p>
+        <p class="text-sm text-gray-600 leading-relaxed bg-indigo-50/50 p-3 rounded-lg border border-indigo-100/50 font-semibold text-indigo-700" id="how-p3">这意味着：当您在下方上传文件时，文件读取、解码、矩阵转换、重新编码的完整流水线完全在您这台设备的 CPU 和内存中本地闭环运行，整个过程不需要消耗任何上传网络流量。即使此时断开互联网，幽灵转换器依然可以完美顺畅地为您工作。</p>
       </section>
 
       <section id="guide-section" class="bg-white border border-gray-100 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4 scroll-mt-24">
@@ -215,43 +177,21 @@
       <section id="deepdive-section" class="bg-white border border-gray-100 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 scroll-mt-24">
         <h2 class="text-xl sm:text-2xl font-bold text-gray-900 border-l-4 border-indigo-600 pl-3" id="deepdive-title">多媒体与文档格式深度技术科普</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50">
-            <h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-heic-title"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> 苹果 HEIC 图像格式</h3>
-            <p class="text-xs text-gray-500 leading-relaxed" id="deepdive-heic-desc">HEIC（High Efficiency Image Container）是苹果在其生态系统中推行的高效图像封装格式。它采用先进的 HEVC 编码，能在保持高画质的同时将体积缩减到传统 JPEG 的一半。然而，由于专利授权和系统兼容性限制，Windows、Android 和许多老旧网页软件默认无法直接读取。通过本站，您可在本地直接批量重组为标准的 JPG。</p>
-          </div>
-          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50">
-            <h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-webp-title"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> 现代网页 WebP 格式</h3>
-            <p class="text-xs text-gray-500 leading-relaxed" id="deepdive-webp-desc">WebP 是由 Google 推出的一种旨在加快网页加载速度的现代图像格式。它同时支持有损和无损压缩，并完美兼容 Alpha 透明通道。在相同视觉质量下，WebP 的体积比 JPEG 小 25%~34%，比 PNG 小 26%。将网站图片批量转换为 WebP，是大幅提升 SEO 排名和网站加载效率的核心技术手段。</p>
-          </div>
-          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50">
-            <h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-pdf-title"><span class="w-2 h-2 bg-emerald-500 rounded-full"></span> 多图合并 PDF 技术</h3>
-            <p class="text-xs text-gray-500 leading-relaxed" id="deepdive-pdf-desc">PDF 是一种跨平台的独立电子文档格式，具备极强的版面固定特征，常用于正式的合同、发票归档和多页图像打包提交。我们的本地合并功能，可在前端直接提取多张上传图片的基线像素，无需借助任何后台庞大的 PDF 生成服务，确保您的财务或个人身份证明文件不离开本设备。</p>
-          </div>
-          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50">
-            <h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-audio-title"><span class="w-2 h-2 bg-red-500 rounded-full"></span> 音视频提取与 MP3 压缩</h3>
-            <p class="text-xs text-gray-500 leading-relaxed" id="deepdive-audio-desc">通过在前端对多媒体数据流进行解复用（Demuxing），我们可以直接剥离视频中的音轨，并利用前端 Lame 库对音频振幅进行动态量化重采样，最终压缩输出为全球通用的高兼容性 MP3 音频。这在播客剪辑、会议录音提取及手机铃声制作中极为常用。</p>
-          </div>
+          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50"><h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-heic-title"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> 苹果 HEIC 图像格式</h3><p class="text-xs text-gray-500 leading-relaxed" id="deepdive-heic-desc">HEIC（High Efficiency Image Container）是苹果在其生态系统中推行的高效图像封装格式。它采用先进的 HEVC 编码，能在保持高画质的同时将体积缩减到传统 JPEG 的一半。然而，由于专利授权和系统兼容性限制，Windows、Android 和许多老旧网页软件默认无法直接读取。通过本站，您可在本地直接批量重组为标准的 JPG。</p></div>
+          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50"><h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-webp-title"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> 现代网页 WebP 格式</h3><p class="text-xs text-gray-500 leading-relaxed" id="deepdive-webp-desc">WebP 是由 Google 推出的一种旨在加快网页加载速度的现代图像格式。它同时支持有损和无损压缩，并完美兼容 Alpha 透明通道。在相同视觉质量下，WebP 的体积比 JPEG 小 25%~34%，比 PNG 小 26%。将网站图片批量转换为 WebP，是大幅提升 SEO 排名和网站加载效率的核心技术手段。</p></div>
+          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50"><h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-pdf-title"><span class="w-2 h-2 bg-emerald-500 rounded-full"></span> 多图合并 PDF 技术</h3><p class="text-xs text-gray-500 leading-relaxed" id="deepdive-pdf-desc">PDF 是一种跨平台的独立电子文档格式，具备极强的版面固定特征，常用于正式的合同、发票归档和多页图像打包提交。我们的本地合并功能，可在前端直接提取多张上传图片的基线像素，无需借助任何后台庞大的 PDF 生成服务，确保您的财务或个人身份证明文件不离开本设备。</p></div>
+          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50"><h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-audio-title"><span class="w-2 h-2 bg-red-500 rounded-full"></span> 音视频提取与 MP3 压缩</h3><p class="text-xs text-gray-500 leading-relaxed" id="deepdive-audio-desc">通过在前端对多媒体数据流进行解复用（Demuxing），我们可以直接剥离视频中的音轨，并利用前端 Lame 库对音频振幅进行动态量化重采样，最终压缩输出为全球通用的高兼容性 MP3 音频。这在播客剪辑、会议录音提取及手机铃声制作中极为常用。</p></div>
         </div>
       </section>
 
       <section id="faq-section" class="bg-white border border-gray-100 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4 scroll-mt-24">
         <h2 class="text-xl sm:text-2xl font-bold text-gray-900 border-l-4 border-indigo-600 pl-3" id="faq-title">常见疑问</h2>
         <div class="space-y-4 text-sm text-gray-600">
-          <div>
-            <h4 class="font-bold text-gray-900" id="faq-q1">我的文件真的不会被上传吗？</h4>
-            <p class="text-xs text-gray-500 mt-1 leading-relaxed" id="faq-a1">绝对不会。页面加载完成后，断开网络并拖入文件 —— 您会发现一切依然正常。没有任何数据离开您的设备。</p>
-          </div>
-          <div class="border-t border-gray-100 pt-3">
-            <h4 class="font-bold text-gray-900" id="faq-q2">为什么大文件有时会转换失败？</h4>
-            <p class="text-xs text-gray-500 mt-1 leading-relaxed" id="faq-a2">浏览器内存限制（通常每个标签页约 1.5 GB）可能导致超大音频、视频或表格转换超时。对于极大文件，建议使用专业桌面工具。</p>
-          </div>
-          <div class="border-t border-gray-100 pt-3">
-            <h4 class="font-bold text-gray-900" id="faq-q3">为什么复杂 Word/Excel 的排版会丢失？</h4>
-            <p class="text-xs text-gray-500 mt-1 leading-relaxed" id="faq-a3">我们轻量、离线友好的解析器尚不能支持所有高级排版特性。我们正持续改进兼容性，但高度格式化的文档可能会丢失部分细节。</p>
-          </div>
+          <div><h4 class="font-bold text-gray-900" id="faq-q1">我的文件真的不会被上传吗？</h4><p class="text-xs text-gray-500 mt-1 leading-relaxed" id="faq-a1">绝对不会。页面加载完成后，断开网络并拖入文件 —— 您会发现一切依然正常。没有任何数据离开您的设备。</p></div>
+          <div class="border-t border-gray-100 pt-3"><h4 class="font-bold text-gray-900" id="faq-q2">为什么大文件有时会转换失败？</h4><p class="text-xs text-gray-500 mt-1 leading-relaxed" id="faq-a2">浏览器内存限制（通常每个标签页约 1.5 GB）可能导致超大音频、视频或表格转换超时。对于极大文件，建议使用专业桌面工具。</p></div>
+          <div class="border-t border-gray-100 pt-3"><h4 class="font-bold text-gray-900" id="faq-q3">为什么复杂 Word/Excel 的排版会丢失？</h4><p class="text-xs text-gray-500 mt-1 leading-relaxed" id="faq-a3">我们轻量、离线友好的解析器尚不能支持所有高级排版特性。我们正持续改进兼容性，但高度格式化的文档可能会丢失部分细节。</p></div>
         </div>
       </section>
-
     </div>
 
     <aside class="hidden lg:block lg:col-span-2">
@@ -265,10 +205,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-800 pb-8">
         <div class="space-y-3">
-          <p class="text-xs text-gray-500 leading-relaxed" id="footer-about">纯客户端、隐私至上的多媒体转换器。您的文件属于您自己。</p>
-          <p class="text-xs text-gray-500" id="footer-contact">
-            如有疑问或建议，联系邮箱：<a href="mailto:support@ghostconvert.cc" class="text-indigo-400 hover:text-indigo-300 underline">support@ghostconvert.cc</a>
-          </p>
+          <p class="text-xs text-gray-500 leading-relaxed" id="footer-about">隐私至上的多媒体转换器。您的文件属于您自己。</p>
+          <p class="text-xs text-gray-500" id="footer-contact">如有疑问或建议，联系邮箱：<a href="mailto:support@ghostconvert.cc" class="text-indigo-400 hover:text-indigo-300 underline">support@ghostconvert.cc</a></p>
         </div>
         <div class="space-y-2">
           <h4 class="text-sm font-bold text-white tracking-wide" id="footer-links-title">快捷链接</h4>
@@ -298,12 +236,11 @@
     <button id="cookieAccept" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-full text-sm font-semibold">接受</button>
     <a href="/privacy.html" target="_blank" class="text-indigo-300 underline text-sm" id="cookieLink">隐私政策</a>
   </div>
-
   <div id="modalOverlay" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-2xl p-8 max-w-sm text-center shadow-xl">
       <p id="modalText" class="text-gray-800 mb-6"></p>
-      <button id="modalCancel" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-full mr-2 font-semibold">取消</button>
-      <button id="modalOk" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-full font-semibold">继续</button>
+      <button id="modalCancel" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-full mr-2 font-semibold hidden">取消</button>
+      <button id="modalOk" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-full font-semibold">确定</button>
     </div>
   </div>
 
@@ -314,13 +251,12 @@
           brand: "GhostConvert",
           "nav-tool": "Converter", "nav-how": "How It Works", "nav-guide": "Guide", "nav-deepdive": "Formats", "nav-faq": "FAQ",
           "mobile-nav-tool": "Converter", "mobile-nav-how": "How It Works", "mobile-nav-guide": "Guide", "mobile-nav-deepdive": "Formats", "mobile-nav-faq": "FAQ",
-          "hero-badge": "🔒 100% Local & Private",
-          "hero-title": "All Formats, One Click",
+          "bookmarkBtn": "⭐ Bookmark",
+          "hero-badge": "🔒 100% Local & Private", "hero-title": "All Formats, One Click",
           "hero-desc": "Free online file converter that runs completely inside your browser. No files are ever uploaded to any server — your data never leaves your device.",
-          "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Best Quality)", "btn-webp": "WebP (Small Size)",
-          "btn-pdf": "PDF (Merge Docs)", "btn-mp3": "MP3/WAV (Audio)",
+          "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Best Quality)", "btn-webp": "WebP (Small Size)", "btn-pdf": "PDF (Merge Docs)", "btn-mp3": "MP3/WAV (Audio)",
           "drop-title": "Drag & drop your files or folder here", "drop-sub": "or click to browse (batch supported)",
-          "convertBtnText": "⚡ Start Local Conversion",
+          "convertBtnText": "⚡ Drop files to convert",
           "statUsersLabel": " Users Securely Converted", "statFilesLabel": " Files Safely Processed",
           "how-title": "Why GhostConvert?",
           "how-p1": "Traditional online converters force you to upload sensitive files to their servers — creating risks of interception, logging, and unauthorized scanning.",
@@ -345,7 +281,7 @@
           "faq-q1": "Are my files really not uploaded?", "faq-a1": "Absolutely. Disconnect the network after loading the page and try—everything still works.",
           "faq-q2": "Why do large files sometimes fail?", "faq-a2": "Browser memory limits (~1.5 GB per tab) can stall huge files. For very large conversions, consider a dedicated desktop app.",
           "faq-q3": "Why does formatting get lost in Word/Excel?", "faq-a3": "Our lightweight, offline-friendly parsers don't support every advanced layout feature yet. We're continuously improving compatibility.",
-          "footer-about": "A fully client-side, privacy-first multimedia converter. Your files belong to you.",
+          "footer-about": "Privacy-first multimedia converter. Your files belong to you.",
           "footer-contact": "Questions or feedback? Contact <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
           "footer-links-title": "Quick Links",
           "footer-tool": "Converter", "footer-how": "How It Works", "footer-guide": "Guide", "footer-deepdive": "Formats", "footer-faq": "FAQ",
@@ -355,28 +291,35 @@
           cookieText: "We use cookies to personalise ads and analyse traffic. By continuing you agree to our use of cookies.", cookieLink: "Privacy Policy",
           modalCancel: "Cancel", modalOk: "Continue",
           processing: "Processing... Please wait",
-          largeFileWarning: "Some files >1.5GB may fail. Continue?",
-          done: "✓ Done! Click to download", fail: "⚠️ Some files failed. Click to retry",
-          noFiles: "No supported files found.",
+          largeFileWarning: "Total file size exceeds {size}. This may cause the browser to run out of memory. Continue?",
+          largeFileStrongWarning: "Total file size exceeds {size}. Very high risk of crash! We strongly recommend using a desktop tool. Continue anyway?",
+          largeFileRejected: "Total file size exceeds 2 GB. Cannot process in browser. Please use a desktop tool.",
+          done: "✓ Done! Click to download",
+          fail: "⚠️ Some files failed. Click to retry",
+          noFiles: "No supported files found for the selected format.",
+          wpsHint: "WPS files not supported. Please save as .docx first.",
+          pptHint: ".ppt files not supported. Please save as .pptx first.",
           downloadKeepOpen: "Downloading... Keep this page open.",
-          progressInit: "Processing... Please wait",
-          progressText: "Processing ({c}/{t})",
-          almostDone: "Almost done... {t}s",
-          scanningFolder: "Scanning folder...",
+          progressInit: "Converting for you, hold on ☕",
+          progressText: "Working on file {c} of {t}… 🏃",
+          almostDone: "Almost ready, {t}s left ✨",
+          scanningFolder: "Looking through your folder… 🗂️",
           audioMemory: "Audio too large to process safely. Try a shorter file.",
           unsupported: "Unsupported format",
+          noTask: "No files can be converted. Please check your file formats.",
+          fileCountExceeded: "Too many files selected. Maximum 200 files allowed.",
+          ignoredFiles: "Skipped {n} unsupported files for the selected format.",
         },
         "zh-CN": {
           brand: "幽灵转换器",
           "nav-tool": "在线转换工具", "nav-how": "核心原理", "nav-guide": "新手指南", "nav-deepdive": "格式科普", "nav-faq": "常见问题",
           "mobile-nav-tool": "在线转换工具", "mobile-nav-how": "核心原理", "mobile-nav-guide": "新手指南", "mobile-nav-deepdive": "格式科普", "mobile-nav-faq": "常见问题",
-          "hero-badge": "🔒 100% 本地运行 · 安全私密",
-          "hero-title": "全格式支持，一键转换",
+          "bookmarkBtn": "⭐ 收藏",
+          "hero-badge": "🔒 100% 本地运行 · 安全私密", "hero-title": "全格式支持，一键转换",
           "hero-desc": "基于先进的浏览器前端 WebAssembly 与 JavaScript 技术，所有转换完全在您本地的电脑或手机上完成。文件无需上传服务器，绝无隐私泄露风险。",
-          "btn-jpg": "JPG（标准图片）", "btn-png": "PNG（透明背景）", "btn-webp": "WebP（极小体积）",
-          "btn-pdf": "PDF（合并文档）", "btn-mp3": "MP3/WAV（音频提取）",
+          "btn-jpg": "JPG（标准图片）", "btn-png": "PNG（透明背景）", "btn-webp": "WebP（极小体积）", "btn-pdf": "PDF（合并文档）", "btn-mp3": "MP3/WAV（音频提取）",
           "drop-title": "拖拽文件或文件夹到此处", "drop-sub": "或点击浏览（支持批量）",
-          "convertBtnText": "⚡ 开始本地安全转换",
+          "convertBtnText": "⚡ 拖入文件，一键转换",
           "statUsersLabel": " 位用户已安全转换", "statFilesLabel": " 个文件已本地处理",
           "how-title": "为什么选择幽灵转换器？彻底颠覆传统的本地隐私文件处理技术",
           "how-p1": "传统的在线文件转换网站，无一例外地需要您将私人文件、敏感照片或内部工作文档上传到他们的云端服务器。在这个过程中，您的敏感数据面临着传输被截获、服务器日志留存以及第三方商业公司非法扫描或二次售卖的严重隐私风险。",
@@ -401,7 +344,7 @@
           "faq-q1": "我的文件真的不会被上传吗？", "faq-a1": "绝对不会。页面加载完成后，断开网络并拖入文件 —— 您会发现一切依然正常。没有任何数据离开您的设备。",
           "faq-q2": "为什么大文件有时会转换失败？", "faq-a2": "浏览器内存限制（通常每个标签页约 1.5 GB）可能导致超大音频、视频或表格转换超时。对于极大文件，建议使用专业桌面工具。",
           "faq-q3": "为什么复杂 Word/Excel 的排版会丢失？", "faq-a3": "我们轻量、离线友好的解析器尚不能支持所有高级排版特性。我们正持续改进兼容性，但高度格式化的文档可能会丢失部分细节。",
-          "footer-about": "纯客户端、隐私至上的多媒体转换器。您的文件属于您自己。",
+          "footer-about": "隐私至上的多媒体转换器。您的文件属于您自己。",
           "footer-contact": "如有疑问或建议，联系邮箱：<a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
           "footer-links-title": "快捷链接",
           "footer-tool": "在线转换工具", "footer-how": "核心原理", "footer-guide": "新手指南", "footer-deepdive": "格式科普", "footer-faq": "常见问题",
@@ -411,28 +354,35 @@
           cookieText: "我们使用 Cookie 来个性化广告和分析流量。继续使用即表示您同意。", cookieLink: "隐私政策",
           modalCancel: "取消", modalOk: "继续",
           processing: "处理中… 请稍候",
-          largeFileWarning: "文件过大（>1.5GB），可能因浏览器内存限制而失败。是否继续？",
-          done: "✓ 转换完成，点击下载", fail: "⚠️ 部分文件处理失败，点击重试",
-          noFiles: "没有可转换的文件。",
+          largeFileWarning: "文件总大小超过 {size}，可能导致浏览器内存不足。是否继续？",
+          largeFileStrongWarning: "文件总大小超过 {size}，极易导致页面崩溃！强烈建议使用桌面工具处理。仍要继续吗？",
+          largeFileRejected: "文件总大小超过 2 GB，浏览器无法安全处理。请使用桌面工具。",
+          done: "✓ 转换完成，点击下载",
+          fail: "⚠️ 有几个文件没能转好，要再试试吗？💪",
+          noFiles: "呀，没找到能转换的文件，换个格式试试？🤔",
+          wpsHint: "检测到 .wps 文件，请先另存为 .docx 格式再转换。",
+          pptHint: "暂不支持 .ppt 格式，请先另存为 .pptx 格式再转换。",
           downloadKeepOpen: "下载中… 请保持页面打开。",
-          progressInit: "处理中… 请稍候",
-          progressText: "处理中 ({c}/{t})",
-          almostDone: "即将完成… {t}秒",
-          scanningFolder: "正在扫描文件夹…",
+          progressInit: "正在帮你转换，请稍等 ☕",
+          progressText: "第 {c}/{t} 个文件努力中… 🏃",
+          almostDone: "快好了，还有 {t} 秒 ✨",
+          scanningFolder: "正在翻找你的文件夹… 🗂️",
           audioMemory: "音频过大无法安全处理。请尝试更短的音频文件。",
           unsupported: "不支持的格式",
+          noTask: "没有可转换的文件，请检查文件格式。",
+          fileCountExceeded: "选择的文件太多，单次最多转换 200 个文件。",
+          ignoredFiles: "已跳过 {n} 个当前格式不支持的文件。",
         },
         es: {
           brand: "GhostConvert",
           "nav-tool": "Convertidor", "nav-how": "Cómo funciona", "nav-guide": "Guía", "nav-deepdive": "Formatos", "nav-faq": "Preguntas",
           "mobile-nav-tool": "Convertidor", "mobile-nav-how": "Cómo funciona", "mobile-nav-guide": "Guía", "mobile-nav-deepdive": "Formatos", "mobile-nav-faq": "Preguntas",
-          "hero-badge": "🔒 100% Local y Privado",
-          "hero-title": "Todos los formatos, un clic",
+          "bookmarkBtn": "⭐ Favoritos",
+          "hero-badge": "🔒 100% Local y Privado", "hero-title": "Todos los formatos, un clic",
           "hero-desc": "Conversor de archivos online gratuito que funciona completamente en tu navegador. Sin subir archivos, tus datos nunca abandonan tu dispositivo.",
-          "btn-jpg": "JPG (Estándar)", "btn-png": "PNG (Mejor calidad)", "btn-webp": "WebP (Tamaño reducido)",
-          "btn-pdf": "PDF (Unir docs)", "btn-mp3": "MP3/WAV (Audio)",
+          "btn-jpg": "JPG (Estándar)", "btn-png": "PNG (Mejor calidad)", "btn-webp": "WebP (Tamaño reducido)", "btn-pdf": "PDF (Unir docs)", "btn-mp3": "MP3/WAV (Audio)",
           "drop-title": "Arrastra y suelta tus archivos o carpeta aquí", "drop-sub": "o haz clic para examinar (por lotes)",
-          "convertBtnText": "⚡ Iniciar conversión local",
+          "convertBtnText": "⚡ Soltar archivos para convertir",
           "statUsersLabel": " usuarios convirtieron de forma segura", "statFilesLabel": " archivos procesados de forma segura",
           "how-title": "¿Por qué GhostConvert?",
           "how-p1": "Los conversores tradicionales te obligan a subir archivos sensibles a sus servidores, creando riesgos de interceptación, registro y escaneo no autorizado.",
@@ -457,7 +407,7 @@
           "faq-q1": "¿Mis archivos realmente no se suben?", "faq-a1": "Totalmente. Desconecta la red después de cargar la página y pruébalo, todo sigue funcionando.",
           "faq-q2": "¿Por qué a veces fallan los archivos grandes?", "faq-a2": "Los límites de memoria del navegador (~1.5 GB por pestaña) pueden detener archivos enormes. Para conversiones muy grandes, considera una aplicación de escritorio dedicada.",
           "faq-q3": "¿Por qué se pierde el formato en Word/Excel?", "faq-a3": "Nuestros analizadores ligeros y sin conexión aún no admiten todas las características avanzadas de diseño. Seguimos mejorando la compatibilidad.",
-          "footer-about": "Un conversor multimedia totalmente del lado del cliente y que prioriza la privacidad. Tus archivos te pertenecen.",
+          "footer-about": "Conversor multimedia que prioriza la privacidad. Tus archivos te pertenecen.",
           "footer-contact": "¿Preguntas o comentarios? Contacta <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
           "footer-links-title": "Enlaces rápidos",
           "footer-tool": "Convertidor", "footer-how": "Cómo funciona", "footer-guide": "Guía", "footer-deepdive": "Formatos", "footer-faq": "Preguntas",
@@ -467,28 +417,35 @@
           cookieText: "Usamos cookies para personalizar anuncios y analizar el tráfico. Al continuar aceptas nuestro uso de cookies.", cookieLink: "Política de privacidad",
           modalCancel: "Cancelar", modalOk: "Continuar",
           processing: "Procesando... Espere",
-          largeFileWarning: "Algunos archivos >1.5GB pueden fallar. ¿Continuar?",
-          done: "✓ ¡Hecho! Clic para descargar", fail: "⚠️ Algunos archivos fallaron. Clic para reintentar",
-          noFiles: "No se encontraron archivos compatibles.",
+          largeFileWarning: "El tamaño total de los archivos supera {size}. Puede causar falta de memoria. ¿Continuar?",
+          largeFileStrongWarning: "El tamaño total supera {size}. ¡Riesgo muy alto de bloqueo! Recomendamos usar una herramienta de escritorio. ¿Continuar de todos modos?",
+          largeFileRejected: "El tamaño total supera los 2 GB. No se puede procesar en el navegador. Use una herramienta de escritorio.",
+          done: "✓ ¡Hecho! Clic para descargar",
+          fail: "⚠️ Algunos archivos fallaron. ¿Reintentar?",
+          noFiles: "No se encontraron archivos compatibles con el formato seleccionado.",
+          wpsHint: "Archivos WPS no soportados. Primero guarda como .docx.",
+          pptHint: "Archivos .ppt no soportados. Por favor guarde como .pptx primero.",
           downloadKeepOpen: "Descargando... Mantenga esta página abierta.",
-          progressInit: "Procesando... Espere",
-          progressText: "Procesando ({c}/{t})",
-          almostDone: "Casi listo... {t}s",
-          scanningFolder: "Escaneando carpeta...",
+          progressInit: "Convirtiendo para ti, espera ☕",
+          progressText: "Trabajando en archivo {c} de {t}… 🏃",
+          almostDone: "Casi listo, quedan {t}s ✨",
+          scanningFolder: "Revisando tu carpeta… 🗂️",
           audioMemory: "Audio demasiado grande para procesar de forma segura. Pruebe con un archivo más corto.",
           unsupported: "Formato no compatible",
+          noTask: "Ningún archivo puede convertirse. Compruebe los formatos.",
+          fileCountExceeded: "Demasiados archivos. Máximo 200 permitidos.",
+          ignoredFiles: "Se omitieron {n} archivos no compatibles con el formato seleccionado.",
         },
         de: {
           brand: "GhostConvert",
           "nav-tool": "Konverter", "nav-how": "Funktionsweise", "nav-guide": "Anleitung", "nav-deepdive": "Formate", "nav-faq": "FAQ",
           "mobile-nav-tool": "Konverter", "mobile-nav-how": "Funktionsweise", "mobile-nav-guide": "Anleitung", "mobile-nav-deepdive": "Formate", "mobile-nav-faq": "FAQ",
-          "hero-badge": "🔒 100% Lokal & Privat",
-          "hero-title": "Alle Formate, ein Klick",
+          "bookmarkBtn": "⭐ Lesezeichen",
+          "hero-badge": "🔒 100% Lokal & Privat", "hero-title": "Alle Formate, ein Klick",
           "hero-desc": "Kostenloser Online-Konverter, der vollständig in Ihrem Browser läuft. Keine Dateien werden hochgeladen – Ihre Daten verlassen nie Ihr Gerät.",
-          "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Beste Qualität)", "btn-webp": "WebP (Kleine Größe)",
-          "btn-pdf": "PDF (Dokumente zusammenführen)", "btn-mp3": "MP3/WAV (Audio)",
+          "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Beste Qualität)", "btn-webp": "WebP (Kleine Größe)", "btn-pdf": "PDF (Dokumente zusammenführen)", "btn-mp3": "MP3/WAV (Audio)",
           "drop-title": "Dateien oder Ordner hier ablegen", "drop-sub": "oder klicken zum Durchsuchen (Stapelverarbeitung)",
-          "convertBtnText": "⚡ Lokale Konvertierung starten",
+          "convertBtnText": "⚡ Dateien ablegen zum Konvertieren",
           "statUsersLabel": " Benutzer sicher konvertiert", "statFilesLabel": " Dateien sicher verarbeitet",
           "how-title": "Warum GhostConvert?",
           "how-p1": "Herkömmliche Konverter zwingen Sie, sensible Dateien auf ihre Server hochzuladen – mit Risiken durch Abfangen, Protokollierung und unbefugtes Scannen.",
@@ -513,7 +470,7 @@
           "faq-q1": "Werden meine Dateien wirklich nicht hochgeladen?", "faq-a1": "Absolut. Trennen Sie nach dem Laden der Seite das Netzwerk und versuchen Sie es – alles funktioniert weiterhin.",
           "faq-q2": "Warum schlagen große Dateien manchmal fehl?", "faq-a2": "Browser-Speicherlimits (~1,5 GB pro Tab) können riesige Dateien blockieren. Für sehr große Konvertierungen sollten Sie eine dedizierte Desktop-Anwendung in Betracht ziehen.",
           "faq-q3": "Warum geht die Formatierung in Word/Excel verloren?", "faq-a3": "Unsere schlanken, offline-freundlichen Parser unterstützen noch nicht jedes erweiterte Layout-Feature. Wir verbessern die Kompatibilität kontinuierlich.",
-          "footer-about": "Ein vollständig clientseitiger, datenschutzorientierter Multimedia-Konverter. Ihre Dateien gehören Ihnen.",
+          "footer-about": "Datenschutzorientierter Multimedia-Konverter. Ihre Dateien gehören Ihnen.",
           "footer-contact": "Fragen oder Feedback? Kontaktieren Sie <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
           "footer-links-title": "Schnellzugriff",
           "footer-tool": "Konverter", "footer-how": "Funktionsweise", "footer-guide": "Anleitung", "footer-deepdive": "Formate", "footer-faq": "FAQ",
@@ -523,28 +480,35 @@
           cookieText: "Wir verwenden Cookies, um Werbung zu personalisieren und den Datenverkehr zu analysieren. Durch die weitere Nutzung stimmen Sie zu.", cookieLink: "Datenschutzerklärung",
           modalCancel: "Abbrechen", modalOk: "Fortfahren",
           processing: "Verarbeitung... Bitte warten",
-          largeFileWarning: "Einige Dateien >1,5 GB könnten fehlschlagen. Fortfahren?",
-          done: "✓ Fertig! Zum Download klicken", fail: "⚠️ Einige Dateien fehlgeschlagen. Zum Wiederholen klicken",
-          noFiles: "Keine unterstützten Dateien gefunden.",
+          largeFileWarning: "Die Gesamtgröße der Dateien überschreitet {size}. Dies kann zu Speichermangel führen. Fortfahren?",
+          largeFileStrongWarning: "Die Gesamtgröße überschreitet {size}. Sehr hohes Absturzrisiko! Wir empfehlen dringend ein Desktop-Tool. Trotzdem fortfahren?",
+          largeFileRejected: "Die Gesamtgröße überschreitet 2 GB. Kann nicht im Browser verarbeitet werden. Bitte verwenden Sie ein Desktop-Tool.",
+          done: "✓ Fertig! Zum Download klicken",
+          fail: "⚠️ Einige Dateien fehlgeschlagen. Wiederholen?",
+          noFiles: "Keine kompatiblen Dateien für das gewählte Format gefunden.",
+          wpsHint: "WPS-Dateien werden nicht unterstützt. Bitte als .docx speichern.",
+          pptHint: ".ppt-Dateien werden nicht unterstützt. Bitte als .pptx speichern.",
           downloadKeepOpen: "Wird heruntergeladen... Bitte lassen Sie diese Seite geöffnet.",
-          progressInit: "Verarbeitung... Bitte warten",
-          progressText: "Verarbeitung ({c}/{t})",
-          almostDone: "Fast fertig... {t}s",
-          scanningFolder: "Ordner wird durchsucht...",
+          progressInit: "Konvertiere für dich, einen Moment ☕",
+          progressText: "Arbeite an Datei {c} von {t}… 🏃",
+          almostDone: "Fast fertig, noch {t}s ✨",
+          scanningFolder: "Durchsuche deinen Ordner… 🗂️",
           audioMemory: "Audio zu groß für sichere Verarbeitung. Versuchen Sie eine kürzere Datei.",
           unsupported: "Nicht unterstütztes Format",
+          noTask: "Keine Datei kann konvertiert werden. Bitte überprüfen Sie die Formate.",
+          fileCountExceeded: "Zu viele Dateien ausgewählt. Maximal 200 erlaubt.",
+          ignoredFiles: "{n} nicht unterstützte Dateien wurden übersprungen.",
         },
         fr: {
           brand: "GhostConvert",
           "nav-tool": "Convertisseur", "nav-how": "Fonctionnement", "nav-guide": "Guide", "nav-deepdive": "Formats", "nav-faq": "FAQ",
           "mobile-nav-tool": "Convertisseur", "mobile-nav-how": "Fonctionnement", "mobile-nav-guide": "Guide", "mobile-nav-deepdive": "Formats", "mobile-nav-faq": "FAQ",
-          "hero-badge": "🔒 100% Local et Privé",
-          "hero-title": "Tous les formats, un clic",
+          "bookmarkBtn": "⭐ Favoris",
+          "hero-badge": "🔒 100% Local et Privé", "hero-title": "Tous les formats, un clic",
           "hero-desc": "Convertisseur de fichiers en ligne gratuit qui fonctionne entièrement dans votre navigateur. Aucun fichier téléchargé – vos données ne quittent jamais votre appareil.",
-          "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Meilleure qualité)", "btn-webp": "WebP (Taille réduite)",
-          "btn-pdf": "PDF (Fusionner docs)", "btn-mp3": "MP3/WAV (Audio)",
+          "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Meilleure qualité)", "btn-webp": "WebP (Taille réduite)", "btn-pdf": "PDF (Fusionner docs)", "btn-mp3": "MP3/WAV (Audio)",
           "drop-title": "Glissez-déposez vos fichiers ou dossier ici", "drop-sub": "ou cliquez pour parcourir (traitement par lots)",
-          "convertBtnText": "⚡ Lancer la conversion locale",
+          "convertBtnText": "⚡ Déposez les fichiers à convertir",
           "statUsersLabel": " utilisateurs convertis en toute sécurité", "statFilesLabel": " fichiers traités en toute sécurité",
           "how-title": "Pourquoi GhostConvert ?",
           "how-p1": "Les convertisseurs traditionnels vous obligent à télécharger des fichiers sensibles sur leurs serveurs, créant des risques d'interception, de journalisation et d'analyse non autorisée.",
@@ -569,7 +533,7 @@
           "faq-q1": "Mes fichiers ne sont-ils vraiment pas téléchargés ?", "faq-a1": "Absolument. Déconnectez le réseau après le chargement de la page et essayez, tout fonctionne toujours.",
           "faq-q2": "Pourquoi les gros fichiers échouent-ils parfois ?", "faq-a2": "Les limites de mémoire du navigateur (~1,5 Go par onglet) peuvent bloquer les fichiers volumineux. Pour de très grosses conversions, envisagez une application de bureau dédiée.",
           "faq-q3": "Pourquoi la mise en forme Word/Excel est-elle perdue ?", "faq-a3": "Nos analyseurs légers et hors ligne ne prennent pas encore en charge toutes les fonctionnalités de mise en page avancées. Nous améliorons continuellement la compatibilité.",
-          "footer-about": "Un convertisseur multimédia entièrement côté client et axé sur la confidentialité. Vos fichiers vous appartiennent.",
+          "footer-about": "Convertisseur multimédia axé sur la confidentialité. Vos fichiers vous appartiennent.",
           "footer-contact": "Des questions ou des commentaires ? Contactez <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
           "footer-links-title": "Liens rapides",
           "footer-tool": "Convertisseur", "footer-how": "Fonctionnement", "footer-guide": "Guide", "footer-deepdive": "Formats", "footer-faq": "FAQ",
@@ -579,28 +543,35 @@
           cookieText: "Nous utilisons des cookies pour personnaliser les annonces et analyser le trafic. En continuant, vous acceptez notre utilisation des cookies.", cookieLink: "Politique de confidentialité",
           modalCancel: "Annuler", modalOk: "Continuer",
           processing: "Traitement... Veuillez patienter",
-          largeFileWarning: "Certains fichiers >1,5 Go peuvent échouer. Continuer ?",
-          done: "✓ Terminé ! Cliquez pour télécharger", fail: "⚠️ Certains fichiers ont échoué. Cliquez pour réessayer",
-          noFiles: "Aucun fichier compatible trouvé.",
+          largeFileWarning: "La taille totale des fichiers dépasse {size}. Cela peut entraîner un manque de mémoire. Continuer ?",
+          largeFileStrongWarning: "La taille totale dépasse {size}. Risque très élevé de plantage ! Nous recommandons vivement un outil de bureau. Continuer malgré tout ?",
+          largeFileRejected: "La taille totale dépasse 2 Go. Impossible à traiter dans le navigateur. Veuillez utiliser un outil de bureau.",
+          done: "✓ Terminé ! Cliquez pour télécharger",
+          fail: "⚠️ Certains fichiers ont échoué. Réessayer ?",
+          noFiles: "Aucun fichier compatible trouvé pour le format sélectionné.",
+          wpsHint: "Fichiers WPS non pris en charge. Veuillez d'abord enregistrer en .docx.",
+          pptHint: "Fichiers .ppt non pris en charge. Veuillez d'abord enregistrer en .pptx.",
           downloadKeepOpen: "Téléchargement en cours... Gardez cette page ouverte.",
-          progressInit: "Traitement... Veuillez patienter",
-          progressText: "Traitement ({c}/{t})",
-          almostDone: "Presque terminé... {t}s",
-          scanningFolder: "Analyse du dossier...",
+          progressInit: "Conversion en cours pour vous, patientez ☕",
+          progressText: "Travail sur le fichier {c} de {t}… 🏃",
+          almostDone: "Presque terminé, encore {t}s ✨",
+          scanningFolder: "Analyse de votre dossier… 🗂️",
           audioMemory: "Audio trop volumineux pour un traitement sûr. Essayez un fichier plus court.",
           unsupported: "Format non pris en charge",
+          noTask: "Aucun fichier ne peut être converti. Vérifiez les formats.",
+          fileCountExceeded: "Trop de fichiers sélectionnés. Maximum 200 autorisés.",
+          ignoredFiles: "{n} fichiers non pris en charge ignorés.",
         },
         ja: {
           brand: "GhostConvert",
           "nav-tool": "変換ツール", "nav-how": "仕組み", "nav-guide": "ガイド", "nav-deepdive": "フォーマット", "nav-faq": "よくある質問",
           "mobile-nav-tool": "変換ツール", "mobile-nav-how": "仕組み", "mobile-nav-guide": "ガイド", "mobile-nav-deepdive": "フォーマット", "mobile-nav-faq": "よくある質問",
-          "hero-badge": "🔒 100% ローカル & プライベート",
-          "hero-title": "あらゆるフォーマットをワンクリックで変換",
+          "bookmarkBtn": "⭐ ブックマーク",
+          "hero-badge": "🔒 100% ローカル & プライベート", "hero-title": "あらゆるフォーマットをワンクリックで変換",
           "hero-desc": "完全にブラウザ内で動作する無料のオンラインファイル変換ツール。ファイルはアップロードされず、データがデバイスから出ることはありません。",
-          "btn-jpg": "JPG (標準)", "btn-png": "PNG (高品質)", "btn-webp": "WebP (軽量)",
-          "btn-pdf": "PDF (ドキュメント結合)", "btn-mp3": "MP3/WAV (音声)",
+          "btn-jpg": "JPG (標準)", "btn-png": "PNG (高品質)", "btn-webp": "WebP (軽量)", "btn-pdf": "PDF (ドキュメント結合)", "btn-mp3": "MP3/WAV (音声)",
           "drop-title": "ファイルまたはフォルダをここにドラッグ＆ドロップ", "drop-sub": "またはクリックして参照（一括対応）",
-          "convertBtnText": "⚡ ローカル変換を開始",
+          "convertBtnText": "⚡ ファイルをドロップして変換",
           "statUsersLabel": " 人のユーザーが安全に変換", "statFilesLabel": " 個のファイルを安全に処理",
           "how-title": "なぜGhostConvertなのか？",
           "how-p1": "従来の変換ツールは、機密ファイルをサーバーにアップロードさせるため、傍受、ログ記録、不正スキャンのリスクがあります。",
@@ -625,7 +596,7 @@
           "faq-q1": "ファイルは本当にアップロードされませんか？", "faq-a1": "はい。ページの読み込み後にネットワークを切断してお試しください。すべて機能し続けます。",
           "faq-q2": "大きなファイルが失敗することがあるのはなぜですか？", "faq-a2": "ブラウザのメモリ制限（タブあたり約1.5GB）により、巨大なファイルがストールする可能性があります。非常に大きな変換には専用のデスクトップアプリを検討してください。",
           "faq-q3": "Word/Excelの書式が失われるのはなぜですか？", "faq-a3": "軽量でオフライン対応のパーサーは、まだすべての高度なレイアウト機能をサポートしていません。互換性は継続的に改善しています。",
-          "footer-about": "完全にクライアントサイドでプライバシー重視のマルチメディア変換ツール。あなたのファイルはあなたのものです。",
+          "footer-about": "プライバシー重視のマルチメディア変換ツール。あなたのファイルはあなたのものです。",
           "footer-contact": "ご質問やフィードバックはこちら： <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
           "footer-links-title": "クイックリンク",
           "footer-tool": "変換ツール", "footer-how": "仕組み", "footer-guide": "ガイド", "footer-deepdive": "フォーマット", "footer-faq": "よくある質問",
@@ -635,16 +606,150 @@
           cookieText: "広告のパーソナライズとトラフィック分析のためCookieを使用します。続行するとCookieの使用に同意したことになります。", cookieLink: "プライバシーポリシー",
           modalCancel: "キャンセル", modalOk: "続行",
           processing: "処理中... お待ちください",
-          largeFileWarning: "1.5GBを超えるファイルは失敗する可能性があります。続行しますか？",
-          done: "✓ 完了！クリックしてダウンロード", fail: "⚠️ 一部のファイルが失敗しました。クリックして再試行",
-          noFiles: "サポートされているファイルが見つかりません。",
+          largeFileWarning: "ファイルの合計サイズが{size}を超えています。メモリ不足になる可能性があります。続行しますか？",
+          largeFileStrongWarning: "合計サイズが{size}を超えています。クラッシュの危険性が非常に高いです！デスクトップツールの使用を強くお勧めします。それでも続行しますか？",
+          largeFileRejected: "合計サイズが2 GBを超えています。ブラウザで処理できません。デスクトップツールを使用してください。",
+          done: "✓ 完了！クリックしてダウンロード",
+          fail: "⚠️ 一部のファイルが失敗しました。再試行しますか？",
+          noFiles: "選択した形式に対応するファイルが見つかりません。",
+          wpsHint: "WPSファイルには対応していません。.docxで保存し直してください。",
+          pptHint: ".pptファイルには対応していません。.pptxで保存し直してください。",
           downloadKeepOpen: "ダウンロード中... このページを開いたままにしてください。",
-          progressInit: "処理中... お待ちください",
-          progressText: "処理中 ({c}/{t})",
-          almostDone: "もうすぐ完了... {t}秒",
-          scanningFolder: "フォルダをスキャン中...",
+          progressInit: "変換中です、少々お待ちください ☕",
+          progressText: "ファイル {c}/{t} を処理中… 🏃",
+          almostDone: "もうすぐ完了、あと{t}秒 ✨",
+          scanningFolder: "フォルダを探しています… 🗂️",
           audioMemory: "音声が大きすぎて安全に処理できません。短いファイルをお試しください。",
           unsupported: "サポートされていない形式",
+          noTask: "変換可能なファイルがありません。フォーマットを確認してください。",
+          fileCountExceeded: "選択したファイルが多すぎます。上限は200ファイルです。",
+          ignoredFiles: "{n}個の非対応ファイルをスキップしました。",
+        },
+        ko: {
+          brand: "GhostConvert",
+          "nav-tool": "변환기", "nav-how": "작동 원리", "nav-guide": "가이드", "nav-deepdive": "포맷", "nav-faq": "FAQ",
+          "mobile-nav-tool": "변환기", "mobile-nav-how": "작동 원리", "mobile-nav-guide": "가이드", "mobile-nav-deepdive": "포맷", "mobile-nav-faq": "FAQ",
+          "bookmarkBtn": "⭐ 북마크",
+          "hero-badge": "🔒 100% 로컬 & 비공개", "hero-title": "모든 포맷, 한 번의 클릭",
+          "hero-desc": "브라우저 내에서 완전히 실행되는 무료 온라인 파일 변환기입니다. 파일이 서버에 업로드되지 않으며 데이터가 장치를 떠나지 않습니다.",
+          "btn-jpg": "JPG (표준)", "btn-png": "PNG (최고 품질)", "btn-webp": "WebP (작은 크기)", "btn-pdf": "PDF (문서 병합)", "btn-mp3": "MP3/WAV (오디오)",
+          "drop-title": "파일 또는 폴더를 여기에 드래그 앤 드롭", "drop-sub": "또는 클릭하여 찾아보기 (일괄 지원)",
+          "convertBtnText": "⚡ 파일을 놓아 변환",
+          "statUsersLabel": " 사용자가 안전하게 변환함", "statFilesLabel": " 파일이 안전하게 처리됨",
+          "how-title": "왜 GhostConvert 인가?",
+          "how-p1": "기존 온라인 변환기는 민감한 파일을 서버에 업로드하도록 강요하여 가로채기, 로깅, 무단 스캔 위험을 초래합니다.",
+          "how-p2": "GhostConvert는 WebAssembly와 최신 브라우저 API를 활용하여 모든 변환을 브라우저 샌드박스 내에서 실행합니다.",
+          "how-p3": "즉, 파일을 드롭하면 읽기, 디코딩, 변환, 재인코딩의 전체 파이프라인이 CPU와 메모리에서 로컬로 실행됩니다. 네트워크 트래픽이 전혀 소모되지 않습니다.",
+          "guide-title": "초보자 가이드: 파일을 로컬에서 변환하는 방법",
+          "guide-step1": "<strong>파일 준비</strong>: HEIC, JPG, PNG를 포함한 이미지, 동영상 또는 스프레드시트를 원하는 만큼 선택할 수 있습니다. 전체 폴더를 선택할 수도 있습니다.",
+          "guide-step2": "<strong>안전하게 가져오기</strong>: 파일을 점선 영역으로 드래그하거나 클릭하여 찾아봅니다. 브라우저가 로컬 읽기 전용 스트림을 생성하므로 서버 업로드가 전혀 발생하지 않습니다.",
+          "guide-step3": "<strong>출력 포맷 선택</strong>: 위 버튼에서 JPG, PNG, WebP, PDF, MP3 중 하나를 선택합니다.",
+          "guide-step4": "<strong>인코딩 시작</strong>: 변환 버튼을 누르면 진행 표시기가 각 파일의 상태를 보여줍니다. 속도는 로컬 하드웨어에 따라 다릅니다.",
+          "guide-step5": "<strong>로컬에 저장</strong>: 완료되면 생성된 파일을 클릭하여 기본 다운로드 폴더로 직접 다운로드합니다.",
+          "deepdive-title": "포맷 심층 분석",
+          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> Apple HEIC",
+          "deepdive-heic-desc": "HEIC는 Apple의 고효율 이미지 컨테이너입니다. JPEG 대비 파일 크기를 절반으로 줄이지만 Windows 및 이전 소프트웨어에서는 호환성이 제한됩니다. 클라우드 업로드 없이 로컬에서 변환하세요.",
+          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> 웹용 WebP",
+          "deepdive-webp-desc": "Google의 WebP는 JPEG보다 최대 34% 작은 파일을 제공하며 투명도를 지원합니다. 웹사이트 속도 향상과 SEO 개선에 이상적입니다.",
+          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> PDF로 병합",
+          "deepdive-pdf-desc": "PDF는 모든 장치에서 정확한 레이아웃을 유지합니다. 당사 도구는 브라우저에서 직접 이미지를 병합하므로 외부 서비스가 계약서나 영수증을 건드리지 않습니다.",
+          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> 오디오 추출 및 MP3",
+          "deepdive-audio-desc": "비디오 파일에서 오디오 트랙을 추출하고 프론트엔드 Lame 인코더를 사용하여 범용 MP3로 압축합니다. 팟캐스트 클립, 회의 녹음, 벨소리에 완벽합니다.",
+          "faq-title": "자주 묻는 질문",
+          "faq-q1": "파일이 정말 업로드되지 않나요?", "faq-a1": "확실합니다. 페이지 로드 후 네트워크를 끊고 파일을 드롭해 보세요. 모든 것이 여전히 작동합니다.",
+          "faq-q2": "큰 파일이 가끔 실패하는 이유는 무엇인가요?", "faq-a2": "브라우저 메모리 제한(탭당 약 1.5GB)으로 인해 거대한 파일이 멈출 수 있습니다. 매우 큰 변환에는 전용 데스크톱 앱을 고려하세요.",
+          "faq-q3": "Word/Excel 서식이 손실되는 이유는 무엇인가요?", "faq-a3": "경량 오프라인 파서가 아직 모든 고급 레이아웃 기능을 지원하지 않습니다. 호환성을 지속적으로 개선하고 있습니다.",
+          "footer-about": "개인 정보 보호 우선 멀티미디어 변환기. 파일은 당신의 것입니다.",
+          "footer-contact": "질문이나 의견이 있으시면 연락하세요: <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
+          "footer-links-title": "빠른 링크",
+          "footer-tool": "변환기", "footer-how": "작동 원리", "footer-guide": "가이드", "footer-deepdive": "포맷", "footer-faq": "FAQ",
+          "footer-policies-title": "정책",
+          "footer-about-link": "회사 소개", "footer-privacy": "개인정보 처리방침", "footer-terms": "서비스 약관",
+          "footer-copy": "© 2026 GhostConvert. 모든 권리 보유.",
+          cookieText: "쿠키를 사용하여 광고를 개인화하고 트래픽을 분석합니다. 계속하면 쿠키 사용에 동의하는 것입니다.", cookieLink: "개인정보 처리방침",
+          modalCancel: "취소", modalOk: "계속",
+          processing: "처리 중... 잠시만 기다려주세요",
+          largeFileWarning: "총 파일 크기가 {size}를 초과합니다. 브라우저 메모리 부족을 초래할 수 있습니다. 계속하시겠습니까?",
+          largeFileStrongWarning: "총 파일 크기가 {size}를 초과합니다. 충돌 위험이 매우 높습니다! 데스크톱 도구를 사용하는 것이 좋습니다. 그래도 계속하시겠습니까?",
+          largeFileRejected: "총 파일 크기가 2GB를 초과합니다. 브라우저에서 처리할 수 없습니다. 데스크톱 도구를 사용하세요.",
+          done: "✓ 완료! 클릭하여 다운로드",
+          fail: "⚠️ 일부 파일이 실패했습니다. 다시 시도하시겠습니까?",
+          noFiles: "선택한 형식에 맞는 지원 파일을 찾을 수 없습니다.",
+          wpsHint: "WPS 파일은 지원되지 않습니다. 먼저 .docx로 저장하세요.",
+          pptHint: ".ppt 파일은 지원되지 않습니다. .pptx로 저장하세요.",
+          downloadKeepOpen: "다운로드 중... 이 페이지를 열어 두세요.",
+          progressInit: "변환 중입니다. 잠시만요 ☕",
+          progressText: "파일 {c}/{t} 작업 중… 🏃",
+          almostDone: "거의 완료, {t}초 남음 ✨",
+          scanningFolder: "폴더를 살펴보는 중… 🗂️",
+          audioMemory: "오디오가 너무 커서 안전하게 처리할 수 없습니다. 더 짧은 파일을 사용해보세요.",
+          unsupported: "지원되지 않는 형식",
+          noTask: "변환할 수 있는 파일이 없습니다. 파일 형식을 확인하세요.",
+          fileCountExceeded: "선택한 파일이 너무 많습니다. 최대 200개까지 가능합니다.",
+          ignoredFiles: "지원되지 않는 {n}개 파일을 건너뛰었습니다.",
+        },
+        "zh-TW": {
+          brand: "幽靈轉換器",
+          "nav-tool": "線上轉換工具", "nav-how": "核心原理", "nav-guide": "新手指南", "nav-deepdive": "格式科普", "nav-faq": "常見問題",
+          "mobile-nav-tool": "線上轉換工具", "mobile-nav-how": "核心原理", "mobile-nav-guide": "新手指南", "mobile-nav-deepdive": "格式科普", "mobile-nav-faq": "常見問題",
+          "bookmarkBtn": "⭐ 收藏",
+          "hero-badge": "🔒 100% 本機運行 · 安全私密", "hero-title": "全格式支援，一鍵轉換",
+          "hero-desc": "基於先進的瀏覽器前端 WebAssembly 與 JavaScript 技術，所有轉換完全在您本機的電腦或手機上完成。檔案無需上傳伺服器，絕無隱私外洩風險。",
+          "btn-jpg": "JPG（標準圖片）", "btn-png": "PNG（透明背景）", "btn-webp": "WebP（極小體積）", "btn-pdf": "PDF（合併文件）", "btn-mp3": "MP3/WAV（音訊提取）",
+          "drop-title": "拖曳檔案或資料夾到此處", "drop-sub": "或點擊瀏覽（支援批次）",
+          "convertBtnText": "⚡ 拖入檔案，一鍵轉換",
+          "statUsersLabel": " 位使用者已安全轉換", "statFilesLabel": " 個檔案已本機處理",
+          "how-title": "為什麼選擇幽靈轉換器？徹底顛覆傳統的本機隱私檔案處理技術",
+          "how-p1": "傳統的線上檔案轉換網站，無一例外地需要您將私人檔案、敏感照片或內部工作文件上傳到他們的雲端伺服器。在這過程中，您的敏感資料面臨著傳輸被攔截、伺服器日誌留存以及第三方商業公司非法掃描或二次販售的嚴重隱私風險。",
+          "how-p2": "幽靈轉換器 徹底解決了這一安全痛點。我們利用先進的 WebAssembly (WASM) 編譯技術與新型的前端 JavaScript 庫，將強大的圖像、音訊及文件解析核心直接植入到了您的現代瀏覽器（如 Chrome, Edge, Safari）之中。",
+          "how-p3": "這意味著：當您在下方上傳檔案時，檔案讀取、解碼、矩陣轉換、重新編碼的完整流水線完全在您這台設備的 CPU 和記憶體中本機閉環運行，整個過程不需要消耗任何上傳網路流量。即使此時斷開網際網路，幽靈轉換器依然可以完美順暢地為您工作。",
+          "guide-title": "新手指南：如何使用幽靈轉換器批次本機轉換檔案？",
+          "guide-step1": "<strong>準備您的待處理檔案</strong>：您可以準備任意數量的圖片（包括蘋果 HEIC、常見 JPG、PNG）、影片或 Excel/Word 試算表。我們支援直接一次選取整個巢狀資料夾。",
+          "guide-step2": "<strong>執行安全匯入</strong>：將檔案拖入虛線框，或者點擊「選擇檔案」。此時瀏覽器會在本機為檔案產生安全唯讀串流，絕不發生伺服器網路傳輸。",
+          "guide-step3": "<strong>指定輸出目標編碼格式</strong>：在上方按鈕中根據需要選擇通用 JPG、無損 PNG、現代高效 WebP、合併 PDF 或高壓縮率 MP3。",
+          "guide-step4": "<strong>觸發本機極速編碼</strong>：點擊「開始轉換」。此時頁面進度條會精準提示每個檔案的處理狀態。轉換時間完全取決於您的本機硬體效能。",
+          "guide-step5": "<strong>一鍵儲存到本機</strong>：轉換成功後，點擊生成的新檔案區塊即可直接下載儲存，檔案路徑為您本機的預設下載目錄。",
+          "deepdive-title": "多媒體與文件格式深度技術科普",
+          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> 蘋果 HEIC 圖像格式",
+          "deepdive-heic-desc": "HEIC（High Efficiency Image Container）是蘋果在其生態系統中推行的高效圖像封裝格式。它採用先進的 HEVC 編碼，能在保持高畫質的同時將體積縮減到傳統 JPEG 的一半。然而，由於專利授權和系統相容性限制，Windows、Android 和許多老舊網頁軟體預設無法直接讀取。透過本站，您可在本機直接批次重組為標準的 JPG。",
+          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> 現代網頁 WebP 格式",
+          "deepdive-webp-desc": "WebP 是由 Google 推出的一種旨在加快網頁載入速度的現代圖像格式。它同時支援有損和無損壓縮，並完美相容 Alpha 透明通道。在相同視覺品質下，WebP 的體積比 JPEG 小 25%~34%，比 PNG 小 26%。將網站圖片批次轉換為 WebP，是大幅提升 SEO 排名和網站載入效率的核心技術手段。",
+          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> 多圖合併 PDF 技術",
+          "deepdive-pdf-desc": "PDF 是一種跨平台的獨立電子文件格式，具備極強的版面固定特徵，常用於正式的合約、發票歸檔和多頁圖像打包提交。我們的本機合併功能，可在前端直接提取多張上傳圖片的基線像素，無需借助任何後台龐大的 PDF 產生服務，確保您的財務或個人身分證明文件不離開本設備。",
+          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> 音視訊提取與 MP3 壓縮",
+          "deepdive-audio-desc": "透過在前端對多媒體資料串流進行解複用（Demuxing），我們可以直接剝離影片中的音軌，並利用前端 Lame 庫對音訊振幅進行動態量化重取樣，最終壓縮輸出為全球通用的高相容性 MP3 音訊。這在播客剪輯、會議錄音提取及手機鈴聲製作中極為常用。",
+          "faq-title": "常見疑問",
+          "faq-q1": "我的檔案真的不會被上傳嗎？", "faq-a1": "絕對不會。頁面載入完成後，斷開網路並拖入檔案 —— 您會發現一切依然正常。沒有任何資料離開您的設備。",
+          "faq-q2": "為什麼大檔案有時會轉換失敗？", "faq-a2": "瀏覽器記憶體限制（通常每個分頁約 1.5 GB）可能導致超大音訊、影片或表格轉換逾時。對於極大檔案，建議使用專業桌面工具。",
+          "faq-q3": "為什麼複雜 Word/Excel 的排版會丟失？", "faq-a3": "我們輕量、離線友善的解析器尚不能支援所有高級排版特性。我們正持續改進相容性，但高度格式化的文件可能會丟失部分細節。",
+          "footer-about": "隱私至上的多媒體轉換器。您的檔案屬於您自己。",
+          "footer-contact": "如有疑問或建議，聯絡信箱：<a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
+          "footer-links-title": "快捷連結",
+          "footer-tool": "線上轉換工具", "footer-how": "核心原理", "footer-guide": "新手指南", "footer-deepdive": "格式科普", "footer-faq": "常見問題",
+          "footer-policies-title": "政策與合規",
+          "footer-about-link": "關於我們", "footer-privacy": "隱私權政策", "footer-terms": "服務條款",
+          "footer-copy": "© 2026 幽靈轉換器. 保留所有權利。",
+          cookieText: "我們使用 Cookie 來個人化廣告和分析流量。繼續使用即表示您同意。", cookieLink: "隱私權政策",
+          modalCancel: "取消", modalOk: "繼續",
+          processing: "處理中… 請稍候",
+          largeFileWarning: "檔案總大小超過 {size}，可能導致瀏覽器記憶體不足。是否繼續？",
+          largeFileStrongWarning: "檔案總大小超過 {size}，極易導致頁面崩潰！強烈建議使用桌面工具處理。仍要繼續嗎？",
+          largeFileRejected: "檔案總大小超過 2 GB，瀏覽器無法安全處理。請使用桌面工具。",
+          done: "✓ 轉換完成，點擊下載",
+          fail: "⚠️ 有幾個檔案沒能轉好，要再試試嗎？💪",
+          noFiles: "呀，沒找到能轉換的檔案，換個格式試試？🤔",
+          wpsHint: "偵測到 .wps 檔案，請先另存為 .docx 格式再轉換。",
+          pptHint: "暫不支援 .ppt 格式，請先另存為 .pptx 格式再轉換。",
+          downloadKeepOpen: "下載中… 請保持此頁面開啟。",
+          progressInit: "正在幫你轉換，請稍等 ☕",
+          progressText: "第 {c}/{t} 個檔案努力中… 🏃",
+          almostDone: "快好了，還有 {t} 秒 ✨",
+          scanningFolder: "正在翻找你的資料夾… 🗂️",
+          audioMemory: "音訊過大無法安全處理。請嘗試較短的音訊檔案。",
+          unsupported: "不支援的格式",
+          noTask: "沒有可轉換的檔案，請檢查檔案格式。",
+          fileCountExceeded: "選擇的檔案太多，單次最多轉換 200 個檔案。",
+          ignoredFiles: "已跳過 {n} 個當前格式不支援的檔案。",
         }
       };
 
@@ -670,6 +775,7 @@
       const modalOk      = document.getElementById('modalOk');
       const menuToggle   = document.getElementById('menuToggle');
       const mobileNav    = document.getElementById('mobileNav');
+      const bookmarkBtn  = document.getElementById('bookmarkBtn');
 
       let currentLang   = 'zh-CN';
       let currentFormat = 'jpg';
@@ -678,6 +784,7 @@
       let fatalError = false;
       let baseUsers = 3916, baseFiles = 20247;
       let userClicks = 0, fileClicks = 0;
+      let lastFiles = null;
 
       const t = (key) => (LANG[currentLang] && LANG[currentLang][key]) || LANG['en'][key] || key;
       const safeName = (name) => name.replace(/[\/\\:*?"<>|]/g, '_').replace(/^\.+/, '').trim() || 'untitled';
@@ -689,9 +796,6 @@
       };
       const getBaseName = (fn) => { const i = fn.lastIndexOf('.'); return i === -1 ? fn : fn.substring(0, i); };
       const isIgnored = (name) => ['.DS_Store', 'Thumbs.db', 'desktop.ini', '.localized'].includes(name) || name.startsWith('~$') || name.startsWith('._');
-      function estimateWavSize(buffer) {
-        return buffer.length * Math.min(buffer.numberOfChannels, 2) * 2 + 44;
-      }
 
       function updateUILang() {
         document.title = t('brand') + ' - ' + t('hero-title');
@@ -721,7 +825,6 @@
         }
         cookieTextEl.textContent = t('cookieText');
         cookieLinkEl.textContent = t('cookieLink');
-        // 更新 canonical
         const canonical = document.querySelector('link[rel="canonical"]');
         if (canonical) canonical.href = 'https://ghostconvert.cc?lang=' + currentLang;
       }
@@ -735,6 +838,14 @@
         updateUILang();
       }
 
+      function updateFileInputAccept() {
+        if (['jpg','png','webp','pdf'].includes(currentFormat)) {
+          fileInput.accept = 'image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.odt,.ods,.epub,.html,.htm,.svg,.tiff,.tif,.avif,.csv,.wps,.et,.dps';
+        } else if (currentFormat === 'mp3') {
+          fileInput.accept = 'audio/*,video/*,.mp4,.mov,.mkv,.webm,.ogg,.flac,.wav,.mp3,.m4a,.aac,.wma,.m4v,.avi,.flv,.3gp,.mpeg,.mpg,.ts,.mts,.m2ts,.vob,.ogv,.divx,.xvid';
+        }
+      }
+
       function setFormat(fmt) {
         currentFormat = fmt;
         document.querySelectorAll('#formatBtns button').forEach(btn => {
@@ -744,18 +855,20 @@
             btn.className = 'format-btn px-3 py-1.5 rounded-md transition-colors bg-white text-gray-600 hover:bg-gray-50';
           }
         });
-        if (resultsData.length && !conversionInProgress) {
+        updateFileInputAccept();
+        if (!conversionInProgress) {
           resultsData.forEach(r => { if (r.blobUrl) URL.revokeObjectURL(r.blobUrl); });
           resultsData = [];
           convertBtnText.textContent = t('convertBtnText');
+          fatalError = false;
         }
-        fatalError = false;
       }
+
       formatBtns.addEventListener('click', e => {
         if (e.target.tagName === 'BUTTON' && e.target.dataset.fmt) setFormat(e.target.dataset.fmt);
       });
 
-      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('click', () => { updateFileInputAccept(); fileInput.click(); });
       fileInput.addEventListener('change', e => { if (e.target.files.length) processFiles(e.target.files); });
       dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
       dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
@@ -816,27 +929,112 @@
         });
       }
 
-      async function processFiles(files) {
-        if (conversionInProgress) return;
-        const maxSize = 1.5 * 1024 * 1024 * 1024;
-        const largeFiles = Array.from(files).some(f => f.size > maxSize);
-        if (largeFiles) {
-          showModal(t('largeFileWarning'), proceed => { if (proceed) doConversion(files); });
+      function showModal(msg, cb, singleButton = false) {
+        const safeCb = cb || (() => {});
+        modalText.textContent = msg;
+        if (singleButton) {
+          modalCancel.classList.add('hidden');
+          modalOk.textContent = t('modalOk') || 'OK';
         } else {
-          doConversion(files);
+          modalCancel.classList.remove('hidden');
+          modalCancel.textContent = t('modalCancel');
+          modalOk.textContent = t('modalOk');
+        }
+        modalOverlay.classList.remove('hidden');
+        const cleanup = () => { modalOverlay.classList.add('hidden'); modalOk.removeEventListener('click', onOk); modalCancel.removeEventListener('click', onCancel); };
+        const onOk = () => { cleanup(); safeCb(true); };
+        const onCancel = () => { cleanup(); safeCb(false); };
+        modalOk.addEventListener('click', onOk);
+        modalCancel.addEventListener('click', onCancel);
+      }
+
+      function checkFileSizeLimit(files, callback) {
+        const totalSize = Array.from(files).reduce((sum, f) => sum + f.size, 0);
+        const GB = 1024*1024*1024, MB = 1024*1024;
+        if (totalSize > 2*GB) {
+          showModal(t('largeFileRejected'), null, true);
+          return;
+        }
+        if (totalSize > 1*GB) {
+          showModal(t('largeFileStrongWarning').replace('{size}', formatSize(totalSize)), proceed => { if (proceed) callback(); });
+        } else if (totalSize > 500*MB) {
+          showModal(t('largeFileWarning').replace('{size}', formatSize(totalSize)), proceed => { if (proceed) callback(); });
+        } else {
+          callback();
         }
       }
 
-      function showModal(msg, cb) {
-        modalText.textContent = msg;
-        modalOk.textContent = t('modalOk');
-        modalCancel.textContent = t('modalCancel');
-        modalOverlay.classList.remove('hidden');
-        const cleanup = () => { modalOverlay.classList.add('hidden'); modalOk.removeEventListener('click', onOk); modalCancel.removeEventListener('click', onCancel); };
-        const onOk = () => { cleanup(); cb(true); };
-        const onCancel = () => { cleanup(); cb(false); };
-        modalOk.addEventListener('click', onOk);
-        modalCancel.addEventListener('click', onCancel);
+      function processFiles(files) {
+        if (conversionInProgress) return;
+        let fileArr = Array.from(files);
+        if (fileArr.length > 200) {
+          showModal(t('fileCountExceeded'), null, true);
+          return;
+        }
+        lastFiles = fileArr;
+        let filtered = fileArr;
+        if (['jpg','png','webp','pdf'].includes(currentFormat)) {
+          filtered = fileArr.filter(f => {
+            const ext = f.name.split('.').pop().toLowerCase();
+            return /^(jpg|jpeg|png|webp|gif|bmp|avif|svg|tiff|tif|heic|pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|odt|ods|epub|html|htm|wps|et|dps)$/.test(ext);
+          });
+        } else if (currentFormat === 'mp3') {
+          filtered = fileArr.filter(f => {
+            const ext = f.name.split('.').pop().toLowerCase();
+            return /^(mp3|wav|ogg|flac|m4a|aac|wma|mp4|mov|mkv|webm|m4v|avi|flv|3gp|mpeg|mpg|ts|mts|m2ts|vob|ogv|divx|xvid)$/.test(ext);
+          });
+        }
+        const skipped = fileArr.length - filtered.length;
+        if (skipped > 0) {
+          showModal(t('ignoredFiles').replace('{n}', skipped), () => {
+            if (filtered.length > 0) checkFileSizeLimit(filtered, () => doConversion(filtered));
+          });
+        } else {
+          if (filtered.length > 0) checkFileSizeLimit(filtered, () => doConversion(filtered));
+          else showModal(t('noFiles'), null, true);
+        }
+      }
+      async function convertSpecialImageToBlob(file) {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (ext === 'tiff' || ext === 'tif') {
+          const arrayBuffer = await file.arrayBuffer();
+          const ifds = UTIF.decode(arrayBuffer);
+          if (!ifds || ifds.length === 0) throw new Error('Invalid TIFF');
+          const pages = [];
+          for (let i = 0; i < ifds.length; i++) {
+            UTIF.decodeImage(arrayBuffer, ifds[i]);
+            const rgba = UTIF.toRGBA8(ifds[i]);
+            const canvas = document.createElement('canvas');
+            canvas.width = ifds[i].width; canvas.height = ifds[i].height;
+            const ctx = canvas.getContext('2d');
+            const imageData = ctx.createImageData(canvas.width, canvas.height);
+            imageData.data.set(rgba);
+            ctx.putImageData(imageData, 0, 0);
+            const blob = await new Promise((resolve, reject) => canvas.toBlob(b => b ? resolve(b) : reject(new Error('Canvas export failed')), 'image/png'));
+            pages.push(blob);
+          }
+          return pages;
+        } else if (ext === 'svg') {
+          const text = await file.text();
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          const v = canvg.Canvg.fromString(ctx, text);
+          await v.render();
+          const blob = await new Promise((resolve, reject) => canvas.toBlob(b => b ? resolve(b) : reject(new Error('Canvas export failed')), 'image/png'));
+          return [blob];
+        }
+        throw new Error('Unsupported special format');
+      }
+
+      async function extractDoc(blob) {
+        try {
+          const arrayBuffer = await blob.arrayBuffer();
+          const text = await officeparser.parseDocAsync(arrayBuffer);
+          return text;
+        } catch (e) {
+          console.warn('DOC extraction failed', e);
+          return '';
+        }
       }
 
       async function doConversion(files) {
@@ -859,11 +1057,22 @@
                   preprocessed.push({ file: { name }, blob, isImage: true });
                 });
               } catch(e) { preprocessed.push({ file: f, success: false }); }
+            } else if (ext === 'tiff' || ext === 'tif' || ext === 'svg') {
+              try {
+                const pngBlobs = await convertSpecialImageToBlob(f);
+                pngBlobs.forEach((blob, i) => {
+                  const pageName = pngBlobs.length > 1 ? getBaseName(f.name)+'_page'+(i+1)+'.png' : getBaseName(f.name)+'.png';
+                  preprocessed.push({ file: { name: pageName }, blob, isImage: true });
+                });
+              } catch(e) { preprocessed.push({ file: f, success: false }); }
             } else {
-              const isImg = ['jpg','jpeg','png','webp','gif','bmp'].includes(ext);
+              const isImg = ['jpg','jpeg','png','webp','gif','bmp','avif'].includes(ext);
               preprocessed.push({ file: f, blob: f, isImage: isImg });
             }
           }
+
+          const wpsFiles = [], pptFiles = [];
+
           for (const item of preprocessed) {
             if (item.success === false) continue;
             const file = item.file, blob = item.blob;
@@ -881,12 +1090,18 @@
               } else {
                 let text = '';
                 const fn = file.name.toLowerCase();
-                if (fn.endsWith('.docx') || fn.endsWith('.wps')) text = await extractDocx(blob);
-                else if (fn.endsWith('.doc')) { tasks.push({ file, success: false, _reason: 'unsupported' }); continue; }
-                else if (fn.endsWith('.xlsx') || fn.endsWith('.et')) text = await extractXlsx(blob);
+                if (fn.endsWith('.docx')) text = await extractDocx(blob);
+                else if (fn.endsWith('.wps')) { wpsFiles.push(file.name); tasks.push({ file, success: false, _reason: 'wpsHint' }); continue; }
+                else if (fn.endsWith('.doc')) text = await extractDoc(blob);
+                else if (fn.endsWith('.xlsx') || fn.endsWith('.xls') || fn.endsWith('.et')) text = await extractXlsx(blob);
                 else if (fn.endsWith('.csv')) text = await readText(blob);
                 else if (fn.endsWith('.pptx') || fn.endsWith('.dps')) text = await extractPptx(blob);
+                else if (fn.endsWith('.ppt')) { pptFiles.push(file.name); tasks.push({ file, success: false, _reason: 'pptHint' }); continue; }
                 else if (fn.endsWith('.txt')) text = await readText(blob);
+                else if (fn.endsWith('.odt')) text = await extractOdtText(blob);
+                else if (fn.endsWith('.ods')) text = await extractOdsText(blob);
+                else if (fn.endsWith('.epub')) text = await extractEpubText(blob);
+                else if (fn.endsWith('.html') || fn.endsWith('.htm')) text = await extractHtmlText(blob);
                 else { tasks.push({ file, success: false, _reason: 'unsupported' }); continue; }
                 if (text) tasks.push({ type: 'textToImage', text, baseName: getBaseName(file.name), format: currentFormat });
                 else tasks.push({ file, success: false, _reason: 'empty' });
@@ -903,31 +1118,39 @@
               } else {
                 let text = '';
                 const fn = file.name.toLowerCase();
-                if (fn.endsWith('.docx') || fn.endsWith('.wps')) text = await extractDocx(blob);
-                else if (fn.endsWith('.doc')) { tasks.push({ file, success: false, _reason: 'unsupported' }); continue; }
-                else if (fn.endsWith('.xlsx') || fn.endsWith('.et')) text = await extractXlsx(blob);
+                if (fn.endsWith('.docx')) text = await extractDocx(blob);
+                else if (fn.endsWith('.wps')) { wpsFiles.push(file.name); tasks.push({ file, success: false, _reason: 'wpsHint' }); continue; }
+                else if (fn.endsWith('.doc')) text = await extractDoc(blob);
+                else if (fn.endsWith('.xlsx') || fn.endsWith('.xls') || fn.endsWith('.et')) text = await extractXlsx(blob);
                 else if (fn.endsWith('.csv')) text = await readText(blob);
                 else if (fn.endsWith('.pptx') || fn.endsWith('.dps')) text = await extractPptx(blob);
+                else if (fn.endsWith('.ppt')) { pptFiles.push(file.name); tasks.push({ file, success: false, _reason: 'pptHint' }); continue; }
                 else if (fn.endsWith('.txt')) text = await readText(blob);
+                else if (fn.endsWith('.odt')) text = await extractOdtText(blob);
+                else if (fn.endsWith('.ods')) text = await extractOdsText(blob);
+                else if (fn.endsWith('.epub')) text = await extractEpubText(blob);
+                else if (fn.endsWith('.html') || fn.endsWith('.htm')) text = await extractHtmlText(blob);
                 else { tasks.push({ file, success: false, _reason: 'unsupported' }); continue; }
                 if (text) tasks.push({ type: 'textForPdf', text, file });
                 else tasks.push({ file, success: false, _reason: 'empty' });
               }
             }
           }
-          if (tasks.length === 0) {
+
+          if (tasks.length === 0 || tasks.every(t => t.success === false)) {
             fatalError = true;
+            if (wpsFiles.length > 0) showModal(t('wpsHint'), null, true);
+            if (pptFiles.length > 0) showModal(t('pptHint'), null, true);
             return;
           }
+
           const results = await runTasks(tasks);
           if (currentFormat === 'pdf') {
             const pages = results.filter(r => r && r.type);
             if (pages.length) {
               const pdfBlob = await mergePdf(pages);
               resultsData = [{ file: { name: 'Merged_Documents.pdf' }, blob: pdfBlob, success: true }];
-            } else {
-              resultsData = [];
-            }
+            } else { resultsData = []; }
           } else {
             resultsData = results.filter(r => r && r.success);
           }
@@ -936,56 +1159,45 @@
           userClicks += 9;
           localStorage.setItem('stats', JSON.stringify({ u: userClicks, f: fileClicks }));
           updateStats();
-        } catch (err) {
-          console.error(err);
-          fatalError = true;
-        } finally {
+        } catch (err) { console.error(err); fatalError = true; }
+        finally {
           conversionInProgress = false;
           convertBtn.disabled = false;
-          if (fatalError) {
-            convertBtnText.textContent = t('noFiles');
-          } else {
+          if (fatalError) { convertBtnText.textContent = t('noFiles'); }
+          else {
             const hasFail = resultsData.some(r => !r.success);
-            convertBtnText.textContent = hasFail ? t('fail') : t('done');
+            if (hasFail) { convertBtnText.textContent = t('fail'); }
+            else {
+              const totalSize = resultsData.filter(r => r.success).reduce((s, r) => s + (r.blob ? r.blob.size : 0), 0);
+              convertBtnText.textContent = t('done') + " (" + formatSize(totalSize) + ")";
+            }
           }
         }
       }
 
       async function runTasks(tasks) {
-        let completed = 0;
-        const total = tasks.length;
+        let completed = 0; const total = tasks.length;
         convertBtnText.textContent = total === 1 ? t('progressInit') : t('progressText').replace('{c}',0).replace('{t}',total);
         const results = await Promise.all(tasks.map(def => new Promise(resolve => {
           const done = (result) => { completed++; convertBtnText.textContent = total === 1 ? t('progressInit') : t('progressText').replace('{c}',completed).replace('{t}',total); resolve(result); };
-          if (def.type === 'pdfPage') {
-            renderPdfPage(def.pdfDoc, def.pageNum, def.format, def.baseName, def.total).then(done).catch(() => done({ success: false }));
-          } else if (def.type === 'imageConvert') {
-            drawAndRename(def.blob, def.format, def.file, done);
-          } else if (def.type === 'textToImage') {
+          if (def.type === 'pdfPage') { renderPdfPage(def.pdfDoc, def.pageNum, def.format, def.baseName, def.total).then(done).catch(() => done({ success: false })); }
+          else if (def.type === 'imageConvert') { drawAndRename(def.blob, def.format, def.file, done); }
+          else if (def.type === 'textToImage') {
             const pages = splitText(def.text, 12, 560);
             const promises = pages.map((lines, idx) => renderTextBlob(lines, 12, def.format==='webp'?'image/webp':(def.format==='jpg'?'image/jpeg':'image/png')).then(blob => ({
-              file: { name: pages.length>1 ? def.baseName+'_page'+(idx+1)+'.'+def.format : def.baseName+'.'+def.format },
-              blob, success: true
+              file: { name: pages.length>1 ? def.baseName+'_page'+(idx+1)+'.'+def.format : def.baseName+'.'+def.format }, blob, success: true
             })));
             Promise.all(promises).then(arr => done(arr.flat())).catch(() => done({ success: false }));
-          } else if (def.type === 'imageForPdf') {
-            done({ type: 'image', blob: def.blob, file: def.file });
-          } else if (def.type === 'textForPdf') {
-            done({ type: 'text', text: def.text, file: def.file });
-          } else if (def.type === 'audio') {
-            convertAudio(def.blob, def.file, done);
-          } else {
-            done(def); 
           }
+          else if (def.type === 'imageForPdf') { done({ type: 'image', blob: def.blob, file: def.file }); }
+          else if (def.type === 'textForPdf') { done({ type: 'text', text: def.text, file: def.file }); }
+          else if (def.type === 'audio') { convertAudio(def.blob, def.file, done); }
+          else { done(def); }
         })));
         let remaining = 3;
         convertBtnText.textContent = t('almostDone').replace('{t}', remaining);
         await new Promise(res => {
-          const iv = setInterval(() => {
-            remaining--;
-            if (remaining <= 0) { clearInterval(iv); res(); }
-            else convertBtnText.textContent = t('almostDone').replace('{t}', remaining);
-          }, 1000);
+          const iv = setInterval(() => { remaining--; if (remaining <= 0) { clearInterval(iv); res(); } else { convertBtnText.textContent = t('almostDone').replace('{t}', remaining); } }, 1000);
         });
         return results.flat().filter(r => r);
       }
@@ -1072,6 +1284,37 @@
         return text;
       }
       function readText(blob) { return new Promise(res => { const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsText(blob); }); }
+      async function extractOdtText(blob) {
+        const zip = await JSZip.loadAsync(blob);
+        const contentXml = await zip.file('content.xml').async('text');
+        return contentXml.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      }
+      async function extractOdsText(blob) {
+        const zip = await JSZip.loadAsync(blob);
+        const contentXml = await zip.file('content.xml').async('text');
+        return contentXml.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      }
+      async function extractEpubText(blob) {
+        const zip = await JSZip.loadAsync(blob);
+        let text = '';
+        const files = Object.keys(zip.files).filter(f => f.endsWith('.html') || f.endsWith('.xhtml'));
+        for (const f of files) {
+          const html = await zip.file(f).async('text');
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          text += (doc.body?.textContent || '') + '\n';
+        }
+        return text.trim();
+      }
+      function extractHtmlText(blob) {
+        return new Promise(resolve => {
+          const reader = new FileReader();
+          reader.onload = e => {
+            const doc = new DOMParser().parseFromString(e.target.result, 'text/html');
+            resolve(doc.body?.textContent || '');
+          };
+          reader.readAsText(blob);
+        });
+      }
       function convertAudio(blob, file, cb) {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const reader = new FileReader();
@@ -1136,7 +1379,11 @@
             const dataUrl = await new Promise(res => { const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(p.blob); });
             if (!first) pdf.addPage(); first = false;
             const img = new Image(); await new Promise(res => { img.onload = res; img.src = dataUrl; });
-            pdf.addImage(dataUrl, 'JPEG', 10, 10, pdf.internal.pageSize.getWidth()-20, (img.height/img.width)*(pdf.internal.pageSize.getWidth()-20));
+            const pw = pdf.internal.pageSize.getWidth(), ph = pdf.internal.pageSize.getHeight();
+            const ratio = Math.min(pw / img.width, ph / img.height);
+            const w = img.width * ratio, h = img.height * ratio;
+            const x = (pw - w) / 2, y = (ph - h) / 2;
+            pdf.addImage(dataUrl, 'JPEG', x, y, w, h);
           } else if (p.type === 'text') {
             const text = p.text;
             const fontSize = 12, lineHeight = fontSize*1.4;
@@ -1147,22 +1394,29 @@
               const ctx = canvas.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
               ctx.font='12px monospace'; ctx.fillStyle='#000'; ctx.textBaseline='top';
               pages[i].forEach((l, idx) => ctx.fillText(l,20,20+idx*lineHeight));
-              pdf.addImage(canvas.toDataURL(), 'PNG', 10, 10, 180, canvas.height/3.78);
+              const imgHeight = 180 * (canvas.height / canvas.width);
+              pdf.addImage(canvas.toDataURL(), 'PNG', 10, 10, 180, imgHeight);
             }
           }
         }
         return pdf.output('blob');
       }
 
+      function estimateWavSize(buffer) { return buffer.length * Math.min(buffer.numberOfChannels, 2) * 2 + 44; }
+
       convertBtn.addEventListener('click', () => {
         if (conversionInProgress) return;
         if (resultsData.length) {
           const success = resultsData.filter(r => r.success);
+          if (success.length === 0) return;
           if (success.length === 1) downloadSingle(success[0]);
-          else if (success.length < 10) success.forEach((item, i) => setTimeout(() => downloadSingle(item), i*300));
           else downloadZip(success);
         } else if (!fatalError) {
-          fileInput.click();
+          if (lastFiles && lastFiles.length > 0) {
+            doConversion(lastFiles);
+          } else {
+            fileInput.click();
+          }
         }
       });
       function downloadSingle(item) {
@@ -1199,11 +1453,26 @@
       } catch(e) {}
       updateStats();
 
-      langSelect.addEventListener('change', () => switchLang(langSelect.value));
-      if (mobileLangSelect) {
-        mobileLangSelect.addEventListener('change', () => switchLang(mobileLangSelect.value));
-      }
+      bookmarkBtn.addEventListener('click', () => {
+        const title = t('brand') + ' - ' + t('hero-title');
+        const url = window.location.href;
+        if (window.sidebar && window.sidebar.addPanel) {
+          window.sidebar.addPanel(title, url, '');
+        } else if (window.external && ('AddFavorite' in window.external)) {
+          window.external.AddFavorite(url, title);
+        } else if (window.opera && window.print) {
+          const elem = document.createElement('a');
+          elem.rel = 'sidebar';
+          elem.title = title;
+          elem.href = url;
+          elem.click();
+        } else {
+          alert('请使用 Ctrl+D（Windows）或 Cmd+D（Mac）将本页添加到收藏夹');
+        }
+      });
 
+      langSelect.addEventListener('change', () => switchLang(langSelect.value));
+      if (mobileLangSelect) mobileLangSelect.addEventListener('change', () => switchLang(mobileLangSelect.value));
       const savedLang = localStorage.getItem('_pref_lang') || 'zh-CN';
       if (LANG[savedLang]) {
         currentLang = savedLang;
@@ -1231,14 +1500,10 @@
       navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
           setActive(this);
-          if (mobileNav.classList.contains('open')) {
-            mobileNav.classList.remove('open');
-          }
+          if (mobileNav.classList.contains('open')) mobileNav.classList.remove('open');
         });
       });
-      menuToggle.addEventListener('click', () => {
-        mobileNav.classList.toggle('open');
-      });
+      menuToggle.addEventListener('click', () => mobileNav.classList.toggle('open'));
 
       setFormat('jpg');
       if (window.adsbygoogle) window.adsbygoogle.push({});
