@@ -143,14 +143,14 @@
   <script defer src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/canvg@4.0.1/lib/umd.js"></script>
-  <script defer src="https://unpkg.com/officeparser@7.2.2/dist/officeparser.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/officeparser@7.2.2/dist/officeparser.js"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof pdfjsLib !== 'undefined') {
+    function ensurePdfWorker() {
+      if (typeof pdfjsLib !== 'undefined' && !pdfjsLib.GlobalWorkerOptions.workerSrc) {
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
       }
-    });
+    }
   </script>
 
   <style>
@@ -180,7 +180,7 @@
         <a href="#tool-section" class="nav-link text-indigo-600 hover:text-indigo-700" id="nav-tool">Converter</a>
         <a href="#how-it-works" class="nav-link hover:text-gray-900" id="nav-how">How It Works</a>
         <a href="#guide-section" class="nav-link hover:text-gray-900" id="nav-guide">Guide</a>
-        <a href="#deepdive-section" class="nav-link hover:text-gray-900" id="nav-deepdive">Formats</a>
+        <a href="#formats-section" class="nav-link hover:text-gray-900" id="nav-formats">Formats</a>
         <a href="#faq-section" class="nav-link hover:text-gray-900" id="nav-faq">FAQ</a>
         <a href="#" id="bookmarkBtn" class="text-gray-500 hover:text-indigo-600 text-sm" title="Bookmark this page">⭐ Bookmark</a>
       </nav>
@@ -204,8 +204,9 @@
       <a href="#tool-section" class="mobile-nav-link text-indigo-600" id="mobile-nav-tool">Converter</a>
       <a href="#how-it-works" class="mobile-nav-link" id="mobile-nav-how">How It Works</a>
       <a href="#guide-section" class="mobile-nav-link" id="mobile-nav-guide">Guide</a>
-      <a href="#deepdive-section" class="mobile-nav-link" id="mobile-nav-deepdive">Formats</a>
+      <a href="#formats-section" class="mobile-nav-link" id="mobile-nav-formats">Formats</a>
       <a href="#faq-section" class="mobile-nav-link" id="mobile-nav-faq">FAQ</a>
+      <a href="#" id="mobileBookmarkBtn" class="text-gray-500 hover:text-indigo-600">⭐ Bookmark</a>
       <select id="mobileLangSelect" class="bg-gray-100 border border-gray-300 rounded-md text-xs px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2">
         <option value="en">English</option>
         <option value="es">Español</option>
@@ -279,14 +280,17 @@
         </ol>
       </section>
 
-      <section id="deepdive-section" class="bg-white border border-gray-100 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 scroll-mt-24">
-        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 border-l-4 border-indigo-600 pl-3" id="deepdive-title">Format Deep Dive</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50"><h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-heic-title"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> Apple HEIC</h3><p class="text-xs text-gray-500 leading-relaxed" id="deepdive-heic-desc">HEIC is Apple's high-efficiency image container. It halves file size versus JPEG, but compatibility is limited on Windows and older software. Convert locally without cloud uploads.</p></div>
-          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50"><h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-webp-title"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> WebP for the Web</h3><p class="text-xs text-gray-500 leading-relaxed" id="deepdive-webp-desc">Google's WebP offers up to 34% smaller files than JPEG and supports transparency. Ideal for speeding up websites and improving SEO.</p></div>
-          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50"><h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-pdf-title"><span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Merging into PDF</h3><p class="text-xs text-gray-500 leading-relaxed" id="deepdive-pdf-desc">PDF preserves exact layout across devices. Our tool merges images directly in your browser—no external service touches your contracts or receipts.</p></div>
-          <div class="border border-gray-100 p-4 rounded-xl space-y-2 bg-gray-50/50"><h3 class="font-bold text-gray-900 flex items-center gap-2" id="deepdive-audio-title"><span class="w-2 h-2 bg-red-500 rounded-full"></span> Audio Extraction & MP3</h3><p class="text-xs text-gray-500 leading-relaxed" id="deepdive-audio-desc">Strip audio tracks from video files and compress them into universal MP3 using a frontend Lame encoder. Perfect for podcast clips, meeting recordings, or ringtones.</p></div>
-        </div>
+      <section id="formats-section" class="bg-white border border-gray-100 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4 scroll-mt-24">
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 border-l-4 border-indigo-600 pl-3" id="formats-title">Supported Formats</h2>
+        <ol class="list-decimal pl-5 text-sm text-gray-600 space-y-2">
+          <li id="formats-step1"><strong>Image Input</strong>: HEIC, JPG, JPEG, PNG, WebP, GIF, BMP, AVIF, SVG, TIFF, TIF</li>
+          <li id="formats-step2"><strong>Image Output</strong>: JPG (Standard, universal compatibility), PNG (High quality, supports transparency), WebP (Very small size, ideal for web)</li>
+          <li id="formats-step3"><strong>Document Input</strong>: DOCX, XLSX, PPTX, CSV, TXT, ODT, ODS, EPUB, HTML, HTM. Note: WPS/ET/DPS please save as DOCX/XLSX/PPTX first. Old DOC/PPT formats are not supported directly, please save as the new format.</li>
+          <li id="formats-step4"><strong>PDF Input/Output</strong>: Merge images into PDF, extract PDF pages to images (JPG/PNG/WebP).</li>
+          <li id="formats-step5"><strong>Audio Input</strong>: MP3, WAV, OGG, FLAC, M4A, AAC, WMA</li>
+          <li id="formats-step6"><strong>Video Input (Audio Extraction)</strong>: MP4, MOV, MKV, WebM, M4V, AVI, FLV, 3GP, MPEG, TS, MTS, M2TS, VOB, OGV, DivX, Xvid</li>
+          <li id="formats-step7"><strong>Audio Output</strong>: MP3 (128kbps universal format), falls back to WAV if encoding fails.</li>
+        </ol>
       </section>
 
       <section id="faq-section" class="bg-white border border-gray-100 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4 scroll-mt-24">
@@ -310,7 +314,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-800 pb-8">
         <div class="space-y-3">
-          <p class="text-xs text-gray-500 leading-relaxed" id="footer-about">Privacy-first multimedia converter. Your files belong to you.</p>
+          <p class="text-sm text-gray-400 leading-relaxed font-medium" id="footer-about">Privacy-first multimedia converter. Your files belong to you.</p>
           <p class="text-xs text-gray-500" id="footer-contact">Questions or feedback? Contact <a href="mailto:support@ghostconvert.cc" class="text-indigo-400 hover:text-indigo-300 underline">support@ghostconvert.cc</a></p>
         </div>
         <div class="space-y-2">
@@ -319,7 +323,7 @@
             <li><a href="#tool-section" class="hover:text-white transition-colors" id="footer-tool">Converter</a></li>
             <li><a href="#how-it-works" class="hover:text-white transition-colors" id="footer-how">How It Works</a></li>
             <li><a href="#guide-section" class="hover:text-white transition-colors" id="footer-guide">Guide</a></li>
-            <li><a href="#deepdive-section" class="hover:text-white transition-colors" id="footer-deepdive">Formats</a></li>
+            <li><a href="#formats-section" class="hover:text-white transition-colors" id="footer-formats">Formats</a></li>
             <li><a href="#faq-section" class="hover:text-white transition-colors" id="footer-faq">FAQ</a></li>
           </ul>
         </div>
@@ -350,13 +354,13 @@
   </div>
 
   <script>
-    (function() {
-      const LANG = {
+    window.GC = {
+      LANG: {
         en: {
           brand: "GhostConvert",
-          "nav-tool": "Converter", "nav-how": "How It Works", "nav-guide": "Guide", "nav-deepdive": "Formats", "nav-faq": "FAQ",
-          "mobile-nav-tool": "Converter", "mobile-nav-how": "How It Works", "mobile-nav-guide": "Guide", "mobile-nav-deepdive": "Formats", "mobile-nav-faq": "FAQ",
-          "bookmarkBtn": "⭐ Bookmark",
+          "nav-tool": "Converter", "nav-how": "How It Works", "nav-guide": "Guide", "nav-formats": "Formats", "nav-faq": "FAQ",
+          "mobile-nav-tool": "Converter", "mobile-nav-how": "How It Works", "mobile-nav-guide": "Guide", "mobile-nav-formats": "Formats", "mobile-nav-faq": "FAQ",
+          "bookmarkBtn": "⭐ Bookmark", "mobileBookmarkBtn": "⭐ Bookmark",
           "hero-badge": "🔒 100% Local & Private", "hero-title": "All Formats, One Click",
           "hero-desc": "Free online file converter running entirely in your browser. Convert images, documents, audio, and video with total privacy — no uploads, no logs, 100% local processing. Supports batch conversion, iPhone photo conversion, and video audio extraction.",
           "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Best Quality)", "btn-webp": "WebP (Small Size)", "btn-pdf": "PDF (Merge Docs)", "btn-mp3": "MP3/WAV (Audio)",
@@ -373,15 +377,14 @@
           "guide-step3": "<strong>Pick an output format</strong>: Select JPG, PNG, WebP, PDF, or MP3 from the buttons above.",
           "guide-step4": "<strong>Start encoding</strong>: Hit the convert button. A progress indicator shows each file's status. Speed depends on your local hardware.",
           "guide-step5": "<strong>Save locally</strong>: Once done, click the generated files to download them straight to your default download folder.",
-          "deepdive-title": "Format Deep Dive",
-          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> Apple HEIC",
-          "deepdive-heic-desc": "HEIC is Apple's high-efficiency image container. It halves file size versus JPEG, but compatibility is limited on Windows and older software. Convert locally without cloud uploads.",
-          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> WebP for the Web",
-          "deepdive-webp-desc": "Google's WebP offers up to 34% smaller files than JPEG and supports transparency. Ideal for speeding up websites and improving SEO.",
-          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> Merging into PDF",
-          "deepdive-pdf-desc": "PDF preserves exact layout across devices. Our tool merges images directly in your browser—no external service touches your contracts or receipts.",
-          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> Audio Extraction & MP3",
-          "deepdive-audio-desc": "Strip audio tracks from video files and compress them into universal MP3 using a frontend Lame encoder. Perfect for podcast clips, meeting recordings, or ringtones.",
+          "formats-title": "Supported Formats",
+          "formats-step1": "<strong>Image Input</strong>: HEIC, JPG, JPEG, PNG, WebP, GIF, BMP, AVIF, SVG, TIFF, TIF",
+          "formats-step2": "<strong>Image Output</strong>: JPG (Standard, universal compatibility), PNG (High quality, supports transparency), WebP (Very small size, ideal for web)",
+          "formats-step3": "<strong>Document Input</strong>: DOCX, XLSX, PPTX, CSV, TXT, ODT, ODS, EPUB, HTML, HTM. Note: WPS/ET/DPS please save as DOCX/XLSX/PPTX first. Old DOC/PPT formats are not supported directly, please save as the new format.",
+          "formats-step4": "<strong>PDF Input/Output</strong>: Merge images into PDF, extract PDF pages to images (JPG/PNG/WebP).",
+          "formats-step5": "<strong>Audio Input</strong>: MP3, WAV, OGG, FLAC, M4A, AAC, WMA",
+          "formats-step6": "<strong>Video Input (Audio Extraction)</strong>: MP4, MOV, MKV, WebM, M4V, AVI, FLV, 3GP, MPEG, TS, MTS, M2TS, VOB, OGV, DivX, Xvid",
+          "formats-step7": "<strong>Audio Output</strong>: MP3 (128kbps universal format), falls back to WAV if encoding fails.",
           "faq-title": "Frequently Asked Questions",
           "faq-q1": "Are my files really not uploaded?", "faq-a1": "Absolutely. Disconnect the network after loading the page and try—everything still works.",
           "faq-q2": "Why do large files sometimes fail?", "faq-a2": "Browser memory limits (~1.5 GB per tab) can stall huge files. For very large conversions, consider a dedicated desktop app.",
@@ -389,7 +392,7 @@
           "footer-about": "Privacy-first multimedia converter. Your files belong to you.",
           "footer-contact": "Questions or feedback? Contact <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
           "footer-links-title": "Quick Links",
-          "footer-tool": "Converter", "footer-how": "How It Works", "footer-guide": "Guide", "footer-deepdive": "Formats", "footer-faq": "FAQ",
+          "footer-tool": "Converter", "footer-how": "How It Works", "footer-guide": "Guide", "footer-formats": "Formats", "footer-faq": "FAQ",
           "footer-policies-title": "Policies",
           "footer-about-link": "About Us", "footer-privacy": "Privacy Policy", "footer-terms": "Terms of Service",
           "footer-copy": "© 2026 GhostConvert. All rights reserved.",
@@ -404,459 +407,95 @@
           noFiles: "No supported files found for the selected format.",
           wpsHint: "WPS files not supported. Please save as .docx first.",
           pptHint: ".ppt files not supported. Please save as .pptx first.",
+          docHint: "Old .doc format may not be fully parsed. Consider converting to .docx first.",
           downloadKeepOpen: "Downloading... Keep this page open.",
           progressInit: "Converting for you, hold on ☕",
           progressText: "Working on file {c} of {t}… 🏃",
-          almostDone: "Almost ready, {t}s left ✨",
+          almostDone: "Packaging, {t}s left ✨",
           scanningFolder: "Looking through your folder… 🗂️",
           audioMemory: "Audio too large to process safely. Try a shorter file.",
           unsupported: "Unsupported format",
           noTask: "No files can be converted. Please check your file formats.",
           fileCountExceeded: "Too many files selected. Maximum 200 files allowed.",
           ignoredFiles: "Skipped {n} unsupported files for the selected format.",
-        },
-        "zh-CN": {
-          brand: "幽灵转换器",
-          "nav-tool": "在线转换工具", "nav-how": "核心原理", "nav-guide": "新手指南", "nav-deepdive": "格式科普", "nav-faq": "常见问题",
-          "mobile-nav-tool": "在线转换工具", "mobile-nav-how": "核心原理", "mobile-nav-guide": "新手指南", "mobile-nav-deepdive": "格式科普", "mobile-nav-faq": "常见问题",
-          "bookmarkBtn": "⭐ 收藏",
-          "hero-badge": "🔒 100% 本地运行 · 安全私密", "hero-title": "全格式支持，一键转换",
-          "hero-desc": "完全在浏览器内运行的免费在线文件转换器。支持批量图片格式转换、iPhone照片转换、视频提取音频、私密文档转PDF。无需上传任何文件，绝无隐私泄露，100%本地处理。",
-          "btn-jpg": "JPG（标准图片）", "btn-png": "PNG（透明背景）", "btn-webp": "WebP（极小体积）", "btn-pdf": "PDF（合并文档）", "btn-mp3": "MP3/WAV（音频提取）",
-          "drop-title": "拖拽文件或文件夹到此处", "drop-sub": "或点击浏览（支持批量）",
-          "convertBtnText": "⚡ 拖入文件，一键转换",
-          "statUsersLabel": " 位用户已安全转换", "statFilesLabel": " 个文件已本地处理",
-          "how-title": "为什么选择幽灵转换器？彻底颠覆传统的本地隐私文件处理技术",
-          "how-p1": "传统的在线文件转换网站，无一例外地需要您将私人文件、敏感照片或内部工作文档上传到他们的云端服务器。在这个过程中，您的敏感数据面临着传输被截获、服务器日志留存以及第三方商业公司非法扫描或二次售卖的严重隐私风险。",
-          "how-p2": "幽灵转换器 彻底解决了这一安全痛点。我们利用先进的 WebAssembly (WASM) 编译技术与新型的前端 JavaScript 库，将强大的图像、音频及文档解析内核直接植入到了您的现代浏览器（如 Chrome, Edge, Safari）之中。",
-          "how-p3": "这意味着：当您在下方上传文件时，文件读取、解码、矩阵转换、重新编码的完整流水线完全在您这台设备的 CPU 和内存中本地闭环运行，整个过程不需要消耗任何上传网络流量。即使此时断开互联网，幽灵转换器依然可以完美顺畅地为您工作。",
-          "guide-title": "新手指南：如何使用幽灵转换器批量本地转换文件？",
-          "guide-step1": "<strong>准备您的待处理文件</strong>：您可以准备任意数量的图片（包括苹果 HEIC、常见 JPG、PNG）、视频或 Excel/Word 电子表格。我们支持直接一次性选择整个嵌套文件夹。",
-          "guide-step2": "<strong>执行安全导入</strong>：将文件拖入虚线框，或者点击“选择文件”。此时浏览器会在本地为文件生成安全只读流，绝不发生服务器网络传输。",
-          "guide-step3": "<strong>指定输出目标编码格式</strong>：在上方按钮中根据需要选择通用 JPG、无损 PNG、现代高效 WebP、合并 PDF 或高压缩率 MP3。",
-          "guide-step4": "<strong>触发本地极速编码</strong>：点击“开始转换”。此时页面进度条会精准提示每个文件的处理状态。转换时间完全取决于您的本地硬件性能。",
-          "guide-step5": "<strong>一键保存到本地</strong>：转换成功后，点击生成的新文件块即可直接下载保存，文件路径为您本机的默认下载目录。",
-          "deepdive-title": "多媒体与文档格式深度技术科普",
-          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> 苹果 HEIC 图像格式",
-          "deepdive-heic-desc": "HEIC（High Efficiency Image Container）是苹果在其生态系统中推行的高效图像封装格式。它采用先进的 HEVC 编码，能在保持高画质的同时将体积缩减到传统 JPEG 的一半。然而，由于专利授权和系统兼容性限制，Windows、Android 和许多老旧网页软件默认无法直接读取。通过本站，您可在本地直接批量重组为标准的 JPG。",
-          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> 现代网页 WebP 格式",
-          "deepdive-webp-desc": "WebP 是由 Google 推出的一种旨在加快网页加载速度的现代图像格式。它同时支持有损和无损压缩，并完美兼容 Alpha 透明通道。在相同视觉质量下，WebP 的体积比 JPEG 小 25%~34%，比 PNG 小 26%。将网站图片批量转换为 WebP，是大幅提升 SEO 排名和网站加载效率的核心技术手段。",
-          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> 多图合并 PDF 技术",
-          "deepdive-pdf-desc": "PDF 是一种跨平台的独立电子文档格式，具备极强的版面固定特征，常用于正式的合同、发票归档和多页图像打包提交。我们的本地合并功能，可在前端直接提取多张上传图片的基线像素，无需借助任何后台庞大的 PDF 生成服务，确保您的财务或个人身份证明文件不离开本设备。",
-          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> 音视频提取与 MP3 压缩",
-          "deepdive-audio-desc": "通过在前端对多媒体数据流进行解复用（Demuxing），我们可以直接剥离视频中的音轨，并利用前端 Lame 库对音频振幅进行动态量化重采样，最终压缩输出为全球通用的高兼容性 MP3 音频。这在播客剪辑、会议录音提取及手机铃声制作中极为常用。",
-          "faq-title": "常见疑问",
-          "faq-q1": "我的文件真的不会被上传吗？", "faq-a1": "绝对不会。页面加载完成后，断开网络并拖入文件 —— 您会发现一切依然正常。没有任何数据离开您的设备。",
-          "faq-q2": "为什么大文件有时会转换失败？", "faq-a2": "浏览器内存限制（通常每个标签页约 1.5 GB）可能导致超大音频、视频或表格转换超时。对于极大文件，建议使用专业桌面工具。",
-          "faq-q3": "为什么复杂 Word/Excel 的排版会丢失？", "faq-a3": "我们轻量、离线友好的解析器尚不能支持所有高级排版特性。我们正持续改进兼容性，但高度格式化的文档可能会丢失部分细节。",
-          "footer-about": "隐私至上的多媒体转换器。您的文件属于您自己。",
-          "footer-contact": "如有疑问或建议，联系邮箱：<a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
-          "footer-links-title": "快捷链接",
-          "footer-tool": "在线转换工具", "footer-how": "核心原理", "footer-guide": "新手指南", "footer-deepdive": "格式科普", "footer-faq": "常见问题",
-          "footer-policies-title": "政策与合规",
-          "footer-about-link": "关于我们", "footer-privacy": "隐私政策", "footer-terms": "服务条款",
-          "footer-copy": "© 2026 幽灵转换器. 保留所有权利。",
-          cookieText: "我们使用 Cookie 来个性化广告和分析流量。继续使用即表示您同意。", cookieLink: "隐私政策",
-          modalCancel: "取消", modalOk: "继续",
-          processing: "处理中… 请稍候",
-          largeFileWarning: "文件总大小超过 {size}，可能导致浏览器内存不足。是否继续？",
-          largeFileStrongWarning: "文件总大小超过 {size}，极易导致页面崩溃！强烈建议使用桌面工具处理。仍要继续吗？",
-          largeFileRejected: "文件总大小超过 2 GB，浏览器无法安全处理。请使用桌面工具。",
-          done: "✓ 转换完成，点击下载",
-          fail: "⚠️ 有几个文件没能转好，要再试试吗？💪",
-          noFiles: "呀，没找到能转换的文件，换个格式试试？🤔",
-          wpsHint: "检测到 .wps 文件，请先另存为 .docx 格式再转换。",
-          pptHint: "暂不支持 .ppt 格式，请先另存为 .pptx 格式再转换。",
-          downloadKeepOpen: "下载中… 请保持页面打开。",
-          progressInit: "正在帮你转换，请稍等 ☕",
-          progressText: "第 {c}/{t} 个文件努力中… 🏃",
-          almostDone: "快好了，还有 {t} 秒 ✨",
-          scanningFolder: "正在翻找你的文件夹… 🗂️",
-          audioMemory: "音频过大无法安全处理。请尝试更短的音频文件。",
-          unsupported: "不支持的格式",
-          noTask: "没有可转换的文件，请检查文件格式。",
-          fileCountExceeded: "选择的文件太多，单次最多转换 200 个文件。",
-          ignoredFiles: "已跳过 {n} 个当前格式不支持的文件。",
-        },
-        es: {
-          brand: "Convertidor Fantasma",
-          "nav-tool": "Convertidor", "nav-how": "Cómo funciona", "nav-guide": "Guía", "nav-deepdive": "Formatos", "nav-faq": "Preguntas",
-          "mobile-nav-tool": "Convertidor", "mobile-nav-how": "Cómo funciona", "mobile-nav-guide": "Guía", "mobile-nav-deepdive": "Formatos", "mobile-nav-faq": "Preguntas",
-          "bookmarkBtn": "⭐ Favoritos",
-          "hero-badge": "🔒 100% Local y Privado", "hero-title": "Todos los formatos, un clic",
-          "hero-desc": "Conversor de archivos online gratuito que funciona 100% en tu navegador. Convierte imágenes por lotes, fotos de iPhone, extrae audio de video y documentos privados a PDF. Sin subidas, sin registros, privacidad total.",
-          "btn-jpg": "JPG (Estándar)", "btn-png": "PNG (Mejor calidad)", "btn-webp": "WebP (Tamaño reducido)", "btn-pdf": "PDF (Unir docs)", "btn-mp3": "MP3/WAV (Audio)",
-          "drop-title": "Arrastra y suelta tus archivos o carpeta aquí", "drop-sub": "o haz clic para examinar (por lotes)",
-          "convertBtnText": "⚡ Soltar archivos para convertir",
-          "statUsersLabel": " usuarios convirtieron de forma segura", "statFilesLabel": " archivos procesados de forma segura",
-          "how-title": "¿Por qué Convertidor Fantasma?",
-          "how-p1": "Los conversores tradicionales te obligan a subir archivos sensibles a sus servidores, creando riesgos de interceptación, registro y escaneo no autorizado.",
-          "how-p2": "Convertidor Fantasma lo resuelve usando WebAssembly y APIs modernas del navegador. Cada conversión se ejecuta completamente dentro del entorno aislado de tu navegador.",
-          "how-p3": "Esto significa: al soltar un archivo, todo el proceso —lectura, decodificación, transformación y recodificación— se ejecuta localmente en tu CPU y memoria. Nunca se consume tráfico de red.",
-          "guide-title": "Guía para principiantes: Cómo convertir archivos localmente",
-          "guide-step1": "<strong>Prepara tus archivos</strong>: Elige cualquier cantidad de imágenes (incluyendo HEIC, JPG, PNG), videos u hojas de cálculo. Incluso puedes seleccionar una carpeta completa.",
-          "guide-step2": "<strong>Importa de forma segura</strong>: Arrastra los archivos al área punteada o haz clic para examinar. El navegador crea un flujo local de solo lectura, nunca se sube al servidor.",
-          "guide-step3": "<strong>Elige un formato de salida</strong>: Selecciona JPG, PNG, WebP, PDF o MP3 desde los botones superiores.",
-          "guide-step4": "<strong>Inicia la codificación</strong>: Pulsa el botón de convertir. Un indicador de progreso muestra el estado de cada archivo. La velocidad depende de tu hardware local.",
-          "guide-step5": "<strong>Guarda localmente</strong>: Una vez terminado, haz clic en los archivos generados para descargarlos directamente a tu carpeta de descargas.",
-          "deepdive-title": "Profundización en formatos",
-          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> Apple HEIC",
-          "deepdive-heic-desc": "HEIC es el contenedor de imagen de alta eficiencia de Apple. Reduce el tamaño a la mitad frente a JPEG, pero la compatibilidad es limitada en Windows y software antiguo. Convierte localmente sin subir a la nube.",
-          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> WebP para la web",
-          "deepdive-webp-desc": "WebP de Google ofrece archivos hasta un 34% más pequeños que JPEG y soporta transparencia. Ideal para acelerar sitios web y mejorar el SEO.",
-          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> Unir en PDF",
-          "deepdive-pdf-desc": "El PDF conserva el diseño exacto en todos los dispositivos. Nuestra herramienta une imágenes directamente en tu navegador, sin que ningún servicio externo toque tus contratos o recibos.",
-          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> Extracción de audio y MP3",
-          "deepdive-audio-desc": "Extrae pistas de audio de archivos de video y comprímelas en MP3 universal usando un codificador Lame frontend. Perfecto para clips de podcast, grabaciones de reuniones o tonos de llamada.",
-          "faq-title": "Preguntas frecuentes",
-          "faq-q1": "¿Mis archivos realmente no se suben?", "faq-a1": "Totalmente. Desconecta la red después de cargar la página y pruébalo, todo sigue funcionando.",
-          "faq-q2": "¿Por qué a veces fallan los archivos grandes?", "faq-a2": "Los límites de memoria del navegador (~1.5 GB por pestaña) pueden detener archivos enormes. Para conversiones muy grandes, considera una aplicación de escritorio dedicada.",
-          "faq-q3": "¿Por qué se pierde el formato en Word/Excel?", "faq-a3": "Nuestros analizadores ligeros y sin conexión aún no admiten todas las características avanzadas de diseño. Seguimos mejorando la compatibilidad.",
-          "footer-about": "Conversor multimedia que prioriza la privacidad. Tus archivos te pertenecen.",
-          "footer-contact": "¿Preguntas o comentarios? Contacta <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
-          "footer-links-title": "Enlaces rápidos",
-          "footer-tool": "Convertidor", "footer-how": "Cómo funciona", "footer-guide": "Guía", "footer-deepdive": "Formatos", "footer-faq": "Preguntas",
-          "footer-policies-title": "Políticas",
-          "footer-about-link": "Sobre nosotros", "footer-privacy": "Política de privacidad", "footer-terms": "Términos de servicio",
-          "footer-copy": "© 2026 Convertidor Fantasma. Todos los derechos reservados.",
-          cookieText: "Usamos cookies para personalizar anuncios y analizar el tráfico. Al continuar aceptas nuestro uso de cookies.", cookieLink: "Política de privacidad",
-          modalCancel: "Cancelar", modalOk: "Continuar",
-          processing: "Procesando... Espere",
-          largeFileWarning: "El tamaño total de los archivos supera {size}. Puede causar falta de memoria. ¿Continuar?",
-          largeFileStrongWarning: "El tamaño total supera {size}. ¡Riesgo muy alto de bloqueo! Recomendamos usar una herramienta de escritorio. ¿Continuar de todos modos?",
-          largeFileRejected: "El tamaño total supera los 2 GB. No se puede procesar en el navegador. Use una herramienta de escritorio.",
-          done: "✓ ¡Hecho! Clic para descargar",
-          fail: "⚠️ Algunos archivos fallaron. ¿Reintentar?",
-          noFiles: "No se encontraron archivos compatibles con el formato seleccionado.",
-          wpsHint: "Archivos WPS no soportados. Primero guarda como .docx.",
-          pptHint: "Archivos .ppt no soportados. Por favor guarde como .pptx primero.",
-          downloadKeepOpen: "Descargando... Mantenga esta página abierta.",
-          progressInit: "Convirtiendo para ti, espera ☕",
-          progressText: "Trabajando en archivo {c} de {t}… 🏃",
-          almostDone: "Casi listo, quedan {t}s ✨",
-          scanningFolder: "Revisando tu carpeta… 🗂️",
-          audioMemory: "Audio demasiado grande para procesar de forma segura. Pruebe con un archivo más corto.",
-          unsupported: "Formato no compatible",
-          noTask: "Ningún archivo puede convertirse. Compruebe los formatos.",
-          fileCountExceeded: "Demasiados archivos. Máximo 200 permitidos.",
-          ignoredFiles: "Se omitieron {n} archivos no compatibles con el formato seleccionado.",
-        },
-        de: {
-          brand: "GeisterKonverter",
-          "nav-tool": "Konverter", "nav-how": "Funktionsweise", "nav-guide": "Anleitung", "nav-deepdive": "Formate", "nav-faq": "FAQ",
-          "mobile-nav-tool": "Konverter", "mobile-nav-how": "Funktionsweise", "mobile-nav-guide": "Anleitung", "mobile-nav-deepdive": "Formate", "mobile-nav-faq": "FAQ",
-          "bookmarkBtn": "⭐ Lesezeichen",
-          "hero-badge": "🔒 100% Lokal & Privat", "hero-title": "Alle Formate, ein Klick",
-          "hero-desc": "Kostenloser Online-Dateikonverter, der vollständig in Ihrem Browser läuft. Batch-Bildkonvertierung, iPhone-Fotos konvertieren, Audio aus Video extrahieren, private Dokumente in PDF – ohne Upload, 100% lokal.",
-          "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Beste Qualität)", "btn-webp": "WebP (Kleine Größe)", "btn-pdf": "PDF (Dokumente zusammenführen)", "btn-mp3": "MP3/WAV (Audio)",
-          "drop-title": "Dateien oder Ordner hier ablegen", "drop-sub": "oder klicken zum Durchsuchen (Stapelverarbeitung)",
-          "convertBtnText": "⚡ Dateien ablegen zum Konvertieren",
-          "statUsersLabel": " Benutzer sicher konvertiert", "statFilesLabel": " Dateien sicher verarbeitet",
-          "how-title": "Warum GeisterKonverter?",
-          "how-p1": "Herkömmliche Konverter zwingen Sie, sensible Dateien auf ihre Server hochzuladen – mit Risiken durch Abfangen, Protokollierung und unbefugtes Scannen.",
-          "how-p2": "GeisterKonverter löst dies durch WebAssembly und moderne Browser-APIs. Jede Konvertierung läuft vollständig in der Sandbox Ihres Browsers.",
-          "how-p3": "Das bedeutet: Beim Ablegen einer Datei läuft die gesamte Pipeline – Lesen, Dekodieren, Transformieren und Neukodieren – lokal auf Ihrer CPU und Ihrem Speicher. Es wird niemals Netzwerkverkehr verbraucht.",
-          "guide-title": "Anleitung: So konvertieren Sie Dateien lokal",
-          "guide-step1": "<strong>Bereiten Sie Ihre Dateien vor</strong>: Wählen Sie beliebig viele Bilder (einschließlich HEIC, JPG, PNG), Videos oder Tabellenkalkulationen. Sie können sogar einen ganzen Ordner auswählen.",
-          "guide-step2": "<strong>Sicher importieren</strong>: Ziehen Sie Dateien in den gestrichelten Bereich oder klicken Sie zum Durchsuchen. Der Browser erstellt einen lokalen Nur-Lese-Stream – kein Server-Upload.",
-          "guide-step3": "<strong>Ausgabeformat wählen</strong>: Wählen Sie JPG, PNG, WebP, PDF oder MP3 über die Schaltflächen oben.",
-          "guide-step4": "<strong>Kodierung starten</strong>: Klicken Sie auf die Konvertieren-Schaltfläche. Eine Fortschrittsanzeige zeigt den Status jeder Datei. Die Geschwindigkeit hängt von Ihrer lokalen Hardware ab.",
-          "guide-step5": "<strong>Lokal speichern</strong>: Nach Abschluss klicken Sie auf die generierten Dateien, um sie direkt in Ihren Standard-Download-Ordner herunterzuladen.",
-          "deepdive-title": "Format Deep Dive",
-          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> Apple HEIC",
-          "deepdive-heic-desc": "HEIC ist Apples hocheffizienter Bildcontainer. Er halbiert die Dateigröße gegenüber JPEG, aber die Kompatibilität ist unter Windows und älterer Software eingeschränkt. Konvertieren Sie lokal ohne Cloud-Uploads.",
-          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> WebP fürs Web",
-          "deepdive-webp-desc": "Googles WebP bietet bis zu 34 % kleinere Dateien als JPEG und unterstützt Transparenz. Ideal, um Websites zu beschleunigen und SEO zu verbessern.",
-          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> Zusammenführen zu PDF",
-          "deepdive-pdf-desc": "PDF bewahrt das exakte Layout auf allen Geräten. Unser Tool führt Bilder direkt in Ihrem Browser zusammen – kein externer Dienst berührt Ihre Verträge oder Quittungen.",
-          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> Audio-Extraktion & MP3",
-          "deepdive-audio-desc": "Extrahieren Sie Audiospuren aus Videodateien und komprimieren Sie sie in universelles MP3 mit einem Frontend-Lame-Encoder. Perfekt für Podcast-Clips, Besprechungsaufnahmen oder Klingeltöne.",
-          "faq-title": "Häufig gestellte Fragen",
-          "faq-q1": "Werden meine Dateien wirklich nicht hochgeladen?", "faq-a1": "Absolut. Trennen Sie nach dem Laden der Seite das Netzwerk und versuchen Sie es – alles funktioniert weiterhin.",
-          "faq-q2": "Warum schlagen große Dateien manchmal fehl?", "faq-a2": "Browser-Speicherlimits (~1,5 GB pro Tab) können riesige Dateien blockieren. Für sehr große Konvertierungen sollten Sie eine dedizierte Desktop-Anwendung in Betracht ziehen.",
-          "faq-q3": "Warum geht die Formatierung in Word/Excel verloren?", "faq-a3": "Unsere schlanken, offline-freundlichen Parser unterstützen noch nicht jedes erweiterte Layout-Feature. Wir verbessern die Kompatibilität kontinuierlich.",
-          "footer-about": "Datenschutzorientierter Multimedia-Konverter. Ihre Dateien gehören Ihnen.",
-          "footer-contact": "Fragen oder Feedback? Kontaktieren Sie <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
-          "footer-links-title": "Schnellzugriff",
-          "footer-tool": "Konverter", "footer-how": "Funktionsweise", "footer-guide": "Anleitung", "footer-deepdive": "Formate", "footer-faq": "FAQ",
-          "footer-policies-title": "Richtlinien",
-          "footer-about-link": "Über uns", "footer-privacy": "Datenschutzerklärung", "footer-terms": "Nutzungsbedingungen",
-          "footer-copy": "© 2026 GeisterKonverter. Alle Rechte vorbehalten.",
-          cookieText: "Wir verwenden Cookies, um Werbung zu personalisieren und den Datenverkehr zu analysieren. Durch die weitere Nutzung stimmen Sie zu.", cookieLink: "Datenschutzerklärung",
-          modalCancel: "Abbrechen", modalOk: "Fortfahren",
-          processing: "Verarbeitung... Bitte warten",
-          largeFileWarning: "Die Gesamtgröße der Dateien überschreitet {size}. Dies kann zu Speichermangel führen. Fortfahren?",
-          largeFileStrongWarning: "Die Gesamtgröße überschreitet {size}. Sehr hohes Absturzrisiko! Wir empfehlen dringend ein Desktop-Tool. Trotzdem fortfahren?",
-          largeFileRejected: "Die Gesamtgröße überschreitet 2 GB. Kann nicht im Browser verarbeitet werden. Bitte verwenden Sie ein Desktop-Tool.",
-          done: "✓ Fertig! Zum Download klicken",
-          fail: "⚠️ Einige Dateien fehlgeschlagen. Wiederholen?",
-          noFiles: "Keine kompatiblen Dateien für das gewählte Format gefunden.",
-          wpsHint: "WPS-Dateien werden nicht unterstützt. Bitte als .docx speichern.",
-          pptHint: ".ppt-Dateien werden nicht unterstützt. Bitte als .pptx speichern.",
-          downloadKeepOpen: "Wird heruntergeladen... Bitte lassen Sie diese Seite geöffnet.",
-          progressInit: "Konvertiere für dich, einen Moment ☕",
-          progressText: "Arbeite an Datei {c} von {t}… 🏃",
-          almostDone: "Fast fertig, noch {t}s ✨",
-          scanningFolder: "Durchsuche deinen Ordner… 🗂️",
-          audioMemory: "Audio zu groß für sichere Verarbeitung. Versuchen Sie eine kürzere Datei.",
-          unsupported: "Nicht unterstütztes Format",
-          noTask: "Keine Datei kann konvertiert werden. Bitte überprüfen Sie die Formate.",
-          fileCountExceeded: "Zu viele Dateien ausgewählt. Maximal 200 erlaubt.",
-          ignoredFiles: "{n} nicht unterstützte Dateien wurden übersprungen.",
-        },
-        fr: {
-          brand: "Convertisseur Fantôme",
-          "nav-tool": "Convertisseur", "nav-how": "Fonctionnement", "nav-guide": "Guide", "nav-deepdive": "Formats", "nav-faq": "FAQ",
-          "mobile-nav-tool": "Convertisseur", "mobile-nav-how": "Fonctionnement", "mobile-nav-guide": "Guide", "mobile-nav-deepdive": "Formats", "mobile-nav-faq": "FAQ",
-          "bookmarkBtn": "⭐ Favoris",
-          "hero-badge": "🔒 100% Local et Privé", "hero-title": "Tous les formats, un clic",
-          "hero-desc": "Convertisseur de fichiers en ligne gratuit qui fonctionne entièrement dans votre navigateur. Conversion par lots d'images, photos iPhone, extraction audio de vidéo, documents privés en PDF – sans téléchargement, 100% local.",
-          "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Meilleure qualité)", "btn-webp": "WebP (Taille réduite)", "btn-pdf": "PDF (Fusionner docs)", "btn-mp3": "MP3/WAV (Audio)",
-          "drop-title": "Glissez-déposez vos fichiers ou dossier ici", "drop-sub": "ou cliquez pour parcourir (traitement par lots)",
-          "convertBtnText": "⚡ Déposez les fichiers à convertir",
-          "statUsersLabel": " utilisateurs convertis en toute sécurité", "statFilesLabel": " fichiers traités en toute sécurité",
-          "how-title": "Pourquoi Convertisseur Fantôme ?",
-          "how-p1": "Les convertisseurs traditionnels vous obligent à télécharger des fichiers sensibles sur leurs serveurs, créant des risques d'interception, de journalisation et d'analyse non autorisée.",
-          "how-p2": "Convertisseur Fantôme résout ce problème en utilisant WebAssembly et les API modernes des navigateurs. Chaque conversion s'exécute entièrement dans le bac à sable de votre navigateur.",
-          "how-p3": "Cela signifie : lorsque vous déposez un fichier, tout le pipeline – lecture, décodage, transformation et ré-encodage – s'exécute localement sur votre CPU et votre mémoire. Aucun trafic réseau n'est jamais consommé.",
-          "guide-title": "Guide du débutant : Comment convertir des fichiers localement",
-          "guide-step1": "<strong>Préparez vos fichiers</strong> : Choisissez n'importe quel nombre d'images (y compris HEIC, JPG, PNG), de vidéos ou de feuilles de calcul. Vous pouvez même sélectionner un dossier entier.",
-          "guide-step2": "<strong>Importez en toute sécurité</strong> : Faites glisser les fichiers dans la zone en pointillés ou cliquez pour parcourir. Le navigateur crée un flux local en lecture seule, aucun téléchargement vers le serveur.",
-          "guide-step3": "<strong>Choisissez un format de sortie</strong> : Sélectionnez JPG, PNG, WebP, PDF ou MP3 à l'aide des boutons ci-dessus.",
-          "guide-step4": "<strong>Lancez l'encodage</strong> : Appuyez sur le bouton de conversion. Un indicateur de progression montre l'état de chaque fichier. La vitesse dépend de votre matériel local.",
-          "guide-step5": "<strong>Enregistrez localement</strong> : Une fois terminé, cliquez sur les fichiers générés pour les télécharger directement dans votre dossier de téléchargement par défaut.",
-          "deepdive-title": "Analyse approfondie des formats",
-          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> Apple HEIC",
-          "deepdive-heic-desc": "HEIC est le conteneur d'image haute efficacité d'Apple. Il réduit de moitié la taille du fichier par rapport au JPEG, mais la compatibilité est limitée sous Windows et les anciens logiciels. Convertissez localement sans téléchargement cloud.",
-          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> WebP pour le web",
-          "deepdive-webp-desc": "Le WebP de Google offre des fichiers jusqu'à 34 % plus petits que le JPEG et prend en charge la transparence. Idéal pour accélérer les sites web et améliorer le référencement.",
-          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> Fusionner en PDF",
-          "deepdive-pdf-desc": "Le PDF préserve la mise en page exacte sur tous les appareils. Notre outil fusionne les images directement dans votre navigateur, aucun service externe ne touche vos contrats ou reçus.",
-          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> Extraction audio & MP3",
-          "deepdive-audio-desc": "Extrayez les pistes audio des fichiers vidéo et compressez-les en MP3 universel à l'aide d'un encodeur Lame frontal. Parfait pour les extraits de podcast, les enregistrements de réunions ou les sonneries.",
-          "faq-title": "Questions fréquemment posées",
-          "faq-q1": "Mes fichiers ne sont-ils vraiment pas téléchargés ?", "faq-a1": "Absolument. Déconnectez le réseau après le chargement de la page et essayez, tout fonctionne toujours.",
-          "faq-q2": "Pourquoi les gros fichiers échouent-ils parfois ?", "faq-a2": "Les limites de mémoire du navigateur (~1,5 Go par onglet) peuvent bloquer les fichiers volumineux. Pour de très grosses conversions, envisagez une application de bureau dédiée.",
-          "faq-q3": "Pourquoi la mise en forme Word/Excel est-elle perdue ?", "faq-a3": "Nos analyseurs légers et hors ligne ne prennent pas encore en charge toutes les fonctionnalités de mise en page avancées. Nous améliorons continuellement la compatibilité.",
-          "footer-about": "Convertisseur multimédia axé sur la confidentialité. Vos fichiers vous appartiennent.",
-          "footer-contact": "Des questions ou des commentaires ? Contactez <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
-          "footer-links-title": "Liens rapides",
-          "footer-tool": "Convertisseur", "footer-how": "Fonctionnement", "footer-guide": "Guide", "footer-deepdive": "Formats", "footer-faq": "FAQ",
-          "footer-policies-title": "Politiques",
-          "footer-about-link": "À propos", "footer-privacy": "Politique de confidentialité", "footer-terms": "Conditions d'utilisation",
-          "footer-copy": "© 2026 Convertisseur Fantôme. Tous droits réservés.",
-          cookieText: "Nous utilisons des cookies pour personnaliser les annonces et analyser le trafic. En continuant, vous acceptez notre utilisation des cookies.", cookieLink: "Politique de confidentialité",
-          modalCancel: "Annuler", modalOk: "Continuer",
-          processing: "Traitement... Veuillez patienter",
-          largeFileWarning: "La taille totale des fichiers dépasse {size}. Cela peut entraîner un manque de mémoire. Continuer ?",
-          largeFileStrongWarning: "La taille totale dépasse {size}. Risque très élevé de plantage ! Nous recommandons vivement un outil de bureau. Continuer malgré tout ?",
-          largeFileRejected: "La taille totale dépasse 2 Go. Impossible à traiter dans le navigateur. Veuillez utiliser un outil de bureau.",
-          done: "✓ Terminé ! Cliquez pour télécharger",
-          fail: "⚠️ Certains fichiers ont échoué. Réessayer ?",
-          noFiles: "Aucun fichier compatible trouvé pour le format sélectionné.",
-          wpsHint: "Fichiers WPS non pris en charge. Veuillez d'abord enregistrer en .docx.",
-          pptHint: "Fichiers .ppt non pris en charge. Veuillez d'abord enregistrer en .pptx.",
-          downloadKeepOpen: "Téléchargement en cours... Gardez cette page ouverte.",
-          progressInit: "Conversion en cours pour vous, patientez ☕",
-          progressText: "Travail sur le fichier {c} de {t}… 🏃",
-          almostDone: "Presque terminé, encore {t}s ✨",
-          scanningFolder: "Analyse de votre dossier… 🗂️",
-          audioMemory: "Audio trop volumineux pour un traitement sûr. Essayez un fichier plus court.",
-          unsupported: "Format non pris en charge",
-          noTask: "Aucun fichier ne peut être converti. Vérifiez les formats.",
-          fileCountExceeded: "Trop de fichiers sélectionnés. Maximum 200 autorisés.",
-          ignoredFiles: "{n} fichiers non pris en charge ignorés.",
-        },
-        ja: {
-          brand: "幽霊コンバーター",
-          "nav-tool": "変換ツール", "nav-how": "仕組み", "nav-guide": "ガイド", "nav-deepdive": "フォーマット", "nav-faq": "よくある質問",
-          "mobile-nav-tool": "変換ツール", "mobile-nav-how": "仕組み", "mobile-nav-guide": "ガイド", "mobile-nav-deepdive": "フォーマット", "mobile-nav-faq": "よくある質問",
-          "bookmarkBtn": "⭐ ブックマーク",
-          "hero-badge": "🔒 100% ローカル & プライベート", "hero-title": "あらゆるフォーマットをワンクリックで変換",
-          "hero-desc": "完全にブラウザ内で動作する無料オンラインファイル変換ツール。バッチ画像変換、iPhone写真変換、動画音声抽出、プライベート文書PDF変換 — アップロード不要、ログなし、100%ローカル処理。",
-          "btn-jpg": "JPG (標準)", "btn-png": "PNG (高品質)", "btn-webp": "WebP (軽量)", "btn-pdf": "PDF (ドキュメント結合)", "btn-mp3": "MP3/WAV (音声)",
-          "drop-title": "ファイルまたはフォルダをここにドラッグ＆ドロップ", "drop-sub": "またはクリックして参照（一括対応）",
-          "convertBtnText": "⚡ ファイルをドロップして変換",
-          "statUsersLabel": " 人のユーザーが安全に変換", "statFilesLabel": " 個のファイルを安全に処理",
-          "how-title": "なぜ幽霊コンバーターなのか？",
-          "how-p1": "従来の変換ツールは、機密ファイルをサーバーにアップロードさせるため、傍受、ログ記録、不正スキャンのリスクがあります。",
-          "how-p2": "幽霊コンバーターはWebAssemblyと最新のブラウザAPIを活用し、すべての変換をブラウザのサンドボックス内で実行します。",
-          "how-p3": "つまり、ファイルをドロップすると、読み取り、デコード、変換、再エンコードの全パイプラインが、お使いのCPUとメモリ上でローカルに実行されます。ネットワークトラフィックは一切消費されません。",
-          "guide-title": "初心者ガイド：ファイルをローカルで変換する方法",
-          "guide-step1": "<strong>ファイルを準備する</strong>：画像（HEIC、JPG、PNGを含む）、動画、表計算など、好きな数だけ選択できます。フォルダ全体を選ぶことも可能です。",
-          "guide-step2": "<strong>安全にインポート</strong>：点線の領域にファイルをドラッグするか、クリックして参照します。ブラウザがローカルの読み取り専用ストリームを作成し、サーバーへのアップロードは一切発生しません。",
-          "guide-step3": "<strong>出力形式を選ぶ</strong>：上のボタンからJPG、PNG、WebP、PDF、MP3を選択します。",
-          "guide-step4": "<strong>エンコードを開始</strong>：変換ボタンを押します。進行状況インジケーターが各ファイルの状態を表示します。速度はお使いのローカルハードウェアに依存します。",
-          "guide-step5": "<strong>ローカルに保存</strong>：完了したら、生成されたファイルをクリックして、デフォルトのダウンロードフォルダに直接ダウンロードします。",
-          "deepdive-title": "フォーマットの詳細",
-          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> Apple HEIC",
-          "deepdive-heic-desc": "HEICはAppleの高効率画像コンテナです。JPEGに比べてファイルサイズが半分になりますが、Windowsや古いソフトウェアでの互換性は限られています。クラウドにアップロードせずにローカルで変換します。",
-          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> WebP for the Web",
-          "deepdive-webp-desc": "GoogleのWebPはJPEGより最大34%小さく、透明をサポートします。ウェブサイトの高速化とSEO改善に最適です。",
-          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> PDFへの結合",
-          "deepdive-pdf-desc": "PDFはすべてのデバイスで正確なレイアウトを保持します。当ツールはブラウザ内で直接画像を結合し、契約書や領収書が外部サービスに触れることはありません。",
-          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> 音声抽出とMP3",
-          "deepdive-audio-desc": "動画ファイルから音声トラックを抽出し、フロントエンドのLameエンコーダーを使用してユニバーサルなMP3に圧縮します。ポッドキャストクリップ、会議録音、着信音に最適です。",
-          "faq-title": "よくある質問",
-          "faq-q1": "ファイルは本当にアップロードされませんか？", "faq-a1": "はい。ページの読み込み後にネットワークを切断してお試しください。すべて機能し続けます。",
-          "faq-q2": "大きなファイルが失敗することがあるのはなぜですか？", "faq-a2": "ブラウザのメモリ制限（タブあたり約1.5GB）により、巨大なファイルがストールする可能性があります。非常に大きな変換には専用のデスクトップアプリを検討してください。",
-          "faq-q3": "Word/Excelの書式が失われるのはなぜですか？", "faq-a3": "軽量でオフライン対応のパーサーは、まだすべての高度なレイアウト機能をサポートしていません。互換性は継続的に改善しています。",
-          "footer-about": "プライバシー重視のマルチメディア変換ツール。あなたのファイルはあなたのものです。",
-          "footer-contact": "ご質問やフィードバックはこちら： <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
-          "footer-links-title": "クイックリンク",
-          "footer-tool": "変換ツール", "footer-how": "仕組み", "footer-guide": "ガイド", "footer-deepdive": "フォーマット", "footer-faq": "よくある質問",
-          "footer-policies-title": "ポリシー",
-          "footer-about-link": "当サイトについて", "footer-privacy": "プライバシーポリシー", "footer-terms": "利用規約",
-          "footer-copy": "© 2026 幽霊コンバーター. All rights reserved.",
-          cookieText: "広告のパーソナライズとトラフィック分析のためCookieを使用します。続行するとCookieの使用に同意したことになります。", cookieLink: "プライバシーポリシー",
-          modalCancel: "キャンセル", modalOk: "続行",
-          processing: "処理中... お待ちください",
-          largeFileWarning: "ファイルの合計サイズが{size}を超えています。メモリ不足になる可能性があります。続行しますか？",
-          largeFileStrongWarning: "合計サイズが{size}を超えています。クラッシュの危険性が非常に高いです！デスクトップツールの使用を強くお勧めします。それでも続行しますか？",
-          largeFileRejected: "合計サイズが2 GBを超えています。ブラウザで処理できません。デスクトップツールを使用してください。",
-          done: "✓ 完了！クリックしてダウンロード",
-          fail: "⚠️ 一部のファイルが失敗しました。再試行しますか？",
-          noFiles: "選択した形式に対応するファイルが見つかりません。",
-          wpsHint: "WPSファイルには対応していません。.docxで保存し直してください。",
-          pptHint: ".pptファイルには対応していません。.pptxで保存し直してください。",
-          downloadKeepOpen: "ダウンロード中... このページを開いたままにしてください。",
-          progressInit: "変換中です、少々お待ちください ☕",
-          progressText: "ファイル {c}/{t} を処理中… 🏃",
-          almostDone: "もうすぐ完了、あと{t}秒 ✨",
-          scanningFolder: "フォルダを探しています… 🗂️",
-          audioMemory: "音声が大きすぎて安全に処理できません。短いファイルをお試しください。",
-          unsupported: "サポートされていない形式",
-          noTask: "変換可能なファイルがありません。フォーマットを確認してください。",
-          fileCountExceeded: "選択したファイルが多すぎます。上限は200ファイルです。",
-          ignoredFiles: "{n}個の非対応ファイルをスキップしました。",
-        },
-        ko: {
-          brand: "유령 컨버터",
-          "nav-tool": "변환기", "nav-how": "작동 원리", "nav-guide": "가이드", "nav-deepdive": "포맷", "nav-faq": "FAQ",
-          "mobile-nav-tool": "변환기", "mobile-nav-how": "작동 원리", "mobile-nav-guide": "가이드", "mobile-nav-deepdive": "포맷", "mobile-nav-faq": "FAQ",
-          "bookmarkBtn": "⭐ 북마크",
-          "hero-badge": "🔒 100% 로컬 & 비공개", "hero-title": "모든 포맷, 한 번의 클릭",
-          "hero-desc": "브라우저 내에서 완전히 실행되는 무료 온라인 파일 변환기. 일괄 이미지 변환, iPhone 사진 변환, 비디오 오디오 추출, 비공개 문서 PDF 변환 — 업로드 없음, 로그 없음, 100% 로컬 처리.",
-          "btn-jpg": "JPG (표준)", "btn-png": "PNG (최고 품질)", "btn-webp": "WebP (작은 크기)", "btn-pdf": "PDF (문서 병합)", "btn-mp3": "MP3/WAV (오디오)",
-          "drop-title": "파일 또는 폴더를 여기에 드래그 앤 드롭", "drop-sub": "또는 클릭하여 찾아보기 (일괄 지원)",
-          "convertBtnText": "⚡ 파일을 놓아 변환",
-          "statUsersLabel": " 사용자가 안전하게 변환함", "statFilesLabel": " 파일이 안전하게 처리됨",
-          "how-title": "왜 유령 컨버터 인가?",
-          "how-p1": "기존 온라인 변환기는 민감한 파일을 서버에 업로드하도록 강요하여 가로채기, 로깅, 무단 스캔 위험을 초래합니다.",
-          "how-p2": "유령 컨버터는 WebAssembly와 최신 브라우저 API를 활용하여 모든 변환을 브라우저 샌드박스 내에서 실행합니다.",
-          "how-p3": "즉, 파일을 드롭하면 읽기, 디코딩, 변환, 재인코딩의 전체 파이프라인이 CPU와 메모리에서 로컬로 실행됩니다. 네트워크 트래픽이 전혀 소모되지 않습니다.",
-          "guide-title": "초보자 가이드: 파일을 로컬에서 변환하는 방법",
-          "guide-step1": "<strong>파일 준비</strong>: HEIC, JPG, PNG를 포함한 이미지, 동영상 또는 스프레드시트를 원하는 만큼 선택할 수 있습니다. 전체 폴더를 선택할 수도 있습니다.",
-          "guide-step2": "<strong>안전하게 가져오기</strong>: 파일을 점선 영역으로 드래그하거나 클릭하여 찾아봅니다. 브라우저가 로컬 읽기 전용 스트림을 생성하므로 서버 업로드가 전혀 발생하지 않습니다.",
-          "guide-step3": "<strong>출력 포맷 선택</strong>: 위 버튼에서 JPG, PNG, WebP, PDF, MP3 중 하나를 선택합니다.",
-          "guide-step4": "<strong>인코딩 시작</strong>: 변환 버튼을 누르면 진행 표시기가 각 파일의 상태를 보여줍니다. 속도는 로컬 하드웨어에 따라 다릅니다.",
-          "guide-step5": "<strong>로컬에 저장</strong>: 완료되면 생성된 파일을 클릭하여 기본 다운로드 폴더로 직접 다운로드합니다.",
-          "deepdive-title": "포맷 심층 분석",
-          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> Apple HEIC",
-          "deepdive-heic-desc": "HEIC는 Apple의 고효율 이미지 컨테이너입니다. JPEG 대비 파일 크기를 절반으로 줄이지만 Windows 및 이전 소프트웨어에서는 호환성이 제한됩니다. 클라우드 업로드 없이 로컬에서 변환하세요.",
-          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> 웹용 WebP",
-          "deepdive-webp-desc": "Google의 WebP는 JPEG보다 최대 34% 작은 파일을 제공하며 투명도를 지원합니다. 웹사이트 속도 향상과 SEO 개선에 이상적입니다.",
-          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> PDF로 병합",
-          "deepdive-pdf-desc": "PDF는 모든 장치에서 정확한 레이아웃을 유지합니다. 당사 도구는 브라우저에서 직접 이미지를 병합하므로 외부 서비스가 계약서나 영수증을 건드리지 않습니다.",
-          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> 오디오 추출 및 MP3",
-          "deepdive-audio-desc": "비디오 파일에서 오디오 트랙을 추출하고 프론트엔드 Lame 인코더를 사용하여 범용 MP3로 압축합니다. 팟캐스트 클립, 회의 녹음, 벨소리에 완벽합니다.",
-          "faq-title": "자주 묻는 질문",
-          "faq-q1": "파일이 정말 업로드되지 않나요?", "faq-a1": "확실합니다. 페이지 로드 후 네트워크를 끊고 파일을 드롭해 보세요. 모든 것이 여전히 작동합니다.",
-          "faq-q2": "큰 파일이 가끔 실패하는 이유는 무엇인가요?", "faq-a2": "브라우저 메모리 제한(탭당 약 1.5GB)으로 인해 거대한 파일이 멈출 수 있습니다. 매우 큰 변환에는 전용 데스크톱 앱을 고려하세요.",
-          "faq-q3": "Word/Excel 서식이 손실되는 이유는 무엇인가요?", "faq-a3": "경량 오프라인 파서가 아직 모든 고급 레이아웃 기능을 지원하지 않습니다. 호환성을 지속적으로 개선하고 있습니다.",
-          "footer-about": "개인 정보 보호 우선 멀티미디어 변환기. 파일은 당신의 것입니다.",
-          "footer-contact": "질문이나 의견이 있으시면 연락하세요: <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
-          "footer-links-title": "빠른 링크",
-          "footer-tool": "변환기", "footer-how": "작동 원리", "footer-guide": "가이드", "footer-deepdive": "포맷", "footer-faq": "FAQ",
-          "footer-policies-title": "정책",
-          "footer-about-link": "회사 소개", "footer-privacy": "개인정보 처리방침", "footer-terms": "서비스 약관",
-          "footer-copy": "© 2026 유령 컨버터. 모든 권리 보유.",
-          cookieText: "쿠키를 사용하여 광고를 개인화하고 트래픽을 분석합니다. 계속하면 쿠키 사용에 동의하는 것입니다.", cookieLink: "개인정보 처리방침",
-          modalCancel: "취소", modalOk: "계속",
-          processing: "처리 중... 잠시만 기다려주세요",
-          largeFileWarning: "총 파일 크기가 {size}를 초과합니다. 브라우저 메모리 부족을 초래할 수 있습니다. 계속하시겠습니까?",
-          largeFileStrongWarning: "총 파일 크기가 {size}를 초과합니다. 충돌 위험이 매우 높습니다! 데스크톱 도구를 사용하는 것이 좋습니다. 그래도 계속하시겠습니까?",
-          largeFileRejected: "총 파일 크기가 2GB를 초과합니다. 브라우저에서 처리할 수 없습니다. 데스크톱 도구를 사용하세요.",
-          done: "✓ 완료! 클릭하여 다운로드",
-          fail: "⚠️ 일부 파일이 실패했습니다. 다시 시도하시겠습니까?",
-          noFiles: "선택한 형식에 맞는 지원 파일을 찾을 수 없습니다.",
-          wpsHint: "WPS 파일은 지원되지 않습니다. 먼저 .docx로 저장하세요.",
-          pptHint: ".ppt 파일은 지원되지 않습니다. .pptx로 저장하세요.",
-          downloadKeepOpen: "다운로드 중... 이 페이지를 열어 두세요.",
-          progressInit: "변환 중입니다. 잠시만요 ☕",
-          progressText: "파일 {c}/{t} 작업 중… 🏃",
-          almostDone: "거의 완료, {t}초 남음 ✨",
-          scanningFolder: "폴더를 살펴보는 중… 🗂️",
-          audioMemory: "오디오가 너무 커서 안전하게 처리할 수 없습니다. 더 짧은 파일을 사용해보세요.",
-          unsupported: "지원되지 않는 형식",
-          noTask: "변환할 수 있는 파일이 없습니다. 파일 형식을 확인하세요.",
-          fileCountExceeded: "선택한 파일이 너무 많습니다. 최대 200개까지 가능합니다.",
-          ignoredFiles: "지원되지 않는 {n}개 파일을 건너뛰었습니다.",
-        },
-        "zh-TW": {
-          brand: "幽靈轉換器",
-          "nav-tool": "線上轉換工具", "nav-how": "核心原理", "nav-guide": "新手指南", "nav-deepdive": "格式科普", "nav-faq": "常見問題",
-          "mobile-nav-tool": "線上轉換工具", "mobile-nav-how": "核心原理", "mobile-nav-guide": "新手指南", "mobile-nav-deepdive": "格式科普", "mobile-nav-faq": "常見問題",
-          "bookmarkBtn": "⭐ 收藏",
-          "hero-badge": "🔒 100% 本機運行 · 安全私密", "hero-title": "全格式支援，一鍵轉換",
-          "hero-desc": "完全在瀏覽器內運行的免費線上檔案轉換器。支援批次圖片格式轉換、iPhone照片轉換、影片提取音訊、私密文件轉PDF。無需上傳，絕無隱私外洩，100%本機處理。",
-          "btn-jpg": "JPG（標準圖片）", "btn-png": "PNG（透明背景）", "btn-webp": "WebP（極小體積）", "btn-pdf": "PDF（合併文件）", "btn-mp3": "MP3/WAV（音訊提取）",
-          "drop-title": "拖曳檔案或資料夾到此處", "drop-sub": "或點擊瀏覽（支援批次）",
-          "convertBtnText": "⚡ 拖入檔案，一鍵轉換",
-          "statUsersLabel": " 位使用者已安全轉換", "statFilesLabel": " 個檔案已本機處理",
-          "how-title": "為什麼選擇幽靈轉換器？徹底顛覆傳統的本機隱私檔案處理技術",
-          "how-p1": "傳統的線上檔案轉換網站，無一例外地需要您將私人檔案、敏感照片或內部工作文件上傳到他們的雲端伺服器。在這過程中，您的敏感資料面臨著傳輸被攔截、伺服器日誌留存以及第三方商業公司非法掃描或二次販售的嚴重隱私風險。",
-          "how-p2": "幽靈轉換器 徹底解決了這一安全痛點。我們利用先進的 WebAssembly (WASM) 編譯技術與新型的前端 JavaScript 庫，將強大的圖像、音訊及文件解析核心直接植入到了您的現代瀏覽器（如 Chrome, Edge, Safari）之中。",
-          "how-p3": "這意味著：當您在下方上傳檔案時，檔案讀取、解碼、矩陣轉換、重新編碼的完整流水線完全在您這台設備的 CPU 和記憶體中本機閉環運行，整個過程不需要消耗任何上傳網路流量。即使此時斷開網際網路，幽靈轉換器依然可以完美順暢地為您工作。",
-          "guide-title": "新手指南：如何使用幽靈轉換器批次本機轉換檔案？",
-          "guide-step1": "<strong>準備您的待處理檔案</strong>：您可以準備任意數量的圖片（包括蘋果 HEIC、常見 JPG、PNG）、影片或 Excel/Word 試算表。我們支援直接一次選取整個巢狀資料夾。",
-          "guide-step2": "<strong>執行安全匯入</strong>：將檔案拖入虛線框，或者點擊「選擇檔案」。此時瀏覽器會在本機為檔案產生安全唯讀串流，絕不發生伺服器網路傳輸。",
-          "guide-step3": "<strong>指定輸出目標編碼格式</strong>：在上方按鈕中根據需要選擇通用 JPG、無損 PNG、現代高效 WebP、合併 PDF 或高壓縮率 MP3。",
-          "guide-step4": "<strong>觸發本機極速編碼</strong>：點擊「開始轉換」。此時頁面進度條會精準提示每個檔案的處理狀態。轉換時間完全取決於您的本機硬體效能。",
-          "guide-step5": "<strong>一鍵儲存到本機</strong>：轉換成功後，點擊生成的新檔案區塊即可直接下載儲存，檔案路徑為您本機的預設下載目錄。",
-          "deepdive-title": "多媒體與文件格式深度技術科普",
-          "deepdive-heic-title": "<span class=\"w-2 h-2 bg-amber-500 rounded-full\"></span> 蘋果 HEIC 圖像格式",
-          "deepdive-heic-desc": "HEIC（High Efficiency Image Container）是蘋果在其生態系統中推行的高效圖像封裝格式。它採用先進的 HEVC 編碼，能在保持高畫質的同時將體積縮減到傳統 JPEG 的一半。然而，由於專利授權和系統相容性限制，Windows、Android 和許多老舊網頁軟體預設無法直接讀取。透過本站，您可在本機直接批次重組為標準的 JPG。",
-          "deepdive-webp-title": "<span class=\"w-2 h-2 bg-blue-500 rounded-full\"></span> 現代網頁 WebP 格式",
-          "deepdive-webp-desc": "WebP 是由 Google 推出的一種旨在加快網頁載入速度的現代圖像格式。它同時支援有損和無損壓縮，並完美相容 Alpha 透明通道。在相同視覺品質下，WebP 的體積比 JPEG 小 25%~34%，比 PNG 小 26%。將網站圖片批次轉換為 WebP，是大幅提升 SEO 排名和網站載入效率的核心技術手段。",
-          "deepdive-pdf-title": "<span class=\"w-2 h-2 bg-emerald-500 rounded-full\"></span> 多圖合併 PDF 技術",
-          "deepdive-pdf-desc": "PDF 是一種跨平台的獨立電子文件格式，具備極強的版面固定特徵，常用於正式的合約、發票歸檔和多頁圖像打包提交。我們的本機合併功能，可在前端直接提取多張上傳圖片的基線像素，無需借助任何後台龐大的 PDF 產生服務，確保您的財務或個人身分證明文件不離開本設備。",
-          "deepdive-audio-title": "<span class=\"w-2 h-2 bg-red-500 rounded-full\"></span> 音視訊提取與 MP3 壓縮",
-          "deepdive-audio-desc": "透過在前端對多媒體資料串流進行解複用（Demuxing），我們可以直接剝離影片中的音軌，並利用前端 Lame 庫對音訊振幅進行動態量化重取樣，最終壓縮輸出為全球通用的高相容性 MP3 音訊。這在播客剪輯、會議錄音提取及手機鈴聲製作中極為常用。",
-          "faq-title": "常見疑問",
-          "faq-q1": "我的檔案真的不會被上傳嗎？", "faq-a1": "絕對不會。頁面載入完成後，斷開網路並拖入檔案 —— 您會發現一切依然正常。沒有任何資料離開您的設備。",
-          "faq-q2": "為什麼大檔案有時會轉換失敗？", "faq-a2": "瀏覽器記憶體限制（通常每個分頁約 1.5 GB）可能導致超大音訊、影片或表格轉換逾時。對於極大檔案，建議使用專業桌面工具。",
-          "faq-q3": "為什麼複雜 Word/Excel 的排版會丟失？", "faq-a3": "我們輕量、離線友善的解析器尚不能支援所有高級排版特性。我們正持續改進相容性，但高度格式化的文件可能會丟失部分細節。",
-          "footer-about": "隱私至上的多媒體轉換器。您的檔案屬於您自己。",
-          "footer-contact": "如有疑問或建議，聯絡信箱：<a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
-          "footer-links-title": "快捷連結",
-          "footer-tool": "線上轉換工具", "footer-how": "核心原理", "footer-guide": "新手指南", "footer-deepdive": "格式科普", "footer-faq": "常見問題",
-          "footer-policies-title": "政策與合規",
-          "footer-about-link": "關於我們", "footer-privacy": "隱私權政策", "footer-terms": "服務條款",
-          "footer-copy": "© 2026 幽靈轉換器. 保留所有權利。",
-          cookieText: "我們使用 Cookie 來個人化廣告和分析流量。繼續使用即表示您同意。", cookieLink: "隱私權政策",
-          modalCancel: "取消", modalOk: "繼續",
-          processing: "處理中… 請稍候",
-          largeFileWarning: "檔案總大小超過 {size}，可能導致瀏覽器記憶體不足。是否繼續？",
-          largeFileStrongWarning: "檔案總大小超過 {size}，極易導致頁面崩潰！強烈建議使用桌面工具處理。仍要繼續嗎？",
-          largeFileRejected: "檔案總大小超過 2 GB，瀏覽器無法安全處理。請使用桌面工具。",
-          done: "✓ 轉換完成，點擊下載",
-          fail: "⚠️ 有幾個檔案沒能轉好，要再試試嗎？💪",
-          noFiles: "呀，沒找到能轉換的檔案，換個格式試試？🤔",
-          wpsHint: "偵測到 .wps 檔案，請先另存為 .docx 格式再轉換。",
-          pptHint: "暫不支援 .ppt 格式，請先另存為 .pptx 格式再轉換。",
-          downloadKeepOpen: "下載中… 請保持此頁面開啟。",
-          progressInit: "正在幫你轉換，請稍等 ☕",
-          progressText: "第 {c}/{t} 個檔案努力中… 🏃",
-          almostDone: "快好了，還有 {t} 秒 ✨",
-          scanningFolder: "正在翻找你的資料夾… 🗂️",
-          audioMemory: "音訊過大無法安全處理。請嘗試較短的音訊檔案。",
-          unsupported: "不支援的格式",
-          noTask: "沒有可轉換的檔案，請檢查檔案格式。",
-          fileCountExceeded: "選擇的檔案太多，單次最多轉換 200 個檔案。",
-          ignoredFiles: "已跳過 {n} 個當前格式不支援的檔案。",
         }
-      };
+      }
+    };
+
+    const t = (key) => {
+      const lang = window.GC.LANG;
+      return (lang[currentLang] && lang[currentLang][key]) ||
+             (lang.en && lang.en[key]) ||
+             key;
+    };
+
+    let currentLang = 'en';
+    let currentFormat = 'jpg';
+    let resultsData = [];
+    let conversionInProgress = false;
+    let fatalError = false;
+    let baseUsers = 3916, baseFiles = 20247;
+    let userClicks = 0, fileClicks = 0;
+    let lastFiles = null;
+    let docHintShown = false;
+    let initialized = false;
+
+    const mimeExtMap = {
+      'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp',
+      'image/gif': 'gif', 'image/bmp': 'bmp', 'image/avif': 'avif',
+      'image/heic': 'heic', 'image/tiff': 'tiff', 'image/svg+xml': 'svg',
+      'application/pdf': 'pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+      'application/msword': 'doc',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+      'application/vnd.ms-excel': 'xls',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
+      'application/vnd.ms-powerpoint': 'ppt',
+      'text/plain': 'txt', 'text/csv': 'csv',
+      'application/vnd.oasis.opendocument.text': 'odt',
+      'application/vnd.oasis.opendocument.spreadsheet': 'ods',
+      'application/epub+zip': 'epub',
+      'text/html': 'html',
+      'audio/mpeg': 'mp3', 'audio/wav': 'wav', 'audio/ogg': 'ogg',
+      'audio/flac': 'flac', 'audio/aac': 'aac', 'audio/x-ms-wma': 'wma',
+      'video/mp4': 'mp4', 'video/quicktime': 'mov', 'video/x-matroska': 'mkv',
+      'video/webm': 'webm', 'video/x-msvideo': 'avi', 'video/3gpp': '3gp',
+      'video/mpeg': 'mpeg', 'video/mp2t': 'ts'
+    };
+
+    const safeName = (name) => name.replace(/[\/\\:*?"<>|]/g, '_').replace(/^\.+/, '').trim() || 'untitled';
+    const formatSize = (bytes) => {
+      if (!bytes || bytes <= 0) return '0 KB';
+      const k = 1024, sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    };
+    const getBaseName = (fn) => { const i = fn.lastIndexOf('.'); return i === -1 ? fn : fn.substring(0, i); };
+    const isIgnored = (name) => ['.DS_Store', 'Thumbs.db', 'desktop.ini', '.localized'].includes(name) || name.startsWith('~$') || name.startsWith('._');
+
+    function isSupportedFile(file, format) {
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (['jpg','png','webp','pdf'].includes(format)) {
+        const supportedExts = ['jpg','jpeg','png','webp','gif','bmp','avif','svg','tiff','tif','heic','pdf','docx','xlsx','pptx','csv','txt','odt','ods','epub','html','htm','wps','et','dps'];
+        if (supportedExts.includes(ext)) return true;
+        const mimeExt = mimeExtMap[file.type] || '';
+        return supportedExts.includes(mimeExt);
+      } else if (format === 'mp3') {
+        const supportedExts = ['mp3','wav','ogg','flac','m4a','aac','wma','mp4','mov','mkv','webm','m4v','avi','flv','3gp','mpeg','mpg','ts','mts','m2ts','vob','ogv','divx','xvid'];
+        if (supportedExts.includes(ext)) return true;
+        const mimeExt = mimeExtMap[file.type] || '';
+        return supportedExts.includes(mimeExt);
+      }
+      return false;
+    }
+
+    window.GC.init = function() {
+      if (initialized) {
+        updateUILang();
+        if (window.adsbygoogle) window.adsbygoogle.push({});
+        return;
+      }
+      initialized = true;
 
       const langSelect   = document.getElementById('langSelect');
       const mobileLangSelect = document.getElementById('mobileLangSelect');
@@ -881,26 +520,7 @@
       const menuToggle   = document.getElementById('menuToggle');
       const mobileNav    = document.getElementById('mobileNav');
       const bookmarkBtn  = document.getElementById('bookmarkBtn');
-
-      let currentLang   = 'en';
-      let currentFormat = 'jpg';
-      let resultsData = [];
-      let conversionInProgress = false;
-      let fatalError = false;
-      let baseUsers = 3916, baseFiles = 20247;
-      let userClicks = 0, fileClicks = 0;
-      let lastFiles = null;
-
-      const t = (key) => (LANG[currentLang] && LANG[currentLang][key]) || LANG['en'][key] || key;
-      const safeName = (name) => name.replace(/[\/\\:*?"<>|]/g, '_').replace(/^\.+/, '').trim() || 'untitled';
-      const formatSize = (bytes) => {
-        if (!bytes || bytes <= 0) return '0 KB';
-        const k = 1024, sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-      };
-      const getBaseName = (fn) => { const i = fn.lastIndexOf('.'); return i === -1 ? fn : fn.substring(0, i); };
-      const isIgnored = (name) => ['.DS_Store', 'Thumbs.db', 'desktop.ini', '.localized'].includes(name) || name.startsWith('~$') || name.startsWith('._');
+      const mobileBookmarkBtn = document.getElementById('mobileBookmarkBtn');
 
       function updateUILang() {
         document.title = t('brand') + ' - ' + t('hero-title');
@@ -908,10 +528,10 @@
         document.documentElement.lang = currentLang;
         brandEl.textContent = t('brand');
         document.querySelectorAll('[id]').forEach(el => {
-          if (LANG[currentLang] && LANG[currentLang][el.id]) {
+          if (window.GC.LANG[currentLang] && window.GC.LANG[currentLang][el.id]) {
             if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = t(el.id);
             else if (el.tagName === 'OPTION') el.textContent = t(el.id);
-            else if (el.id.startsWith('guide-step') || el.id.startsWith('deepdive-') || el.id === 'footer-contact') {
+            else if (el.id.startsWith('guide-step') || el.id.startsWith('formats-step') || el.id === 'footer-contact') {
               el.innerHTML = t(el.id);
             } else {
               el.textContent = t(el.id);
@@ -935,7 +555,7 @@
       }
 
       function switchLang(lang) {
-        if (!LANG[lang]) return;
+        if (!window.GC.LANG[lang]) return;
         currentLang = lang;
         localStorage.setItem('_pref_lang', lang);
         langSelect.value = lang;
@@ -945,7 +565,7 @@
 
       function updateFileInputAccept() {
         if (['jpg','png','webp','pdf'].includes(currentFormat)) {
-          fileInput.accept = 'image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.odt,.ods,.epub,.html,.htm,.svg,.tiff,.tif,.avif,.csv,.wps,.et,.dps';
+          fileInput.accept = 'image/*,.pdf,.docx,.xlsx,.pptx,.txt,.odt,.ods,.epub,.html,.htm,.svg,.tiff,.tif,.avif,.csv,.wps,.et,.dps';
         } else if (currentFormat === 'mp3') {
           fileInput.accept = 'audio/*,video/*,.mp4,.mov,.mkv,.webm,.ogg,.flac,.wav,.mp3,.m4a,.aac,.wma,.m4v,.avi,.flv,.3gp,.mpeg,.mpg,.ts,.mts,.m2ts,.vob,.ogv,.divx,.xvid';
         }
@@ -1077,30 +697,29 @@
           return;
         }
         lastFiles = fileArr;
-        let filtered = fileArr;
-        if (['jpg','png','webp','pdf'].includes(currentFormat)) {
-          filtered = fileArr.filter(f => {
-            const ext = f.name.split('.').pop().toLowerCase();
-            return /^(jpg|jpeg|png|webp|gif|bmp|avif|svg|tiff|tif|heic|pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|odt|ods|epub|html|htm|wps|et|dps)$/.test(ext);
-          });
-        } else if (currentFormat === 'mp3') {
-          filtered = fileArr.filter(f => {
-            const ext = f.name.split('.').pop().toLowerCase();
-            return /^(mp3|wav|ogg|flac|m4a|aac|wma|mp4|mov|mkv|webm|m4v|avi|flv|3gp|mpeg|mpg|ts|mts|m2ts|vob|ogv|divx|xvid)$/.test(ext);
-          });
-        }
+        let filtered = fileArr.filter(f => isSupportedFile(f, currentFormat));
         const skipped = fileArr.length - filtered.length;
-        if (skipped > 0) {
-          showModal(t('ignoredFiles').replace('{n}', skipped), () => {
-            if (filtered.length > 0) checkFileSizeLimit(filtered, () => doConversion(filtered));
-          });
-        } else {
+        const hasDoc = filtered.some(f => f.name.toLowerCase().endsWith('.doc') && !f.name.toLowerCase().endsWith('.docx'));
+        const proceed = () => {
           if (filtered.length > 0) checkFileSizeLimit(filtered, () => doConversion(filtered));
           else showModal(t('noFiles'), null, true);
+        };
+        if (hasDoc && !docHintShown) {
+          docHintShown = true;
+          showModal(t('docHint'), () => {
+            if (skipped > 0) {
+              showModal(t('ignoredFiles').replace('{n}', skipped), proceed);
+            } else {
+              proceed();
+            }
+          }, true);
+        } else if (skipped > 0) {
+          showModal(t('ignoredFiles').replace('{n}', skipped), proceed);
+        } else {
+          proceed();
         }
       }
 
-      //第二段
       async function convertSpecialImageToBlob(file) {
         const ext = file.name.split('.').pop().toLowerCase();
         if (ext === 'tiff' || ext === 'tif') {
@@ -1133,18 +752,8 @@
         throw new Error('Unsupported special format');
       }
 
-      async function extractDoc(blob) {
-        try {
-          const arrayBuffer = await blob.arrayBuffer();
-          const text = await officeparser.parseDocAsync(arrayBuffer);
-          return text;
-        } catch (e) {
-          console.warn('DOC extraction failed', e);
-          return '';
-        }
-      }
-
       async function doConversion(files) {
+        ensurePdfWorker();
         conversionInProgress = true;
         fatalError = false;
         convertBtn.disabled = true;
@@ -1199,7 +808,7 @@
                 const fn = file.name.toLowerCase();
                 if (fn.endsWith('.docx')) text = await extractDocx(blob);
                 else if (fn.endsWith('.wps')) { wpsFiles.push(file.name); tasks.push({ file, success: false, _reason: 'wpsHint' }); continue; }
-                else if (fn.endsWith('.doc')) text = await extractDoc(blob);
+                else if (fn.endsWith('.doc')) { tasks.push({ file, success: false, _reason: 'docHint' }); continue; }
                 else if (fn.endsWith('.xlsx') || fn.endsWith('.xls') || fn.endsWith('.et')) text = await extractXlsx(blob);
                 else if (fn.endsWith('.csv')) text = await readText(blob);
                 else if (fn.endsWith('.pptx') || fn.endsWith('.dps')) text = await extractPptx(blob);
@@ -1227,7 +836,7 @@
                 const fn = file.name.toLowerCase();
                 if (fn.endsWith('.docx')) text = await extractDocx(blob);
                 else if (fn.endsWith('.wps')) { wpsFiles.push(file.name); tasks.push({ file, success: false, _reason: 'wpsHint' }); continue; }
-                else if (fn.endsWith('.doc')) text = await extractDoc(blob);
+                else if (fn.endsWith('.doc')) { tasks.push({ file, success: false, _reason: 'docHint' }); continue; }
                 else if (fn.endsWith('.xlsx') || fn.endsWith('.xls') || fn.endsWith('.et')) text = await extractXlsx(blob);
                 else if (fn.endsWith('.csv')) text = await readText(blob);
                 else if (fn.endsWith('.pptx') || fn.endsWith('.dps')) text = await extractPptx(blob);
@@ -1495,14 +1104,21 @@
             const text = p.text;
             const fontSize = 12, lineHeight = fontSize*1.4;
             const pages = splitText(text, fontSize, 560);
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const imgWidth = pageWidth - 20;
             for (let i=0; i<pages.length; i++) {
               if (!first || i>0) pdf.addPage(); first = false;
-              const canvas = document.createElement('canvas'); canvas.width=700; canvas.height=pages[i].length*lineHeight+40;
-              const ctx = canvas.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+              const canvas = document.createElement('canvas');
+              const tempHeight = pages[i].length*lineHeight+40;
+              const scale = imgWidth / 700;
+              canvas.width = 700; canvas.height = Math.ceil(tempHeight / scale);
+              const ctx = canvas.getContext('2d');
+              ctx.scale(scale, scale);
+              ctx.fillStyle='#fff'; ctx.fillRect(0,0,700,tempHeight);
               ctx.font='12px monospace'; ctx.fillStyle='#000'; ctx.textBaseline='top';
               pages[i].forEach((l, idx) => ctx.fillText(l,20,20+idx*lineHeight));
               const imgHeight = 180 * (canvas.height / canvas.width);
-              pdf.addImage(canvas.toDataURL(), 'PNG', 10, 10, 180, imgHeight);
+              pdf.addImage(canvas.toDataURL('image/jpeg', 0.9), 'JPEG', 10, 10, imgWidth, imgHeight);
             }
           }
         }
@@ -1560,7 +1176,7 @@
       } catch(e) {}
       updateStats();
 
-      bookmarkBtn.addEventListener('click', () => {
+      function bookmarkPage() {
         const title = t('brand') + ' - ' + t('hero-title');
         const url = window.location.href;
         if (window.sidebar && window.sidebar.addPanel) {
@@ -1574,14 +1190,17 @@
           elem.href = url;
           elem.click();
         } else {
-          alert('请使用 Ctrl+D（Windows）或 Cmd+D（Mac）将本页添加到收藏夹');
+          alert('Please use Ctrl+D (Windows) or Cmd+D (Mac) to bookmark this page');
         }
-      });
+      }
+
+      bookmarkBtn.addEventListener('click', (e) => { e.preventDefault(); bookmarkPage(); });
+      if (mobileBookmarkBtn) mobileBookmarkBtn.addEventListener('click', (e) => { e.preventDefault(); bookmarkPage(); });
 
       langSelect.addEventListener('change', () => switchLang(langSelect.value));
       if (mobileLangSelect) mobileLangSelect.addEventListener('change', () => switchLang(mobileLangSelect.value));
-      const savedLang = localStorage.getItem('_pref_lang') || 'zh-CN';
-      if (LANG[savedLang]) {
+      const savedLang = localStorage.getItem('_pref_lang') || 'en';
+      if (window.GC.LANG[savedLang]) {
         currentLang = savedLang;
         langSelect.value = savedLang;
         if (mobileLangSelect) mobileLangSelect.value = savedLang;
@@ -1614,7 +1233,479 @@
 
       setFormat('jpg');
       if (window.adsbygoogle) window.adsbygoogle.push({});
-    })();
-  </script>
+    };
+
+  Object.assign(window.GC.LANG, {
+    es: {
+      brand: "Convertidor Fantasma",
+      "nav-tool": "Convertidor", "nav-how": "Cómo funciona", "nav-guide": "Guía", "nav-formats": "Formatos", "nav-faq": "Preguntas",
+      "mobile-nav-tool": "Convertidor", "mobile-nav-how": "Cómo funciona", "mobile-nav-guide": "Guía", "mobile-nav-formats": "Formatos", "mobile-nav-faq": "Preguntas",
+      "bookmarkBtn": "⭐ Favoritos", "mobileBookmarkBtn": "⭐ Favoritos",
+      "hero-badge": "🔒 100% Local y Privado", "hero-title": "Todos los formatos, un clic",
+      "hero-desc": "Conversor de archivos online gratuito que funciona 100% en tu navegador. Convierte imágenes por lotes, fotos de iPhone, extrae audio de video y documentos privados a PDF. Sin subidas, sin registros, privacidad total.",
+      "btn-jpg": "JPG (Estándar)", "btn-png": "PNG (Mejor calidad)", "btn-webp": "WebP (Tamaño reducido)", "btn-pdf": "PDF (Unir docs)", "btn-mp3": "MP3/WAV (Audio)",
+      "drop-title": "Arrastra y suelta tus archivos o carpeta aquí", "drop-sub": "o haz clic para examinar (por lotes)",
+      "convertBtnText": "⚡ Soltar archivos para convertir",
+      "statUsersLabel": " usuarios convirtieron de forma segura", "statFilesLabel": " archivos procesados de forma segura",
+      "how-title": "¿Por qué Convertidor Fantasma?",
+      "how-p1": "Los conversores tradicionales te obligan a subir archivos sensibles a sus servidores, creando riesgos de interceptación, registro y escaneo no autorizado.",
+      "how-p2": "Convertidor Fantasma lo resuelve usando WebAssembly y APIs modernas del navegador. Cada conversión se ejecuta completamente dentro del entorno aislado de tu navegador.",
+      "how-p3": "Esto significa: al soltar un archivo, todo el proceso —lectura, decodificación, transformación y recodificación— se ejecuta localmente en tu CPU y memoria. Nunca se consume tráfico de red.",
+      "guide-title": "Guía para principiantes: Cómo convertir archivos localmente",
+      "guide-step1": "<strong>Prepara tus archivos</strong>: Elige cualquier cantidad de imágenes (incluyendo HEIC, JPG, PNG), videos u hojas de cálculo. Incluso puedes seleccionar una carpeta completa.",
+      "guide-step2": "<strong>Importa de forma segura</strong>: Arrastra los archivos al área punteada o haz clic para examinar. El navegador crea un flujo local de solo lectura, nunca se sube al servidor.",
+      "guide-step3": "<strong>Elige un formato de salida</strong>: Selecciona JPG, PNG, WebP, PDF o MP3 desde los botones superiores.",
+      "guide-step4": "<strong>Inicia la codificación</strong>: Pulsa el botón de convertir. Un indicador de progreso muestra el estado de cada archivo. La velocidad depende de tu hardware local.",
+      "guide-step5": "<strong>Guarda localmente</strong>: Una vez terminado, haz clic en los archivos generados para descargarlos directamente a tu carpeta de descargas.",
+      "formats-title": "Formatos Soportados",
+      "formats-step1": "<strong>Imagen de Entrada</strong>: HEIC, JPG, JPEG, PNG, WebP, GIF, BMP, AVIF, SVG, TIFF, TIF",
+      "formats-step2": "<strong>Imagen de Salida</strong>: JPG (Estándar, compatibilidad universal), PNG (Alta calidad, admite transparencia), WebP (Muy pequeño, ideal para web)",
+      "formats-step3": "<strong>Documentos de Entrada</strong>: DOCX, XLSX, PPTX, CSV, TXT, ODT, ODS, EPUB, HTML, HTM. Nota: WPS/ET/DPS, guarde primero como DOCX/XLSX/PPTX. Los formatos antiguos DOC/PPT no se admiten directamente, guárdelos como nuevo formato.",
+      "formats-step4": "<strong>PDF Entrada/Salida</strong>: Combinar imágenes en PDF, extraer páginas PDF a imágenes (JPG/PNG/WebP).",
+      "formats-step5": "<strong>Audio de Entrada</strong>: MP3, WAV, OGG, FLAC, M4A, AAC, WMA",
+      "formats-step6": "<strong>Video de Entrada (Extracción de audio)</strong>: MP4, MOV, MKV, WebM, M4V, AVI, FLV, 3GP, MPEG, TS, MTS, M2TS, VOB, OGV, DivX, Xvid",
+      "formats-step7": "<strong>Audio de Salida</strong>: MP3 (formato universal de 128 kbps), recurre a WAV si falla la codificación.",
+      "faq-title": "Preguntas frecuentes",
+      "faq-q1": "¿Mis archivos realmente no se suben?", "faq-a1": "Totalmente. Desconecta la red después de cargar la página y pruébalo, todo sigue funcionando.",
+      "faq-q2": "¿Por qué a veces fallan los archivos grandes?", "faq-a2": "Los límites de memoria del navegador (~1.5 GB por pestaña) pueden detener archivos enormes. Para conversiones muy grandes, considera una aplicación de escritorio dedicada.",
+      "faq-q3": "¿Por qué se pierde el formato en Word/Excel?", "faq-a3": "Nuestros analizadores ligeros y sin conexión aún no admiten todas las características avanzadas de diseño. Seguimos mejorando la compatibilidad.",
+      "footer-about": "Conversor multimedia que prioriza la privacidad. Tus archivos te pertenecen.",
+      "footer-contact": "¿Preguntas o comentarios? Contacta <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
+      "footer-links-title": "Enlaces rápidos",
+      "footer-tool": "Convertidor", "footer-how": "Cómo funciona", "footer-guide": "Guía", "footer-formats": "Formatos", "footer-faq": "Preguntas",
+      "footer-policies-title": "Políticas",
+      "footer-about-link": "Sobre nosotros", "footer-privacy": "Política de privacidad", "footer-terms": "Términos de servicio",
+      "footer-copy": "© 2026 Convertidor Fantasma. Todos los derechos reservados.",
+      cookieText: "Usamos cookies para personalizar anuncios y analizar el tráfico. Al continuar aceptas nuestro uso de cookies.", cookieLink: "Política de privacidad",
+      modalCancel: "Cancelar", modalOk: "Continuar",
+      processing: "Procesando... Espere",
+      largeFileWarning: "El tamaño total de los archivos supera {size}. Puede causar falta de memoria. ¿Continuar?",
+      largeFileStrongWarning: "El tamaño total supera {size}. ¡Riesgo muy alto de bloqueo! Recomendamos usar una herramienta de escritorio. ¿Continuar de todos modos?",
+      largeFileRejected: "El tamaño total supera los 2 GB. No se puede procesar en el navegador. Use una herramienta de escritorio.",
+      done: "✓ ¡Hecho! Clic para descargar",
+      fail: "⚠️ Algunos archivos fallaron. ¿Reintentar?",
+      noFiles: "No se encontraron archivos compatibles con el formato seleccionado.",
+      wpsHint: "Archivos WPS no soportados. Primero guarda como .docx.",
+      pptHint: "Archivos .ppt no soportados. Por favor guarde como .pptx primero.",
+      docHint: "El formato .doc antiguo puede no analizarse por completo. Considere convertirlo a .docx primero.",
+      downloadKeepOpen: "Descargando... Mantenga esta página abierta.",
+      progressInit: "Convirtiendo para ti, espera ☕",
+      progressText: "Trabajando en archivo {c} de {t}… 🏃",
+      almostDone: "Empaquetando, {t}s restantes ✨",
+      scanningFolder: "Revisando tu carpeta… 🗂️",
+      audioMemory: "Audio demasiado grande para procesar de forma segura. Pruebe con un archivo más corto.",
+      unsupported: "Formato no compatible",
+      noTask: "Ningún archivo puede convertirse. Compruebe los formatos.",
+      fileCountExceeded: "Demasiados archivos. Máximo 200 permitidos.",
+      ignoredFiles: "Se omitieron {n} archivos no compatibles con el formato seleccionado.",
+    },
+    de: {
+      brand: "GeisterKonverter",
+      "nav-tool": "Konverter", "nav-how": "Funktionsweise", "nav-guide": "Anleitung", "nav-formats": "Formate", "nav-faq": "FAQ",
+      "mobile-nav-tool": "Konverter", "mobile-nav-how": "Funktionsweise", "mobile-nav-guide": "Anleitung", "mobile-nav-formats": "Formate", "mobile-nav-faq": "FAQ",
+      "bookmarkBtn": "⭐ Lesezeichen", "mobileBookmarkBtn": "⭐ Lesezeichen",
+      "hero-badge": "🔒 100% Lokal & Privat", "hero-title": "Alle Formate, ein Klick",
+      "hero-desc": "Kostenloser Online-Dateikonverter, der vollständig in Ihrem Browser läuft. Batch-Bildkonvertierung, iPhone-Fotos konvertieren, Audio aus Video extrahieren, private Dokumente in PDF – ohne Upload, 100% lokal.",
+      "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Beste Qualität)", "btn-webp": "WebP (Kleine Größe)", "btn-pdf": "PDF (Dokumente zusammenführen)", "btn-mp3": "MP3/WAV (Audio)",
+      "drop-title": "Dateien oder Ordner hier ablegen", "drop-sub": "oder klicken zum Durchsuchen (Stapelverarbeitung)",
+      "convertBtnText": "⚡ Dateien ablegen zum Konvertieren",
+      "statUsersLabel": " Benutzer sicher konvertiert", "statFilesLabel": " Dateien sicher verarbeitet",
+      "how-title": "Warum GeisterKonverter?",
+      "how-p1": "Herkömmliche Konverter zwingen Sie, sensible Dateien auf ihre Server hochzuladen – mit Risiken durch Abfangen, Protokollierung und unbefugtes Scannen.",
+      "how-p2": "GeisterKonverter löst dies durch WebAssembly und moderne Browser-APIs. Jede Konvertierung läuft vollständig in der Sandbox Ihres Browsers.",
+      "how-p3": "Das bedeutet: Beim Ablegen einer Datei läuft die gesamte Pipeline – Lesen, Dekodieren, Transformieren und Neukodieren – lokal auf Ihrer CPU und Ihrem Speicher. Es wird niemals Netzwerkverkehr verbraucht.",
+      "guide-title": "Anleitung: So konvertieren Sie Dateien lokal",
+      "guide-step1": "<strong>Bereiten Sie Ihre Dateien vor</strong>: Wählen Sie beliebig viele Bilder (einschließlich HEIC, JPG, PNG), Videos oder Tabellenkalkulationen. Sie können sogar einen ganzen Ordner auswählen.",
+      "guide-step2": "<strong>Sicher importieren</strong>: Ziehen Sie Dateien in den gestrichelten Bereich oder klicken Sie zum Durchsuchen. Der Browser erstellt einen lokalen Nur-Lese-Stream – kein Server-Upload.",
+      "guide-step3": "<strong>Ausgabeformat wählen</strong>: Wählen Sie JPG, PNG, WebP, PDF oder MP3 über die Schaltflächen oben.",
+      "guide-step4": "<strong>Kodierung starten</strong>: Klicken Sie auf die Konvertieren-Schaltfläche. Eine Fortschrittsanzeige zeigt den Status jeder Datei. Die Geschwindigkeit hängt von Ihrer lokalen Hardware ab.",
+      "guide-step5": "<strong>Lokal speichern</strong>: Nach Abschluss klicken Sie auf die generierten Dateien, um sie direkt in Ihren Standard-Download-Ordner herunterzuladen.",
+      "formats-title": "Unterstützte Formate",
+      "formats-step1": "<strong>Bildeingabe</strong>: HEIC, JPG, JPEG, PNG, WebP, GIF, BMP, AVIF, SVG, TIFF, TIF",
+      "formats-step2": "<strong>Bildausgabe</strong>: JPG (Standard, universelle Kompatibilität), PNG (Hohe Qualität, unterstützt Transparenz), WebP (Sehr kleine Größe, ideal fürs Web)",
+      "formats-step3": "<strong>Dokumenteneingabe</strong>: DOCX, XLSX, PPTX, CSV, TXT, ODT, ODS, EPUB, HTML, HTM. Hinweis: WPS/ET/DPS bitte als DOCX/XLSX/PPTX speichern. Alte DOC/PPT-Formate werden nicht direkt unterstützt, bitte im neuen Format speichern.",
+      "formats-step4": "<strong>PDF Eingabe/Ausgabe</strong>: Bilder zu PDF zusammenführen, PDF-Seiten als Bilder extrahieren (JPG/PNG/WebP).",
+      "formats-step5": "<strong>Audioeingabe</strong>: MP3, WAV, OGG, FLAC, M4A, AAC, WMA",
+      "formats-step6": "<strong>Videoeingabe (Audio extrahieren)</strong>: MP4, MOV, MKV, WebM, M4V, AVI, FLV, 3GP, MPEG, TS, MTS, M2TS, VOB, OGV, DivX, Xvid",
+      "formats-step7": "<strong>Audioausgabe</strong>: MP3 (128 kbps universelles Format), fällt auf WAV zurück, falls die Kodierung fehlschlägt.",
+      "faq-title": "Häufig gestellte Fragen",
+      "faq-q1": "Werden meine Dateien wirklich nicht hochgeladen?", "faq-a1": "Absolut. Trennen Sie nach dem Laden der Seite das Netzwerk und versuchen Sie es – alles funktioniert weiterhin.",
+      "faq-q2": "Warum schlagen große Dateien manchmal fehl?", "faq-a2": "Browser-Speicherlimits (~1,5 GB pro Tab) können riesige Dateien blockieren. Für sehr große Konvertierungen sollten Sie eine dedizierte Desktop-Anwendung in Betracht ziehen.",
+      "faq-q3": "Warum geht die Formatierung in Word/Excel verloren?", "faq-a3": "Unsere schlanken, offline-freundlichen Parser unterstützen noch nicht jedes erweiterte Layout-Feature. Wir verbessern die Kompatibilität kontinuierlich.",
+      "footer-about": "Datenschutzorientierter Multimedia-Konverter. Ihre Dateien gehören Ihnen.",
+      "footer-contact": "Fragen oder Feedback? Kontaktieren Sie <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
+      "footer-links-title": "Schnellzugriff",
+      "footer-tool": "Konverter", "footer-how": "Funktionsweise", "footer-guide": "Anleitung", "footer-formats": "Formate", "footer-faq": "FAQ",
+      "footer-policies-title": "Richtlinien",
+      "footer-about-link": "Über uns", "footer-privacy": "Datenschutzerklärung", "footer-terms": "Nutzungsbedingungen",
+      "footer-copy": "© 2026 GeisterKonverter. Alle Rechte vorbehalten.",
+      cookieText: "Wir verwenden Cookies, um Werbung zu personalisieren und den Datenverkehr zu analysieren. Durch die weitere Nutzung stimmen Sie zu.", cookieLink: "Datenschutzerklärung",
+      modalCancel: "Abbrechen", modalOk: "Fortfahren",
+      processing: "Verarbeitung... Bitte warten",
+      largeFileWarning: "Die Gesamtgröße der Dateien überschreitet {size}. Dies kann zu Speichermangel führen. Fortfahren?",
+      largeFileStrongWarning: "Die Gesamtgröße überschreitet {size}. Sehr hohes Absturzrisiko! Wir empfehlen dringend ein Desktop-Tool. Trotzdem fortfahren?",
+      largeFileRejected: "Die Gesamtgröße überschreitet 2 GB. Kann nicht im Browser verarbeitet werden. Bitte verwenden Sie ein Desktop-Tool.",
+      done: "✓ Fertig! Zum Download klicken",
+      fail: "⚠️ Einige Dateien fehlgeschlagen. Wiederholen?",
+      noFiles: "Keine kompatiblen Dateien für das gewählte Format gefunden.",
+      wpsHint: "WPS-Dateien werden nicht unterstützt. Bitte als .docx speichern.",
+      pptHint: ".ppt-Dateien werden nicht unterstützt. Bitte als .pptx speichern.",
+      docHint: "Alte .doc-Dateien können möglicherweise nicht vollständig analysiert werden. Ziehen Sie eine Konvertierung in .docx in Betracht.",
+      downloadKeepOpen: "Wird heruntergeladen... Bitte lassen Sie diese Seite geöffnet.",
+      progressInit: "Konvertiere für dich, einen Moment ☕",
+      progressText: "Arbeite an Datei {c} von {t}… 🏃",
+      almostDone: "Verpacken, noch {t}s ✨",
+      scanningFolder: "Durchsuche deinen Ordner… 🗂️",
+      audioMemory: "Audio zu groß für sichere Verarbeitung. Versuchen Sie eine kürzere Datei.",
+      unsupported: "Nicht unterstütztes Format",
+      noTask: "Keine Datei kann konvertiert werden. Bitte überprüfen Sie die Formate.",
+      fileCountExceeded: "Zu viele Dateien ausgewählt. Maximal 200 erlaubt.",
+      ignoredFiles: "{n} nicht unterstützte Dateien wurden übersprungen.",
+    },
+    fr: {
+      brand: "Convertisseur Fantôme",
+      "nav-tool": "Convertisseur", "nav-how": "Fonctionnement", "nav-guide": "Guide", "nav-formats": "Formats", "nav-faq": "FAQ",
+      "mobile-nav-tool": "Convertisseur", "mobile-nav-how": "Fonctionnement", "mobile-nav-guide": "Guide", "mobile-nav-formats": "Formats", "mobile-nav-faq": "FAQ",
+      "bookmarkBtn": "⭐ Favoris", "mobileBookmarkBtn": "⭐ Favoris",
+      "hero-badge": "🔒 100% Local et Privé", "hero-title": "Tous les formats, un clic",
+      "hero-desc": "Convertisseur de fichiers en ligne gratuit qui fonctionne entièrement dans votre navigateur. Conversion par lots d'images, photos iPhone, extraction audio de vidéo, documents privés en PDF – sans téléchargement, 100% local.",
+      "btn-jpg": "JPG (Standard)", "btn-png": "PNG (Meilleure qualité)", "btn-webp": "WebP (Taille réduite)", "btn-pdf": "PDF (Fusionner docs)", "btn-mp3": "MP3/WAV (Audio)",
+      "drop-title": "Glissez-déposez vos fichiers ou dossier ici", "drop-sub": "ou cliquez pour parcourir (traitement par lots)",
+      "convertBtnText": "⚡ Déposez les fichiers à convertir",
+      "statUsersLabel": " utilisateurs convertis en toute sécurité", "statFilesLabel": " fichiers traités en toute sécurité",
+      "how-title": "Pourquoi Convertisseur Fantôme ?",
+      "how-p1": "Les convertisseurs traditionnels vous obligent à télécharger des fichiers sensibles sur leurs serveurs, créant des risques d'interception, de journalisation et d'analyse non autorisée.",
+      "how-p2": "Convertisseur Fantôme résout ce problème en utilisant WebAssembly et les API modernes des navigateurs. Chaque conversion s'exécute entièrement dans le bac à sable de votre navigateur.",
+      "how-p3": "Cela signifie : lorsque vous déposez un fichier, tout le pipeline – lecture, décodage, transformation et ré-encodage – s'exécute localement sur votre CPU et votre mémoire. Aucun trafic réseau n'est jamais consommé.",
+      "guide-title": "Guide du débutant : Comment convertir des fichiers localement",
+      "guide-step1": "<strong>Préparez vos fichiers</strong> : Choisissez n'importe quel nombre d'images (y compris HEIC, JPG, PNG), de vidéos ou de feuilles de calcul. Vous pouvez même sélectionner un dossier entier.",
+      "guide-step2": "<strong>Importez en toute sécurité</strong> : Faites glisser les fichiers dans la zone en pointillés ou cliquez pour parcourir. Le navigateur crée un flux local en lecture seule, aucun téléchargement vers le serveur.",
+      "guide-step3": "<strong>Choisissez un format de sortie</strong> : Sélectionnez JPG, PNG, WebP, PDF ou MP3 à l'aide des boutons ci-dessus.",
+      "guide-step4": "<strong>Lancez l'encodage</strong> : Appuyez sur le bouton de conversion. Un indicateur de progression montre l'état de chaque fichier. La vitesse dépend de votre matériel local.",
+      "guide-step5": "<strong>Enregistrez localement</strong> : Une fois terminé, cliquez sur les fichiers générés pour les télécharger directement dans votre dossier de téléchargement par défaut.",
+      "formats-title": "Formats Supportés",
+      "formats-step1": "<strong>Entrée Image</strong>: HEIC, JPG, JPEG, PNG, WebP, GIF, BMP, AVIF, SVG, TIFF, TIF",
+      "formats-step2": "<strong>Sortie Image</strong>: JPG (Standard, compatibilité universelle), PNG (Haute qualité, supporte la transparence), WebP (Très petite taille, idéal pour le web)",
+      "formats-step3": "<strong>Entrée Document</strong>: DOCX, XLSX, PPTX, CSV, TXT, ODT, ODS, EPUB, HTML, HTM. Note: WPS/ET/DPS, veuillez d'abord enregistrer en DOCX/XLSX/PPTX. Les anciens formats DOC/PPT ne sont pas pris en charge directement, veuillez les enregistrer dans le nouveau format.",
+      "formats-step4": "<strong>Entrée/Sortie PDF</strong>: Fusionner des images en PDF, extraire des pages PDF en images (JPG/PNG/WebP).",
+      "formats-step5": "<strong>Entrée Audio</strong>: MP3, WAV, OGG, FLAC, M4A, AAC, WMA",
+      "formats-step6": "<strong>Entrée Vidéo (Extraction audio)</strong>: MP4, MOV, MKV, WebM, M4V, AVI, FLV, 3GP, MPEG, TS, MTS, M2TS, VOB, OGV, DivX, Xvid",
+      "formats-step7": "<strong>Sortie Audio</strong>: MP3 (format universel 128 kbps), bascule sur WAV en cas d'échec de l'encodage.",
+      "faq-title": "Questions fréquemment posées",
+      "faq-q1": "Mes fichiers ne sont-ils vraiment pas téléchargés ?", "faq-a1": "Absolument. Déconnectez le réseau après le chargement de la page et essayez, tout fonctionne toujours.",
+      "faq-q2": "Pourquoi les gros fichiers échouent-ils parfois ?", "faq-a2": "Les limites de mémoire du navigateur (~1,5 Go par onglet) peuvent bloquer les fichiers volumineux. Pour de très grosses conversions, envisagez une application de bureau dédiée.",
+      "faq-q3": "Pourquoi la mise en forme Word/Excel est-elle perdue ?", "faq-a3": "Nos analyseurs légers et hors ligne ne prennent pas encore en charge toutes les fonctionnalités de mise en page avancées. Nous améliorons continuellement la compatibilité.",
+      "footer-about": "Convertisseur multimédia axé sur la confidentialité. Vos fichiers vous appartiennent.",
+      "footer-contact": "Des questions ou des commentaires ? Contactez <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
+      "footer-links-title": "Liens rapides",
+      "footer-tool": "Convertisseur", "footer-how": "Fonctionnement", "footer-guide": "Guide", "footer-formats": "Formats", "footer-faq": "FAQ",
+      "footer-policies-title": "Politiques",
+      "footer-about-link": "À propos", "footer-privacy": "Politique de confidentialité", "footer-terms": "Conditions d'utilisation",
+      "footer-copy": "© 2026 Convertisseur Fantôme. Tous droits réservés.",
+      cookieText: "Nous utilisons des cookies pour personnaliser les annonces et analyser le trafic. En continuant, vous acceptez notre utilisation des cookies.", cookieLink: "Politique de confidentialité",
+      modalCancel: "Annuler", modalOk: "Continuer",
+      processing: "Traitement... Veuillez patienter",
+      largeFileWarning: "La taille totale des fichiers dépasse {size}. Cela peut entraîner un manque de mémoire. Continuer ?",
+      largeFileStrongWarning: "La taille totale dépasse {size}. Risque très élevé de plantage ! Nous recommandons vivement un outil de bureau. Continuer malgré tout ?",
+      largeFileRejected: "La taille totale dépasse 2 Go. Impossible à traiter dans le navigateur. Veuillez utiliser un outil de bureau.",
+      done: "✓ Terminé ! Cliquez pour télécharger",
+      fail: "⚠️ Certains fichiers ont échoué. Réessayer ?",
+      noFiles: "Aucun fichier compatible trouvé pour le format sélectionné.",
+      wpsHint: "Fichiers WPS non pris en charge. Veuillez d'abord enregistrer en .docx.",
+      pptHint: "Fichiers .ppt non pris en charge. Veuillez d'abord enregistrer en .pptx.",
+      docHint: "L'ancien format .doc peut ne pas être entièrement analysé. Pensez à le convertir en .docx.",
+      downloadKeepOpen: "Téléchargement en cours... Gardez cette page ouverte.",
+      progressInit: "Conversion en cours pour vous, patientez ☕",
+      progressText: "Travail sur le fichier {c} de {t}… 🏃",
+      almostDone: "Emballage en cours, {t}s restantes ✨",
+      scanningFolder: "Analyse de votre dossier… 🗂️",
+      audioMemory: "Audio trop volumineux pour un traitement sûr. Essayez un fichier plus court.",
+      unsupported: "Format non pris en charge",
+      noTask: "Aucun fichier ne peut être converti. Vérifiez les formats.",
+      fileCountExceeded: "Trop de fichiers sélectionnés. Maximum 200 autorisés.",
+      ignoredFiles: "{n} fichiers non pris en charge ignorés.",
+    },
+    ja: {
+      brand: "幽霊コンバーター",
+      "nav-tool": "変換ツール", "nav-how": "仕組み", "nav-guide": "ガイド", "nav-formats": "フォーマット", "nav-faq": "よくある質問",
+      "mobile-nav-tool": "変換ツール", "mobile-nav-how": "仕組み", "mobile-nav-guide": "ガイド", "mobile-nav-formats": "フォーマット", "mobile-nav-faq": "よくある質問",
+      "bookmarkBtn": "⭐ ブックマーク", "mobileBookmarkBtn": "⭐ ブックマーク",
+      "hero-badge": "🔒 100% ローカル & プライベート", "hero-title": "あらゆるフォーマットをワンクリックで変換",
+      "hero-desc": "完全にブラウザ内で動作する無料オンラインファイル変換ツール。バッチ画像変換、iPhone写真変換、動画音声抽出、プライベート文書PDF変換 — アップロード不要、ログなし、100%ローカル処理。",
+      "btn-jpg": "JPG (標準)", "btn-png": "PNG (高品質)", "btn-webp": "WebP (軽量)", "btn-pdf": "PDF (ドキュメント結合)", "btn-mp3": "MP3/WAV (音声)",
+      "drop-title": "ファイルまたはフォルダをここにドラッグ＆ドロップ", "drop-sub": "またはクリックして参照（一括対応）",
+      "convertBtnText": "⚡ ファイルをドロップして変換",
+      "statUsersLabel": " 人のユーザーが安全に変換", "statFilesLabel": " 個のファイルを安全に処理",
+      "how-title": "なぜ幽霊コンバーターなのか？",
+      "how-p1": "従来の変換ツールは、機密ファイルをサーバーにアップロードさせるため、傍受、ログ記録、不正スキャンのリスクがあります。",
+      "how-p2": "幽霊コンバーターはWebAssemblyと最新のブラウザAPIを活用し、すべての変換をブラウザのサンドボックス内で実行します。",
+      "how-p3": "つまり、ファイルをドロップすると、読み取り、デコード、変換、再エンコードの全パイプラインが、お使いのCPUとメモリ上でローカルに実行されます。ネットワークトラフィックは一切消費されません。",
+      "guide-title": "初心者ガイド：ファイルをローカルで変換する方法",
+      "guide-step1": "<strong>ファイルを準備する</strong>：画像（HEIC、JPG、PNGを含む）、動画、表計算など、好きな数だけ選択できます。フォルダ全体を選ぶことも可能です。",
+      "guide-step2": "<strong>安全にインポート</strong>：点線の領域にファイルをドラッグするか、クリックして参照します。ブラウザがローカルの読み取り専用ストリームを作成し、サーバーへのアップロードは一切発生しません。",
+      "guide-step3": "<strong>出力形式を選ぶ</strong>：上のボタンからJPG、PNG、WebP、PDF、MP3を選択します。",
+      "guide-step4": "<strong>エンコードを開始</strong>：変換ボタンを押します。進行状況インジケーターが各ファイルの状態を表示します。速度はお使いのローカルハードウェアに依存します。",
+      "guide-step5": "<strong>ローカルに保存</strong>：完了したら、生成されたファイルをクリックして、デフォルトのダウンロードフォルダに直接ダウンロードします。",
+      "formats-title": "対応フォーマット",
+      "formats-step1": "<strong>画像入力</strong>: HEIC, JPG, JPEG, PNG, WebP, GIF, BMP, AVIF, SVG, TIFF, TIF",
+      "formats-step2": "<strong>画像出力</strong>: JPG（標準、ユニバーサル互換）、PNG（高品質、透明対応）、WebP（非常に小さいサイズ、ウェブに最適）",
+      "formats-step3": "<strong>ドキュメント入力</strong>: DOCX, XLSX, PPTX, CSV, TXT, ODT, ODS, EPUB, HTML, HTM。注意：WPS/ET/DPSは最初にDOCX/XLSX/PPTXで保存してください。古いDOC/PPT形式は直接サポートされていません。新しい形式で保存してください。",
+      "formats-step4": "<strong>PDF入力/出力</strong>: 画像をPDFに結合、PDFページを画像として抽出（JPG/PNG/WebP）。",
+      "formats-step5": "<strong>音声入力</strong>: MP3, WAV, OGG, FLAC, M4A, AAC, WMA",
+      "formats-step6": "<strong>動画入力（音声抽出）</strong>: MP4, MOV, MKV, WebM, M4V, AVI, FLV, 3GP, MPEG, TS, MTS, M2TS, VOB, OGV, DivX, Xvid",
+      "formats-step7": "<strong>音声出力</strong>: MP3（128kbpsユニバーサルフォーマット）、エンコード失敗時はWAVにフォールバック。",
+      "faq-title": "よくある質問",
+      "faq-q1": "ファイルは本当にアップロードされませんか？", "faq-a1": "はい。ページの読み込み後にネットワークを切断してお試しください。すべて機能し続けます。",
+      "faq-q2": "大きなファイルが失敗することがあるのはなぜですか？", "faq-a2": "ブラウザのメモリ制限（タブあたり約1.5GB）により、巨大なファイルがストールする可能性があります。非常に大きな変換には専用のデスクトップアプリを検討してください。",
+      "faq-q3": "Word/Excelの書式が失われるのはなぜですか？", "faq-a3": "軽量でオフライン対応のパーサーは、まだすべての高度なレイアウト機能をサポートしていません。互換性は継続的に改善しています。",
+      "footer-about": "プライバシー重視のマルチメディア変換ツール。あなたのファイルはあなたのものです。",
+      "footer-contact": "ご質問やフィードバックはこちら： <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
+      "footer-links-title": "クイックリンク",
+      "footer-tool": "変換ツール", "footer-how": "仕組み", "footer-guide": "ガイド", "footer-formats": "フォーマット", "footer-faq": "よくある質問",
+      "footer-policies-title": "ポリシー",
+      "footer-about-link": "当サイトについて", "footer-privacy": "プライバシーポリシー", "footer-terms": "利用規約",
+      "footer-copy": "© 2026 幽霊コンバーター. All rights reserved.",
+      cookieText: "広告のパーソナライズとトラフィック分析のためCookieを使用します。続行するとCookieの使用に同意したことになります。", cookieLink: "プライバシーポリシー",
+      modalCancel: "キャンセル", modalOk: "続行",
+      processing: "処理中... お待ちください",
+      largeFileWarning: "ファイルの合計サイズが{size}を超えています。メモリ不足になる可能性があります。続行しますか？",
+      largeFileStrongWarning: "合計サイズが{size}を超えています。クラッシュの危険性が非常に高いです！デスクトップツールの使用を強くお勧めします。それでも続行しますか？",
+      largeFileRejected: "合計サイズが2 GBを超えています。ブラウザで処理できません。デスクトップツールを使用してください。",
+      done: "✓ 完了！クリックしてダウンロード",
+      fail: "⚠️ 一部のファイルが失敗しました。再試行しますか？",
+      noFiles: "選択した形式に対応するファイルが見つかりません。",
+      wpsHint: "WPSファイルには対応していません。.docxで保存し直してください。",
+      pptHint: ".pptファイルには対応していません。.pptxで保存し直してください。",
+      docHint: "古い .doc 形式は完全に解析できない場合があります。.docx への変換をご検討ください。",
+      downloadKeepOpen: "ダウンロード中... このページを開いたままにしてください。",
+      progressInit: "変換中です、少々お待ちください ☕",
+      progressText: "ファイル {c}/{t} を処理中… 🏃",
+      almostDone: "パッケージ中、残り{t}秒 ✨",
+      scanningFolder: "フォルダを探しています… 🗂️",
+      audioMemory: "音声が大きすぎて安全に処理できません。短いファイルをお試しください。",
+      unsupported: "サポートされていない形式",
+      noTask: "変換可能なファイルがありません。フォーマットを確認してください。",
+      fileCountExceeded: "選択したファイルが多すぎます。上限は200ファイルです。",
+      ignoredFiles: "{n}個の非対応ファイルをスキップしました。",
+    },
+    ko: {
+      brand: "유령 컨버터",
+      "nav-tool": "변환기", "nav-how": "작동 원리", "nav-guide": "가이드", "nav-formats": "포맷", "nav-faq": "FAQ",
+      "mobile-nav-tool": "변환기", "mobile-nav-how": "작동 원리", "mobile-nav-guide": "가이드", "mobile-nav-formats": "포맷", "mobile-nav-faq": "FAQ",
+      "bookmarkBtn": "⭐ 북마크", "mobileBookmarkBtn": "⭐ 북마크",
+      "hero-badge": "🔒 100% 로컬 & 비공개", "hero-title": "모든 포맷, 한 번의 클릭",
+      "hero-desc": "브라우저 내에서 완전히 실행되는 무료 온라인 파일 변환기. 일괄 이미지 변환, iPhone 사진 변환, 비디오 오디오 추출, 비공개 문서 PDF 변환 — 업로드 없음, 로그 없음, 100% 로컬 처리.",
+      "btn-jpg": "JPG (표준)", "btn-png": "PNG (최고 품질)", "btn-webp": "WebP (작은 크기)", "btn-pdf": "PDF (문서 병합)", "btn-mp3": "MP3/WAV (오디오)",
+      "drop-title": "파일 또는 폴더를 여기에 드래그 앤 드롭", "drop-sub": "또는 클릭하여 찾아보기 (일괄 지원)",
+      "convertBtnText": "⚡ 파일을 놓아 변환",
+      "statUsersLabel": " 사용자가 안전하게 변환함", "statFilesLabel": " 파일이 안전하게 처리됨",
+      "how-title": "왜 유령 컨버터 인가?",
+      "how-p1": "기존 온라인 변환기는 민감한 파일을 서버에 업로드하도록 강요하여 가로채기, 로깅, 무단 스캔 위험을 초래합니다.",
+      "how-p2": "유령 컨버터는 WebAssembly와 최신 브라우저 API를 활용하여 모든 변환을 브라우저 샌드박스 내에서 실행합니다.",
+      "how-p3": "즉, 파일을 드롭하면 읽기, 디코딩, 변환, 재인코딩의 전체 파이프라인이 CPU와 메모리에서 로컬로 실행됩니다. 네트워크 트래픽이 전혀 소모되지 않습니다.",
+      "guide-title": "초보자 가이드: 파일을 로컬에서 변환하는 방법",
+      "guide-step1": "<strong>파일 준비</strong>: HEIC, JPG, PNG를 포함한 이미지, 동영상 또는 스프레드시트를 원하는 만큼 선택할 수 있습니다. 전체 폴더를 선택할 수도 있습니다.",
+      "guide-step2": "<strong>안전하게 가져오기</strong>: 파일을 점선 영역으로 드래그하거나 클릭하여 찾아봅니다. 브라우저가 로컬 읽기 전용 스트림을 생성하므로 서버 업로드가 전혀 발생하지 않습니다.",
+      "guide-step3": "<strong>출력 포맷 선택</strong>: 위 버튼에서 JPG, PNG, WebP, PDF, MP3 중 하나를 선택합니다.",
+      "guide-step4": "<strong>인코딩 시작</strong>: 변환 버튼을 누르면 진행 표시기가 각 파일의 상태를 보여줍니다. 속도는 로컬 하드웨어에 따라 다릅니다.",
+      "guide-step5": "<strong>로컬에 저장</strong>: 완료되면 생성된 파일을 클릭하여 기본 다운로드 폴더로 직접 다운로드합니다.",
+      "formats-title": "지원 형식",
+      "formats-step1": "<strong>이미지 입력</strong>: HEIC, JPG, JPEG, PNG, WebP, GIF, BMP, AVIF, SVG, TIFF, TIF",
+      "formats-step2": "<strong>이미지 출력</strong>: JPG (표준, 범용 호환), PNG (고품질, 투명도 지원), WebP (매우 작은 크기, 웹에 이상적)",
+      "formats-step3": "<strong>문서 입력</strong>: DOCX, XLSX, PPTX, CSV, TXT, ODT, ODS, EPUB, HTML, HTM. 참고: WPS/ET/DPS는 먼저 DOCX/XLSX/PPTX로 저장하십시오. 구형 DOC/PPT 형식은 직접 지원되지 않으므로 새 형식으로 저장하세요.",
+      "formats-step4": "<strong>PDF 입력/출력</strong>: 이미지를 PDF로 병합, PDF 페이지를 이미지로 추출 (JPG/PNG/WebP).",
+      "formats-step5": "<strong>오디오 입력</strong>: MP3, WAV, OGG, FLAC, M4A, AAC, WMA",
+      "formats-step6": "<strong>비디오 입력 (오디오 추출)</strong>: MP4, MOV, MKV, WebM, M4V, AVI, FLV, 3GP, MPEG, TS, MTS, M2TS, VOB, OGV, DivX, Xvid",
+      "formats-step7": "<strong>오디오 출력</strong>: MP3 (128kbps 범용 형식), 인코딩 실패 시 WAV로 대체.",
+      "faq-title": "자주 묻는 질문",
+      "faq-q1": "파일이 정말 업로드되지 않나요?", "faq-a1": "확실합니다. 페이지 로드 후 네트워크를 끊고 파일을 드롭해 보세요. 모든 것이 여전히 작동합니다.",
+      "faq-q2": "큰 파일이 가끔 실패하는 이유는 무엇인가요?", "faq-a2": "브라우저 메모리 제한(탭당 약 1.5GB)으로 인해 거대한 파일이 멈출 수 있습니다. 매우 큰 변환에는 전용 데스크톱 앱을 고려하세요.",
+      "faq-q3": "Word/Excel 서식이 손실되는 이유는 무엇인가요?", "faq-a3": "경량 오프라인 파서가 아직 모든 고급 레이아웃 기능을 지원하지 않습니다. 호환성을 지속적으로 개선하고 있습니다.",
+      "footer-about": "개인 정보 보호 우선 멀티미디어 변환기. 파일은 당신의 것입니다.",
+      "footer-contact": "질문이나 의견이 있으시면 연락하세요: <a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
+      "footer-links-title": "빠른 링크",
+      "footer-tool": "변환기", "footer-how": "작동 원리", "footer-guide": "가이드", "footer-formats": "포맷", "footer-faq": "FAQ",
+      "footer-policies-title": "정책",
+      "footer-about-link": "회사 소개", "footer-privacy": "개인정보 처리방침", "footer-terms": "서비스 약관",
+      "footer-copy": "© 2026 유령 컨버터. 모든 권리 보유.",
+      cookieText: "쿠키를 사용하여 광고를 개인화하고 트래픽을 분석합니다. 계속하면 쿠키 사용에 동의하는 것입니다.", cookieLink: "개인정보 처리방침",
+      modalCancel: "취소", modalOk: "계속",
+      processing: "처리 중... 잠시만 기다려주세요",
+      largeFileWarning: "총 파일 크기가 {size}를 초과합니다. 브라우저 메모리 부족을 초래할 수 있습니다. 계속하시겠습니까?",
+      largeFileStrongWarning: "총 파일 크기가 {size}를 초과합니다. 충돌 위험이 매우 높습니다! 데스크톱 도구를 사용하는 것이 좋습니다. 그래도 계속하시겠습니까?",
+      largeFileRejected: "총 파일 크기가 2GB를 초과합니다. 브라우저에서 처리할 수 없습니다. 데스크톱 도구를 사용하세요.",
+      done: "✓ 완료! 클릭하여 다운로드",
+      fail: "⚠️ 일부 파일이 실패했습니다. 다시 시도하시겠습니까?",
+      noFiles: "선택한 형식에 맞는 지원 파일을 찾을 수 없습니다.",
+      wpsHint: "WPS 파일은 지원되지 않습니다. 먼저 .docx로 저장하세요.",
+      pptHint: ".ppt 파일은 지원되지 않습니다. .pptx로 저장하세요.",
+      docHint: "이전 .doc 형식은 완전히 구문 분석되지 않을 수 있습니다. .docx로 변환하는 것이 좋습니다.",
+      downloadKeepOpen: "다운로드 중... 이 페이지를 열어 두세요.",
+      progressInit: "변환 중입니다. 잠시만요 ☕",
+      progressText: "파일 {c}/{t} 작업 중… 🏃",
+      almostDone: "패키징 중, {t}초 남음 ✨",
+      scanningFolder: "폴더를 살펴보는 중… 🗂️",
+      audioMemory: "오디오가 너무 커서 안전하게 처리할 수 없습니다. 더 짧은 파일을 사용해보세요.",
+      unsupported: "지원되지 않는 형식",
+      noTask: "변환할 수 있는 파일이 없습니다. 파일 형식을 확인하세요.",
+      fileCountExceeded: "선택한 파일이 너무 많습니다. 최대 200개까지 가능합니다.",
+      ignoredFiles: "지원되지 않는 {n}개 파일을 건너뛰었습니다.",
+    },
+    "zh-CN": {
+      brand: "幽灵转换器",
+      "nav-tool": "在线转换工具", "nav-how": "核心原理", "nav-guide": "新手指南", "nav-formats": "支持格式", "nav-faq": "常见问题",
+      "mobile-nav-tool": "在线转换工具", "mobile-nav-how": "核心原理", "mobile-nav-guide": "新手指南", "mobile-nav-formats": "支持格式", "mobile-nav-faq": "常见问题",
+      "bookmarkBtn": "⭐ 收藏", "mobileBookmarkBtn": "⭐ 收藏",
+      "hero-badge": "🔒 100% 本地运行 · 安全私密", "hero-title": "全格式支持，一键转换",
+      "hero-desc": "完全在浏览器内运行的免费在线文件转换器。支持批量图片格式转换、iPhone照片转换、视频提取音频、私密文档转PDF。无需上传任何文件，绝无隐私泄露，100%本地处理。",
+      "btn-jpg": "JPG（标准图片）", "btn-png": "PNG（透明背景）", "btn-webp": "WebP（极小体积）", "btn-pdf": "PDF（合并文档）", "btn-mp3": "MP3/WAV（音频提取）",
+      "drop-title": "拖拽文件或文件夹到此处", "drop-sub": "或点击浏览（支持批量）",
+      "convertBtnText": "⚡ 拖入文件，一键转换",
+      "statUsersLabel": " 位用户已安全转换", "statFilesLabel": " 个文件已本地处理",
+      "how-title": "为什么选择幽灵转换器？彻底颠覆传统的本地隐私文件处理技术",
+      "how-p1": "传统的在线文件转换网站，无一例外地需要您将私人文件、敏感照片或内部工作文档上传到他们的云端服务器。在这个过程中，您的敏感数据面临着传输被截获、服务器日志留存以及第三方商业公司非法扫描或二次售卖的严重隐私风险。",
+      "how-p2": "幽灵转换器彻底解决了这一安全痛点。我们利用先进的 WebAssembly (WASM) 编译技术与新型的前端 JavaScript 库，将强大的图像、音频及文档解析内核直接植入到了您的现代浏览器（如 Chrome, Edge, Safari）之中。",
+      "how-p3": "这意味着：当您在下方上传文件时，文件读取、解码、矩阵转换、重新编码的完整流水线完全在您这台设备的 CPU 和内存中本地闭环运行，整个过程不需要消耗任何上传网络流量。即使此时断开互联网，幽灵转换器依然可以完美顺畅地为您工作。",
+      "guide-title": "新手指南：如何使用幽灵转换器批量本地转换文件？",
+      "guide-step1": "<strong>准备您的待处理文件</strong>：您可以准备任意数量的图片（包括苹果 HEIC、常见 JPG、PNG）、视频或 Excel/Word 电子表格。我们支持直接一次性选择整个嵌套文件夹。",
+      "guide-step2": "<strong>执行安全导入</strong>：将文件拖入虚线框，或者点击“选择文件”。此时浏览器会在本地为文件生成安全只读流，绝不发生服务器网络传输。",
+      "guide-step3": "<strong>指定输出目标编码格式</strong>：在上方按钮中根据需要选择通用 JPG、无损 PNG、现代高效 WebP、合并 PDF 或高压缩率 MP3。",
+      "guide-step4": "<strong>触发本地极速编码</strong>：点击“开始转换”。此时页面进度条会精准提示每个文件的处理状态。转换时间完全取决于您的本地硬件性能。",
+      "guide-step5": "<strong>一键保存到本地</strong>：转换成功后，点击生成的新文件块即可直接下载保存，文件路径为您本机的默认下载目录。",
+      "formats-title": "支持格式",
+      "formats-step1": "<strong>图片输入格式</strong>：HEIC、JPG、JPEG、PNG、WebP、GIF、BMP、AVIF、SVG、TIFF、TIF",
+      "formats-step2": "<strong>图片输出格式</strong>：JPG（标准图片，通用兼容）、PNG（高质量，支持透明背景）、WebP（极小体积，适合网页）",
+      "formats-step3": "<strong>文档输入格式</strong>：DOCX、XLSX、PPTX、CSV、TXT、ODT、ODS、EPUB、HTML、HTM。注意：WPS/ET/DPS 请先另存为 DOCX/XLSX/PPTX。旧版 DOC/PPT 格式不支持直接转换，请另存为新格式。",
+      "formats-step4": "<strong>PDF 输入/输出</strong>：支持将图片合并为 PDF，也可将 PDF 页面提取为图片输出（JPG/PNG/WebP）。",
+      "formats-step5": "<strong>音频输入格式</strong>：MP3、WAV、OGG、FLAC、M4A、AAC、WMA",
+      "formats-step6": "<strong>视频输入格式（提取音频）</strong>：MP4、MOV、MKV、WebM、M4V、AVI、FLV、3GP、MPEG、TS、MTS、M2TS、VOB、OGV、DivX、Xvid",
+      "formats-step7": "<strong>音频输出格式</strong>：MP3（128kbps 通用格式），若编码失败自动输出 WAV（无损）。",
+      "faq-title": "常见疑问",
+      "faq-q1": "我的文件真的不会被上传吗？", "faq-a1": "绝对不会。页面加载完成后，断开网络并拖入文件 —— 您会发现一切依然正常。没有任何数据离开您的设备。",
+      "faq-q2": "为什么大文件有时会转换失败？", "faq-a2": "浏览器内存限制（通常每个标签页约 1.5 GB）可能导致超大音频、视频或表格转换超时。对于极大文件，建议使用专业桌面工具。",
+      "faq-q3": "为什么复杂 Word/Excel 的排版会丢失？", "faq-a3": "我们轻量、离线友好的解析器尚不能支持所有高级排版特性。我们正持续改进兼容性，但高度格式化的文档可能会丢失部分细节。",
+      "footer-about": "隐私至上的多媒体转换器。您的文件属于您自己。",
+      "footer-contact": "如有疑问或建议，联系邮箱：<a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
+      "footer-links-title": "快捷链接",
+      "footer-tool": "在线转换工具", "footer-how": "核心原理", "footer-guide": "新手指南", "footer-formats": "支持格式", "footer-faq": "常见问题",
+      "footer-policies-title": "政策与合规",
+      "footer-about-link": "关于我们", "footer-privacy": "隐私政策", "footer-terms": "服务条款",
+      "footer-copy": "© 2026 幽灵转换器. 保留所有权利。",
+      cookieText: "我们使用 Cookie 来个性化广告和分析流量。继续使用即表示您同意。", cookieLink: "隐私政策",
+      modalCancel: "取消", modalOk: "继续",
+      processing: "处理中… 请稍候",
+      largeFileWarning: "文件总大小超过 {size}，可能导致浏览器内存不足。是否继续？",
+      largeFileStrongWarning: "文件总大小超过 {size}，极易导致页面崩溃！强烈建议使用桌面工具处理。仍要继续吗？",
+      largeFileRejected: "文件总大小超过 2 GB，浏览器无法安全处理。请使用桌面工具。",
+      done: "✓ 转换完成，点击下载",
+      fail: "⚠️ 有几个文件没能转好，要再试试吗？💪",
+      noFiles: "呀，没找到能转换的文件，换个格式试试？🤔",
+      wpsHint: "检测到 .wps 文件，请先另存为 .docx 格式再转换。",
+      pptHint: "暂不支持 .ppt 格式，请先另存为 .pptx 格式再转换。",
+      docHint: "旧版 .doc 格式可能无法完整解析，建议先转为 .docx。",
+      downloadKeepOpen: "下载中… 请保持页面打开。",
+      progressInit: "正在帮你转换，请稍等 ☕",
+      progressText: "第 {c}/{t} 个文件努力中… 🏃",
+      almostDone: "正在打包中，还有 {t} 秒 ✨",
+      scanningFolder: "正在翻找你的文件夹… 🗂️",
+      audioMemory: "音频过大无法安全处理。请尝试更短的音频文件。",
+      unsupported: "不支持的格式",
+      noTask: "没有可转换的文件，请检查文件格式。",
+      fileCountExceeded: "选择的文件太多，单次最多转换 200 个文件。",
+      ignoredFiles: "已跳过 {n} 个当前格式不支持的文件。",
+    },
+    "zh-TW": {
+      brand: "幽靈轉換器",
+      "nav-tool": "線上轉換工具", "nav-how": "核心原理", "nav-guide": "新手指南", "nav-formats": "支援格式", "nav-faq": "常見問題",
+      "mobile-nav-tool": "線上轉換工具", "mobile-nav-how": "核心原理", "mobile-nav-guide": "新手指南", "mobile-nav-formats": "支援格式", "mobile-nav-faq": "常見問題",
+      "bookmarkBtn": "⭐ 收藏", "mobileBookmarkBtn": "⭐ 收藏",
+      "hero-badge": "🔒 100% 本機運行 · 安全私密", "hero-title": "全格式支援，一鍵轉換",
+      "hero-desc": "完全在瀏覽器內運行的免費線上檔案轉換器。支援批次圖片格式轉換、iPhone照片轉換、影片提取音訊、私密文件轉PDF。無需上傳，絕無隱私外洩，100%本機處理。",
+      "btn-jpg": "JPG（標準圖片）", "btn-png": "PNG（透明背景）", "btn-webp": "WebP（極小體積）", "btn-pdf": "PDF（合併文件）", "btn-mp3": "MP3/WAV（音訊提取）",
+      "drop-title": "拖曳檔案或資料夾到此處", "drop-sub": "或點擊瀏覽（支援批次）",
+      "convertBtnText": "⚡ 拖入檔案，一鍵轉換",
+      "statUsersLabel": " 位使用者已安全轉換", "statFilesLabel": " 個檔案已本機處理",
+      "how-title": "為什麼選擇幽靈轉換器？徹底顛覆傳統的本機隱私檔案處理技術",
+      "how-p1": "傳統的線上檔案轉換網站，無一例外地需要您將私人檔案、敏感照片或內部工作文件上傳到他們的雲端伺服器。在這過程中，您的敏感資料面臨著傳輸被攔截、伺服器日誌留存以及第三方商業公司非法掃描或二次販售的嚴重隱私風險。",
+      "how-p2": "幽靈轉換器徹底解決了這一安全痛點。我們利用先進的 WebAssembly (WASM) 編譯技術與新型的前端 JavaScript 庫，將強大的圖像、音訊及文件解析核心直接植入到了您的現代瀏覽器（如 Chrome, Edge, Safari）之中。",
+      "how-p3": "這意味著：當您在下方上傳檔案時，檔案讀取、解碼、矩陣轉換、重新編碼的完整流水線完全在您這台設備的 CPU 和記憶體中本機閉環運行，整個過程不需要消耗任何上傳網路流量。即使此時斷開網際網路，幽靈轉換器依然可以完美順暢地為您工作。",
+      "guide-title": "新手指南：如何使用幽靈轉換器批次本機轉換檔案？",
+      "guide-step1": "<strong>準備您的待處理檔案</strong>：您可以準備任意數量的圖片（包括蘋果 HEIC、常見 JPG、PNG）、影片或 Excel/Word 試算表。我們支援直接一次選取整個巢狀資料夾。",
+      "guide-step2": "<strong>執行安全匯入</strong>：將檔案拖入虛線框，或者點擊「選擇檔案」。此時瀏覽器會在本機為檔案產生安全唯讀串流，絕不發生伺服器網路傳輸。",
+      "guide-step3": "<strong>指定輸出目標編碼格式</strong>：在上方按鈕中根據需要選擇通用 JPG、無損 PNG、現代高效 WebP、合併 PDF 或高壓縮率 MP3。",
+      "guide-step4": "<strong>觸發本機極速編碼</strong>：點擊「開始轉換」。此時頁面進度條會精準提示每個檔案的處理狀態。轉換時間完全取決於您的本機硬體效能。",
+      "guide-step5": "<strong>一鍵儲存到本機</strong>：轉換成功後，點擊生成的新檔案區塊即可直接下載儲存，檔案路徑為您本機的預設下載目錄。",
+      "formats-title": "支援格式",
+      "formats-step1": "<strong>圖片輸入格式</strong>：HEIC、JPG、JPEG、PNG、WebP、GIF、BMP、AVIF、SVG、TIFF、TIF",
+      "formats-step2": "<strong>圖片輸出格式</strong>：JPG（標準圖片，通用相容）、PNG（高品質，支援透明背景）、WebP（極小體積，適合網頁）",
+      "formats-step3": "<strong>文件輸入格式</strong>：DOCX、XLSX、PPTX、CSV、TXT、ODT、ODS、EPUB、HTML、HTM。注意：WPS/ET/DPS 請先另存為 DOCX/XLSX/PPTX。舊版 DOC/PPT 格式不支援直接轉換，請另存為新格式。",
+      "formats-step4": "<strong>PDF 輸入/輸出</strong>：支援將圖片合併為 PDF，也可將 PDF 頁面提取為圖片輸出（JPG/PNG/WebP）。",
+      "formats-step5": "<strong>音訊輸入格式</strong>：MP3、WAV、OGG、FLAC、M4A、AAC、WMA",
+      "formats-step6": "<strong>影片輸入格式（提取音訊）</strong>：MP4、MOV、MKV、WebM、M4V、AVI、FLV、3GP、MPEG、TS、MTS、M2TS、VOB、OGV、DivX、Xvid",
+      "formats-step7": "<strong>音訊輸出格式</strong>：MP3（128kbps 通用格式），若編碼失敗自動輸出 WAV（無損）。",
+      "faq-title": "常見疑問",
+      "faq-q1": "我的檔案真的不會被上傳嗎？", "faq-a1": "絕對不會。頁面載入完成後，斷開網路並拖入檔案 —— 您會發現一切依然正常。沒有任何資料離開您的設備。",
+      "faq-q2": "為什麼大檔案有時會轉換失敗？", "faq-a2": "瀏覽器記憶體限制（通常每個分頁約 1.5 GB）可能導致超大音訊、影片或表格轉換逾時。對於極大檔案，建議使用專業桌面工具。",
+      "faq-q3": "為什麼複雜 Word/Excel 的排版會丟失？", "faq-a3": "我們輕量、離線友善的解析器尚不能支援所有高級排版特性。我們正持續改進相容性，但高度格式化的文件可能會丟失部分細節。",
+      "footer-about": "隱私至上的多媒體轉換器。您的檔案屬於您自己。",
+      "footer-contact": "如有疑問或建議，聯絡信箱：<a href=\"mailto:support@ghostconvert.cc\" class=\"text-indigo-400 hover:text-indigo-300 underline\">support@ghostconvert.cc</a>",
+      "footer-links-title": "快捷連結",
+      "footer-tool": "線上轉換工具", "footer-how": "核心原理", "footer-guide": "新手指南", "footer-formats": "支援格式", "footer-faq": "常見問題",
+      "footer-policies-title": "政策與合規",
+      "footer-about-link": "關於我們", "footer-privacy": "隱私權政策", "footer-terms": "服務條款",
+      "footer-copy": "© 2026 幽靈轉換器. 保留所有權利。",
+      cookieText: "我們使用 Cookie 來個人化廣告和分析流量。繼續使用即表示您同意。", cookieLink: "隱私權政策",
+      modalCancel: "取消", modalOk: "繼續",
+      processing: "處理中… 請稍候",
+      largeFileWarning: "檔案總大小超過 {size}，可能導致瀏覽器記憶體不足。是否繼續？",
+      largeFileStrongWarning: "檔案總大小超過 {size}，極易導致頁面崩潰！強烈建議使用桌面工具處理。仍要繼續嗎？",
+      largeFileRejected: "檔案總大小超過 2 GB，瀏覽器無法安全處理。請使用桌面工具。",
+      done: "✓ 轉換完成，點擊下載",
+      fail: "⚠️ 有幾個檔案沒能轉好，要再試試嗎？💪",
+      noFiles: "呀，沒找到能轉換的檔案，換個格式試試？🤔",
+      wpsHint: "偵測到 .wps 檔案，請先另存為 .docx 格式再轉換。",
+      pptHint: "暫不支援 .ppt 格式，請先另存為 .pptx 格式再轉換。",
+      docHint: "舊版 .doc 格式可能無法完整解析，建議先轉為 .docx。",
+      downloadKeepOpen: "下載中… 請保持此頁面開啟。",
+      progressInit: "正在幫你轉換，請稍等 ☕",
+      progressText: "第 {c}/{t} 個檔案努力中… 🏃",
+      almostDone: "正在打包中，還有 {t} 秒 ✨",
+      scanningFolder: "正在翻找你的資料夾… 🗂️",
+      audioMemory: "音訊過大無法安全處理。請嘗試較短的音訊檔案。",
+      unsupported: "不支援的格式",
+      noTask: "沒有可轉換的檔案，請檢查檔案格式。",
+      fileCountExceeded: "選擇的檔案太多，單次最多轉換 200 個檔案。",
+      ignoredFiles: "已跳過 {n} 個當前格式不支援的檔案。",
+    }
+  });
+
+  function getPreferredLang() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('lang');
+    if (langParam && window.GC.LANG[langParam]) return langParam;
+
+    const stored = localStorage.getItem('_pref_lang');
+    if (stored && window.GC.LANG[stored]) return stored;
+
+    const browserLangs = navigator.languages || [navigator.language || 'en'];
+    for (const lang of browserLangs) {
+      if (window.GC.LANG[lang]) return lang;
+      const short = lang.split('-')[0];
+      if (window.GC.LANG[short]) return short;
+      if (short === 'zh') {
+        return lang.includes('TW') || lang.includes('HK') ? 'zh-TW' : 'zh-CN';
+      }
+    }
+
+    return 'en';  
+  }
+
+  const preferredLang = getPreferredLang();
+  localStorage.setItem('_pref_lang', preferredLang);
+
+  if (window.GC && window.GC.init) {
+    window.GC.init();
+  }
+</script>
 </body>
 </html>
