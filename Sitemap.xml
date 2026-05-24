@@ -4,6 +4,7 @@
   <!-- 英文 (默认) -->
   <url>
     <loc>https://ghostconvert.cc?lang=en</loc>
+    <lastmod>2026-05-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://ghostconvert.cc?lang=en"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ghostconvert.cc?lang=zh-CN"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://ghostconvert.cc?lang=es"/>
@@ -19,6 +20,7 @@
   <!-- 简体中文 -->
   <url>
     <loc>https://ghostconvert.cc?lang=zh-CN</loc>
+    <lastmod>2026-05-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://ghostconvert.cc?lang=en"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ghostconvert.cc?lang=zh-CN"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://ghostconvert.cc?lang=es"/>
@@ -34,6 +36,7 @@
   <!-- 西班牙语 -->
   <url>
     <loc>https://ghostconvert.cc?lang=es</loc>
+    <lastmod>2026-05-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://ghostconvert.cc?lang=en"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ghostconvert.cc?lang=zh-CN"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://ghostconvert.cc?lang=es"/>
@@ -49,6 +52,7 @@
   <!-- 德语 -->
   <url>
     <loc>https://ghostconvert.cc?lang=de</loc>
+    <lastmod>2026-05-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://ghostconvert.cc?lang=en"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ghostconvert.cc?lang=zh-CN"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://ghostconvert.cc?lang=es"/>
@@ -64,6 +68,7 @@
   <!-- 法语 -->
   <url>
     <loc>https://ghostconvert.cc?lang=fr</loc>
+    <lastmod>2026-05-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://ghostconvert.cc?lang=en"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ghostconvert.cc?lang=zh-CN"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://ghostconvert.cc?lang=es"/>
@@ -79,6 +84,7 @@
   <!-- 日语 -->
   <url>
     <loc>https://ghostconvert.cc?lang=ja</loc>
+    <lastmod>2026-05-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://ghostconvert.cc?lang=en"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ghostconvert.cc?lang=zh-CN"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://ghostconvert.cc?lang=es"/>
@@ -94,6 +100,7 @@
   <!-- 韩语 -->
   <url>
     <loc>https://ghostconvert.cc?lang=ko</loc>
+    <lastmod>2026-05-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://ghostconvert.cc?lang=en"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ghostconvert.cc?lang=zh-CN"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://ghostconvert.cc?lang=es"/>
@@ -109,6 +116,7 @@
   <!-- 繁体中文 -->
   <url>
     <loc>https://ghostconvert.cc?lang=zh-TW</loc>
+    <lastmod>2026-05-24</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://ghostconvert.cc?lang=en"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ghostconvert.cc?lang=zh-CN"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://ghostconvert.cc?lang=es"/>
